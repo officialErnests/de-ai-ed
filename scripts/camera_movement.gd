@@ -5,9 +5,14 @@ extends Node3D
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
-const MOUSE_SENSITIVITY = 1
-
+const MOUSE_SENSITIVITY = 0.5
+const SPEED = 10
+var distance = 3
 func _input(event):
+	if event.is_action_pressed("scroll_down"):
+		distance += 0.2
+	if event.is_action_pressed("scroll_up"):
+		distance -= 0.2
 	if event.is_action_pressed("r_click"):
 		if Input.mouse_mode == Input.MOUSE_MODE_VISIBLE:
 			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
@@ -47,4 +52,6 @@ func _process(delta):
 	
 	dir.y = 0
 	dir = dir.normalized()
-	position += dir * delta
+	position += dir * delta * SPEED
+	$NeckOrSmthing/Dron.position = Vector3.BACK * distance
+	$NeckOrSmthing/Dron.global_position.y = max($NeckOrSmthing/Dron.global_position.y, 0.1)

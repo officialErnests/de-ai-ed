@@ -52,7 +52,6 @@ mesh = SubResource("PlaneMesh_sugp2")
 shape = SubResource("WorldBoundaryShape3D_jyhfs")
 
 [node name="Camera_setup" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
 script = ExtResource("2_0wfyh")
 
 [node name="NeckOrSmthing" type="Node3D" parent="Camera_setup"]
