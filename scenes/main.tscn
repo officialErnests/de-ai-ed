@@ -1,0 +1,64 @@
+[gd_scene load_steps=8 format=3 uid="uid://btjrdo0mrklry"]
+
+[ext_resource type="Texture2D" uid="uid://cx0txlsseflw8" path="res://icon.svg" id="1_o5qli"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_o5qli"]
+sky_top_color = Color(0.26750416, 0.6006932, 0.68498224, 1)
+sky_horizon_color = Color(0.6423824, 0.7356543, 0.7578019, 1)
+ground_bottom_color = Color(0.094618656, 0.13451722, 0.13881871, 1)
+ground_horizon_color = Color(0.6423824, 0.7356543, 0.7578019, 1)
+
+[sub_resource type="Sky" id="Sky_0wfyh"]
+sky_material = SubResource("ProceduralSkyMaterial_o5qli")
+
+[sub_resource type="Environment" id="Environment_sugp2"]
+background_mode = 2
+sky = SubResource("Sky_0wfyh")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0wfyh"]
+albedo_texture = ExtResource("1_o5qli")
+uv1_scale = Vector3(10, 10, 10)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_sugp2"]
+size = Vector2(10, 10)
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_jyhfs"]
+
+[node name="main" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_sugp2")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
+shadow_enabled = true
+
+[node name="floor" type="MeshInstance3D" parent="."]
+material_override = SubResource("StandardMaterial3D_0wfyh")
+mesh = SubResource("PlaneMesh_sugp2")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="floor"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="floor/StaticBody3D"]
+shape = SubResource("WorldBoundaryShape3D_jyhfs")
+
+[node name="Floating_cam" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.77395076, 0.6332458, 0, -0.6332458, 0.77395076, 0, 2.5803497, 0)
+current = true
+
+[node name="CanvasLayer" type="CanvasLayer" parent="Floating_cam"]
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="Floating_cam/CanvasLayer"]
+offset_right = 512.0
+offset_bottom = 512.0
+
+[node name="SubViewport" type="SubViewport" parent="Floating_cam/CanvasLayer/SubViewportContainer"]
+transparent_bg = true
+handle_input_locally = false
+anisotropic_filtering_level = 0
+gui_disable_input = true
+size = Vector2i(640, 360)
+render_target_update_mode = 4
+
+[node name="Camera3D" type="Camera3D" parent="Floating_cam/CanvasLayer/SubViewportContainer/SubViewport"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2703743, 3.0424364)
