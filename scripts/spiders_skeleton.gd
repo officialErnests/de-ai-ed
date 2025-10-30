@@ -1,6 +1,6 @@
-extends Skeleton3D
+extends PhysicalBoneSimulator3D
 
 
 # Called when the node enters the scene tree for the first time.
-func _process(delta: float) -> void:
+func _ready() -> void:
 	physical_bones_start_simulation()

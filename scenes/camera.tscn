@@ -1,0 +1,33 @@
+[gd_scene load_steps=6 format=3 uid="uid://bpelfa8vyvu4i"]
+
+[ext_resource type="Script" uid="uid://ccb5pwd1qkktp" path="res://scripts/camera_movement.gd" id="1_kod1s"]
+[ext_resource type="Texture2D" uid="uid://dr7si1xjs4kh0" path="res://assets/loop.jpg" id="2_tmlye"]
+[ext_resource type="Script" uid="uid://ci5qkkw67oieq" path="res://scripts/drager.gd" id="3_tmlye"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tefeu"]
+albedo_texture = ExtResource("2_tmlye")
+uv1_scale = Vector3(4, 4, 4)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_sugp2"]
+top_radius = 0.1
+bottom_radius = 0.2
+height = 0.5
+radial_segments = 4
+rings = 0
+cap_bottom = false
+
+[node name="Camera_setup" type="Node3D"]
+script = ExtResource("1_kod1s")
+
+[node name="NeckOrSmthing" type="Node3D" parent="."]
+
+[node name="Dron" type="MeshInstance3D" parent="NeckOrSmthing"]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 3)
+material_override = SubResource("StandardMaterial3D_tefeu")
+mesh = SubResource("CylinderMesh_sugp2")
+skeleton = NodePath("../..")
+
+[node name="Floating_cam" type="Camera3D" parent="NeckOrSmthing/Dron"]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0)
+current = true
+script = ExtResource("3_tmlye")
