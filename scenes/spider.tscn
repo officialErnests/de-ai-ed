@@ -791,16 +791,10 @@ transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0)
 shape = SubResource("CapsuleShape3D_1wupe")
 
 [node name="Physical Bone Leg_FL_l" type="PhysicalBone3D" parent="Skeleton3D/PhysicalBoneSimulator3D"]
-transform = Transform3D(0.8276127, -0.2575573, 0.49871984, 0.56032515, 0.43143034, -0.70703864, -0.03305988, 0.86459947, 0.501373, -0.73749995, 0.33587578, -0.4874999)
-joint_type = 2
-joint_offset = Transform3D(1, 0, 0, 0, 0.9999988, 0, 0, 0, 0.9999988, 0.00050663087, -0.0007344156, 0.47499925)
-body_offset = Transform3D(0.99999857, -0.0014151856, -0.0010687169, -0.001066586, 0.0015461445, -0.99999833, 0.0014168583, 0.99999785, 0.0015445948, -2.9802322e-08, 0.47500014, 1.4901161e-08)
+transform = Transform3D(0.82771665, -0.25902402, 0.4977869, 0.5602486, 0.43162066, -0.70698315, -0.031729504, 0.8640661, 0.50237745, -0.73749995, 0.33587578, -0.4874999)
+joint_offset = Transform3D(1, 0, 0, 0, 0.9999988, 0, 0, 0, 0.9999988, 0.0008729875, -0.0012733683, 0.47499758)
+body_offset = Transform3D(0.99999523, -0.0025035478, -0.0018445179, -0.0018378347, 0.0026807487, -0.9999949, 0.00250851, 0.9999933, 0.0026761293, -2.9802322e-08, 0.47500014, 1.4901161e-08)
 bone_name = "Leg_FL.l"
-joint_constraints/swing_span = 28.549997
-joint_constraints/twist_span = 45.0
-joint_constraints/bias = 0.79
-joint_constraints/softness = 0.8
-joint_constraints/relaxation = 1.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Skeleton3D/PhysicalBoneSimulator3D/Physical Bone Leg_FL_l"]
 transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0)
@@ -808,16 +802,9 @@ shape = SubResource("CapsuleShape3D_5iqwl")
 
 [node name="Physical Bone Leg_FU_l" type="PhysicalBone3D" parent="Skeleton3D/PhysicalBoneSimulator3D"]
 transform = Transform3D(-0.85275024, 0.15105252, 0.5000002, 0.30128905, -0.6397067, 0.70710695, 0.4266638, 0.75363016, 0.49999955, -1.2247224, 0.31661555, -0.9736736)
-joint_type = 3
 joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00014768574, -0.002053752, 0.50031704)
 body_offset = Transform3D(1.0000001, 1.7881393e-07, 2.9802322e-08, -4.4703484e-08, -2.9802322e-08, -1.0000002, -2.3841858e-07, 1.0000002, 2.9802322e-08, -0.00014770031, 0.50031716, 0.0020537376)
 bone_name = "Leg_FU.l"
-joint_constraints/angular_limit_enabled = false
-joint_constraints/angular_limit_upper = 90.0
-joint_constraints/angular_limit_lower = 0.0
-joint_constraints/angular_limit_bias = 0.3
-joint_constraints/angular_limit_softness = 0.9
-joint_constraints/angular_limit_relaxation = 1.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Skeleton3D/PhysicalBoneSimulator3D/Physical Bone Leg_FU_l"]
 transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0)
