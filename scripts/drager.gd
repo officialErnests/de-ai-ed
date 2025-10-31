@@ -21,11 +21,13 @@ func _process(delta: float) -> void:
 			var mouse_position = get_viewport().get_mouse_position()
 			var ray_point_start = project_ray_origin(mouse_position)
 
-			pointer.global_position = intersection['position']
 			pointer.scale = Vector3.ONE * sqrt((intersection['position'] - ray_point_start).length()) * 0.5
 		
 			if drag_obj:
-				drag_obj.linear_velocity = (intersection['position'] + Vector3.UP - drag_obj.global_position + drag_obj_offset) * delta * 100
+				pointer.global_position = intersection['position'] + Vector3.UP * 0.3
+				drag_obj.linear_velocity = (intersection['position'] + Vector3.UP * 0.3 - drag_obj.global_position + drag_obj_offset) * delta * 1000
+			else:
+				pointer.global_position = intersection['position']
 func _input(event: InputEvent) -> void:
 	if Input.mouse_mode == Input.MOUSE_MODE_VISIBLE and enabled:
 		pointer.visible = true
@@ -34,15 +36,14 @@ func _input(event: InputEvent) -> void:
 			if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 				if drag_obj:
 					drag_obj = null
-					print("unset")
 				else:
 					var intersection = curRaycast()
-					if intersection and intersection['collider'].get_parent().is_in_group('Creature'):
-						print("set")
+					if intersection and intersection['collider'].is_in_group('Movable'):
 						drag_obj = intersection['collider']
 						drag_obj_offset = drag_obj.global_position - intersection['position']
 	else:
-		pointer.visible = false
+		if not drag_obj:
+			pointer.visible = false
 
 func curRaycast():
 	var mouse_position = get_viewport().get_mouse_position()
