@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://btjrdo0mrklry"]
+[gd_scene load_steps=21 format=3 uid="uid://btjrdo0mrklry"]
 
 [ext_resource type="Texture2D" uid="uid://chnecxepau4i1" path="res://assets/Ground.jpg" id="1_sugp2"]
 [ext_resource type="Script" uid="uid://ccb5pwd1qkktp" path="res://scripts/camera_movement.gd" id="2_0wfyh"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://dirupln0p5560" path="res://scenes/spider.tscn" id="4_jyhfs"]
 [ext_resource type="Script" uid="uid://ci5qkkw67oieq" path="res://scripts/drager.gd" id="4_tbgi4"]
 [ext_resource type="Texture2D" uid="uid://wvphex60pobq" path="res://assets/s2.jpg" id="5_tefeu"]
+[ext_resource type="Texture2D" uid="uid://bwc1c2bbf5c44" path="res://assets/s4.jpg" id="7_o6xl0"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_o5qli"]
 sky_top_color = Color(0.26750416, 0.6006932, 0.68498224, 1)
@@ -50,6 +51,13 @@ albedo_texture = ExtResource("5_tefeu")
 [sub_resource type="BoxMesh" id="BoxMesh_tipki"]
 size = Vector3(0.2, 0.2, 0.2)
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tipki"]
+albedo_texture = ExtResource("7_o6xl0")
+
+[sub_resource type="SphereMesh" id="SphereMesh_85g3d"]
+radius = 0.25
+height = 0.5
+
 [node name="main" type="Node3D"]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
@@ -92,3 +100,8 @@ mesh = SubResource("BoxMesh_tipki")
 
 [node name="Spider" parent="." instance=ExtResource("4_jyhfs")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+
+[node name="Goal" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 1, 2)
+material_override = SubResource("StandardMaterial3D_tipki")
+mesh = SubResource("SphereMesh_85g3d")

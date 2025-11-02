@@ -3,67 +3,65 @@ extends PhysicalBoneSimulator3D
 
 # Called when the node enters the scene tree for the first time.
 
-var base_bone
-var leg_base_bones = []
-var leg_upper_bones = []
-
 var time = 0
 @export var debuger: Node3D
 var start_vector
 var main_bone_start_inverse
+var spider
 
 func _ready() -> void:
 	physical_bones_start_simulation()
-	var temp_bones = get_children().filter(func(x): return x is PhysicalBone3D)
-	for x in range(temp_bones.size() / 2.0):
-		if x == 0:
-			base_bone = Leg_bone.new(
-				temp_bones[x],
-				null,
-				null
-			)
-		leg_base_bones.append(Leg_bone.new(
-			temp_bones[x * 2 - 1],
-			base_bone.bone,
-			temp_bones[x * 2]
-		))
-		leg_upper_bones.append(Leg_bone.new(
-				temp_bones[x * 2],
-				temp_bones[x * 2 - 1],
-				null
-		))
-		leg_base_bones[x - 1].bone_next = leg_upper_bones[x - 1]
-
-var xx = 0
-func _physics_process(delta: float) -> void:
-	var a = -1
-	var b = 0
-	var s = 1
-	xx += 1
-	if xx % 10 == 0:
-		for iter_bone in leg_base_bones:
-			pass
-			print(iter_bone.getDirection())
+	spider = Spider.new(get_children().filter(func(x): return x is PhysicalBone3D))
 	
-	for iter_bone in leg_base_bones:
-		iter_bone.addAngularVel(Vector3(
-			delta * 400 * a,
-			delta * 200 * b,
-			0
-		))
 
-	for iter_bone in leg_upper_bones:
-		iter_bone.addAngularVel(Vector3(
-			delta * 400 * s,
-			0,
-			0
-		))
+func _physics_process(delta: float) -> void:
+	pass
 
+class Spider:
+	var bone_base
+	var bone_base_start_transform
+	var leg_base_bones = []
+	var leg_upper_bones = []
+	func _init(p_bones) -> void:
+		for x in range(p_bones.size() / 2.0):
+			if x == 0:
+				bone_base = Leg_bone.new(p_bones[x], null, null)
+				bone_base_start_transform = p_bones[x].transform
+			leg_base_bones.append(Leg_bone.new(
+				p_bones[x * 2 - 1],
+				bone_base.bone,
+				p_bones[x * 2]
+			))
+			leg_upper_bones.append(Leg_bone.new(
+					p_bones[x * 2],
+					p_bones[x * 2 - 1],
+					null
+			))
+	
+	func getData():
+		var result = []
+		var t_bone_direction = Vector3(bone_base.bone.transform.basis.x.dot(bone_base_start_transform.basis.x),
+				bone_base.bone.transform.basis.y.dot(bone_base_start_transform.basis.y),
+				bone_base.bone.transform.basis.z.dot(bone_base_start_transform.basis.z))
+		result.append(t_bone_direction.x)
+		result.append(t_bone_direction.y)
+		result.append(t_bone_direction.z)
+		for i_bone in leg_base_bones:
+			t_bone_direction = i_bone.getDirection()
+			result.append(t_bone_direction.x)
+			result.append(t_bone_direction.y)
+			result.append(t_bone_direction.z)
+		for i_bone in leg_upper_bones:
+			t_bone_direction = i_bone.getDirection()
+			result.append(t_bone_direction.x)
+			result.append(t_bone_direction.y)
+			result.append(t_bone_direction.z)
+		return result
 
 class Leg_bone extends Bone:
 	var bone_next
 	var bone_prev
-	func _init(p_bone: PhysicalBone3D, p_bone_next, p_bone_prev):
+	func _init(p_bone: PhysicalBone3D, p_bone_prev, p_bone_next):
 		super (p_bone)
 		if p_bone_next: bone_next = p_bone_next
 		if p_bone_prev: bone_prev = p_bone_prev
