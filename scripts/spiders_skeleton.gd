@@ -26,18 +26,20 @@ func _ready() -> void:
 			base_legs_left_arr.append(base_leg_arr[i])
 		else:
 			base_legs_right_arr.append(base_leg_arr[i])
+	for i in range(upper_legs_arr.size()):
+		if i < upper_legs_arr.size() / 2.0:
+			upper_legs_left_arr.append(upper_legs_arr[i])
+		else:
+			upper_legs_right_arr.append(upper_legs_arr[i])
 
 func _physics_process(delta: float) -> void:
-	var s = -1
+	var s = 1
 
-	for i in range(upper_legs_arr.size()):
-		var mul = 1
-		if 0 < i and i < 4:
-			mul = -1
-		var upper_leg = upper_legs_arr[i]
+	for i in range(base_legs_left_arr.size()):
+		var upper_leg = base_legs_left_arr[i]
 		var basiscs = upper_leg.transform.basis
 		var nb_transform = upper_leg.transform.rotated(upper_leg.transform.basis.x, PI / 2.0)
-		upper_leg.angular_velocity = (nb_transform.basis.get_euler() - basiscs.get_euler()) * delta * 30 * s * mul
+		upper_leg.angular_velocity = (nb_transform.basis.get_euler() - basiscs.get_euler()) * delta * 30 * s
 	# for upper_leg in upper_legs_arr:
 	# 	upper_leg.angular_velocity += upper_leg.transform.basis.get_euler(1) * delta * 20
 	# for base_leg in base_legs_left_arr:
