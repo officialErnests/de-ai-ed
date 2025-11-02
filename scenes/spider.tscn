@@ -774,11 +774,11 @@ transform = Transform3D(0.99999964, 0, 0, 0, 0, 1, 0, -0.99999964, 0, 0, 0, 0)
 shape = SubResource("BoxShape3D_5iqwl")
 
 [node name="Physical Bone Leg_FL_l" type="PhysicalBone3D" parent="Skeleton3D/PhysicalBoneSimulator3D" groups=["Movable"]]
-transform = Transform3D(0.82776165, -0.25963816, 0.49739197, 0.5602138, 0.43169272, -0.70696676, -0.031164944, 0.86384577, 0.5027916, -0.73749995, 0.33587578, -0.4874999)
+transform = Transform3D(0.8279656, -0.26254535, 0.49552283, 0.5600519, 0.43211344, -0.7068379, -0.028545078, 0.86275595, 0.5048141, -0.73749995, 0.33587578, -0.4874999)
 joint_type = 5
-joint_offset = Transform3D(-0.7509178, 0.66039443, 0, -0.66039443, -0.7509178, 0, 0, 0, 0.99999934, 0.0010294237, -0.0014957665, 0.47499663)
+joint_offset = Transform3D(-0.7509178, 0.66039443, 0, -0.66039443, -0.7509178, 0, 0, 0, 0.99999934, 0.0017544726, -0.0025863657, 0.47498974)
 joint_rotation = Vector3(0, 0, -2.420248)
-body_offset = Transform3D(0.9999933, -0.0029636975, -0.0021764785, -0.0021672128, 0.003148973, -0.9999928, 0.0029705465, 0.9999907, 0.003142506, -2.9802322e-08, 0.47500014, 1.4901161e-08)
+body_offset = Transform3D(0.99998015, -0.005095452, -0.0037213154, -0.0036936216, 0.0054449737, -0.9999785, 0.005115632, 0.9999723, 0.0054260194, -2.9802322e-08, 0.47500014, 1.4901161e-08)
 bone_name = "Leg_FL.l"
 joint_constraints/x/linear_limit_enabled = true
 joint_constraints/x/linear_limit_upper = 0.0
@@ -1074,11 +1074,11 @@ transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0)
 shape = SubResource("CapsuleShape3D_c7em6")
 
 [node name="Physical Bone Leg_MbL_l" type="PhysicalBone3D" parent="Skeleton3D/PhysicalBoneSimulator3D" groups=["Movable"]]
-transform = Transform3D(0.34303367, 0.9312632, -0.122787505, -0.6886647, 0.16043939, -0.70710695, -0.63880265, 0.3271209, 0.6963642, 0.20832402, 0.33587584, -0.580773)
+transform = Transform3D(0.34303322, 0.9312633, -0.12278772, -0.6886647, 0.16043885, -0.707107, -0.63880295, 0.32712078, 0.69636405, 0.20832402, 0.33587584, -0.580773)
 joint_type = 5
-joint_offset = Transform3D(0.9677521, 0.25190014, 0, -0.25190014, 0.9677521, 0, 0, 0, 1, 4.3958426e-08, 4.507602e-08, 0.47500002)
-joint_rotation = Vector3(0, 0, -0.2546435)
-body_offset = Transform3D(1, 2.9802322e-08, -2.9802322e-08, 0, -5.9604645e-08, -1, -7.4505806e-08, 0.99999994, 1.4901161e-08, -2.9802322e-08, 0.47500002, -5.2154064e-08)
+joint_offset = Transform3D(0.98248124, 0.18635224, 0, -0.18635224, 0.98248124, 0, 0, 0, 0.9999999, -1.2666084e-08, 1.7248095e-07, 0.47500002)
+joint_rotation = Vector3(0, 0, -0.18744837)
+body_offset = Transform3D(1, 5.2154064e-07, 8.940697e-08, 1.4901161e-07, -3.427267e-07, -1, -5.811453e-07, 0.99999994, -2.5331974e-07, -2.9802322e-08, 0.47500002, -5.2154064e-08)
 bone_name = "Leg_MbL.l"
 joint_constraints/x/linear_limit_enabled = true
 joint_constraints/x/linear_limit_upper = 0.0
@@ -1901,8 +1901,7 @@ shape = SubResource("CapsuleShape3D_c7em6")
 [node name="Physical Bone Leg_MfU_r" type="PhysicalBone3D" parent="Skeleton3D/PhysicalBoneSimulator3D" groups=["Movable"]]
 transform = Transform3D(0.12078361, -0.9850555, 0.122788556, -0.7071055, 0.001439362, 0.70710665, -0.696716, -0.17223135, -0.69636434, -0.32804242, 0.31819814, 1.2597282)
 joint_type = 5
-joint_offset = Transform3D(-4.3711346e-08, -0.999999, 0, 0.999999, -4.3711346e-08, 0, 0, 0, 1, -1.9371467e-07, 3.4645228e-07, 0.50000006)
-joint_rotation = Vector3(0, 0, 1.5707964)
+joint_offset = Transform3D(0.999999, 0, 0, 0, 0.999999, 0, 0, 0, 1, -1.9371467e-07, 3.4645228e-07, 0.50000006)
 body_offset = Transform3D(0.99999976, -1.4230609e-06, 3.874302e-07, 4.4703484e-07, -7.674098e-07, -0.9999999, 1.385808e-06, 1, -6.92904e-07, 0, 0.5, 0)
 bone_name = "Leg_MfU.r"
 joint_constraints/x/linear_limit_enabled = true
@@ -1916,8 +1915,8 @@ joint_constraints/x/linear_equilibrium_point = 0.0
 joint_constraints/x/linear_restitution = 0.5
 joint_constraints/x/linear_damping = 1.0
 joint_constraints/x/angular_limit_enabled = true
-joint_constraints/x/angular_limit_upper = 45.0
-joint_constraints/x/angular_limit_lower = -45.0
+joint_constraints/x/angular_limit_upper = 0.0
+joint_constraints/x/angular_limit_lower = 0.0
 joint_constraints/x/angular_limit_softness = 0.5
 joint_constraints/x/angular_restitution = 0.0
 joint_constraints/x/angular_damping = 1.0
