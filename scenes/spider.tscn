@@ -1,5 +1,6 @@
-[gd_scene load_steps=41 format=4 uid="uid://dirupln0p5560"]
+[gd_scene load_steps=42 format=4 uid="uid://dirupln0p5560"]
 
+[ext_resource type="Script" uid="uid://b7vlkktufxb4" path="res://scripts/agent.gd" id="1_algeo"]
 [ext_resource type="Script" uid="uid://bncjfqswqgssj" path="res://scripts/spiders_skeleton.gd" id="1_c7em6"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yavc1"]
@@ -449,6 +450,7 @@ radius = 0.05
 height = 0.8
 
 [node name="Spider" type="Node3D"]
+script = ExtResource("1_algeo")
 
 [node name="Skeleton3D" type="Skeleton3D" parent="."]
 bones/0/name = "Body"
@@ -699,9 +701,8 @@ skin = SubResource("Skin_2ee2v")
 mesh = SubResource("ArrayMesh_avj5f")
 skin = SubResource("Skin_2ee2v")
 
-[node name="PhysicalBoneSimulator3D" type="PhysicalBoneSimulator3D" parent="Skeleton3D" node_paths=PackedStringArray("debuger")]
+[node name="PhysicalBoneSimulator3D" type="PhysicalBoneSimulator3D" parent="Skeleton3D"]
 script = ExtResource("1_c7em6")
-debuger = NodePath("")
 
 [node name="Physical Bone Body" type="PhysicalBone3D" parent="Skeleton3D/PhysicalBoneSimulator3D" groups=["Movable"]]
 bone_name = "Body"

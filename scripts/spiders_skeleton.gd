@@ -8,6 +8,7 @@ var time = 0
 var start_vector
 var main_bone_start_inverse
 var spider
+var velocity_arr = []
 
 func _ready() -> void:
 	physical_bones_start_simulation()
@@ -15,13 +16,15 @@ func _ready() -> void:
 	
 
 func _physics_process(delta: float) -> void:
-	pass
+	spider.addVel(delta)
+	#make the agent connect to this and update after while velocities and get date
 
 class Spider:
 	var bone_base
 	var bone_base_start_transform
 	var leg_base_bones = []
 	var leg_upper_bones = []
+	var velocity_set = false
 	func _init(p_bones) -> void:
 		for x in range(p_bones.size() / 2.0):
 			if x == 0:
@@ -57,10 +60,24 @@ class Spider:
 			result.append(t_bone_direction.y)
 			result.append(t_bone_direction.z)
 		return result
+	
+	func setVel(p_velocities):
+		velocity_set = true
+		print(p_velocities)
+		for i_vel in range(p_velocities.size() / 2.0):
+			leg_base_bones[i_vel].set_dir_velocity = p_velocities[i_vel * 2 - 1]
+			leg_upper_bones[i_vel].set_dir_velocity = p_velocities[i_vel * 2]
+
+	func addVel(delta):
+		if not velocity_set: return
+		for i in leg_base_bones: i.addVel(delta * 200)
+		for i in leg_upper_bones: i.addVel(delta * 200)
+			
 
 class Leg_bone extends Bone:
 	var bone_next
 	var bone_prev
+	var set_dir_velocity
 	func _init(p_bone: PhysicalBone3D, p_bone_prev, p_bone_next):
 		super (p_bone)
 		if p_bone_next: bone_next = p_bone_next
@@ -75,7 +92,9 @@ class Leg_bone extends Bone:
 		bone.angular_velocity += bone.transform.basis.x * p_velocity.x \
 								+ bone.transform.basis.y * p_velocity.y \
 								+ bone.transform.basis.z * p_velocity.z
-
+	
+	func addVel(delta):
+		addAngularVel(set_dir_velocity * delta)
 
 class Bone:
 	var bone
