@@ -12,7 +12,7 @@ var velocity_arr = []
 
 func _ready() -> void:
 	physical_bones_start_simulation()
-	spider = Spider.new(get_children().filter(func(x): return x is PhysicalBone3D))
+	spider = Spider.new(get_children().filter(func(x): return x is PhysicalBone3D), self)
 	
 
 func _physics_process(delta: float) -> void:
@@ -31,7 +31,9 @@ class Spider:
 	var leg_base_bones = []
 	var leg_upper_bones = []
 	var velocity_set = false
-	func _init(p_bones) -> void:
+	var skeleton_main_node
+	func _init(p_bones, p_main) -> void:
+		skeleton_main_node = p_main
 		for x in range(p_bones.size() / 2.0):
 			if x == 0:
 				bone_base = Leg_bone.new(p_bones[x], null, null)
@@ -48,6 +50,7 @@ class Spider:
 			))
 	
 	func getData():
+		skeleton_main_node.global_position = bone_base.bone.global_position
 		var result = []
 		var t_bone_direction = Vector3(bone_base.bone.transform.basis.x.dot(bone_base_start_transform.basis.x),
 				bone_base.bone.transform.basis.y.dot(bone_base_start_transform.basis.y),
