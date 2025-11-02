@@ -11,7 +11,6 @@ func _ready() -> void:
 			temp_spider.position = position
 			var temp_node = temp_spider.get_node("Skeleton3D/PhysicalBoneSimulator3D")
 			temp_node.setCollLayers(x + 2)
-			print(x + 2)
 			add_child(temp_spider)
 
 
