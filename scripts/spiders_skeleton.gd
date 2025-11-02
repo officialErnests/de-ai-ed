@@ -11,31 +11,26 @@ var upper_legs_arr = []
 var upper_legs_left_arr = []
 var upper_legs_right_arr = []
 
+var time = 0
+@export var debuger: Node3D
+var start_vector
+var main_bone_start_inverse
+
 func _ready() -> void:
 	physical_bones_start_simulation()
 	bones = get_children().filter(func(x): return x is PhysicalBone3D)
 	
-	for i in range(bones.size()):
-		if i == 0: continue
-		if i % 2 == 1:
-			base_leg_arr.append(bones[i])
-		else:
-			upper_legs_arr.append(bones[i])
-	for i in range(base_leg_arr.size()):
-		if i < base_leg_arr.size() / 2.0:
-			base_legs_left_arr.append(base_leg_arr[i])
-		else:
-			base_legs_right_arr.append(base_leg_arr[i])
-	for i in range(upper_legs_arr.size()):
-		if i < upper_legs_arr.size() / 2.0:
-			upper_legs_left_arr.append(upper_legs_arr[i])
-		else:
-			upper_legs_right_arr.append(upper_legs_arr[i])
 
 func _physics_process(delta: float) -> void:
 	var a = 0
 	var b = 0
 	var s = 0
+	x += 1
+	if x % 10 == 0:
+		print(bones[1].transform.basis.x.dot(bones[0].transform.basis.x),
+		bones[1].transform.basis.y.dot(bones[0].transform.basis.y),
+		bones[1].transform.basis.z.dot(bones[0].transform.basis.z))
+	# debuger.basis = bones[1].transform.basis * (start_vector * (bones[0].transform.basis * bones[0].transform.basis.inverse()))
 	
 	for base_leg in base_leg_arr:
 		base_leg.angular_velocity += base_leg.transform.basis.x * delta * 400 * a
@@ -56,3 +51,14 @@ func _physics_process(delta: float) -> void:
 	pass
 	# for base_leg in base_legs_left_arr:
 	# 	base_leg.angular_velocity = base_leg.transform.basis.x * delta * -200
+
+class Leg:
+class Base_leg extends Bone:
+	func _init(p_bone: PhysicalBone3D, p_uper_bone):
+		super (p_bone)
+		var
+
+class Bone:
+	var bone
+	func _init(p_bone: PhysicalBone3D):
+		bone = p_bone
