@@ -91,4 +91,4 @@ material_override = SubResource("StandardMaterial3D_o6xl0")
 mesh = SubResource("BoxMesh_tipki")
 
 [node name="Spider" parent="." instance=ExtResource("4_jyhfs")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
