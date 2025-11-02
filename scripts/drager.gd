@@ -8,6 +8,7 @@ var REACH = 100
 var drag_obj = null
 var drag_obj_offset = Vector3.ZERO
 var rotation_angle = 0
+var last_dist = 0
 func _process(delta: float) -> void:
 	if pointer.visible:
 		rotation_angle += delta
@@ -20,14 +21,23 @@ func _process(delta: float) -> void:
 		if intersection:
 			var mouse_position = get_viewport().get_mouse_position()
 			var ray_point_start = project_ray_origin(mouse_position)
+			last_dist = ray_point_start.distance_to(intersection['position'])
 
 			pointer.scale = Vector3.ONE * sqrt((intersection['position'] - ray_point_start).length()) * 0.5
 		
 			if drag_obj:
-				pointer.global_position = intersection['position'] + Vector3.UP * 0.3
-				drag_obj.linear_velocity = (intersection['position'] + Vector3.UP * 0.3 - drag_obj.global_position + drag_obj_offset) * delta * 1000
+				pointer.global_position = intersection['position'] + Vector3.UP
+				drag_obj.linear_velocity = (intersection['position'] + Vector3.UP - drag_obj.global_position + drag_obj_offset) * delta * 100
 			else:
 				pointer.global_position = intersection['position']
+		else:
+			var mouse_position = get_viewport().get_mouse_position()
+			var ray_point_start = project_ray_origin(mouse_position)
+			if drag_obj:
+				pointer.global_position = ray_point_start + Vector3.UP + project_ray_normal(mouse_position) * last_dist
+				drag_obj.linear_velocity = (ray_point_start + Vector3.UP + project_ray_normal(mouse_position) * last_dist - drag_obj.global_position + drag_obj_offset) * delta * 100
+			else:
+				pointer.global_position = ray_point_start + Vector3.UP + project_ray_normal(mouse_position) * last_dist
 func _input(event: InputEvent) -> void:
 	if Input.mouse_mode == Input.MOUSE_MODE_VISIBLE and enabled:
 		pointer.visible = true

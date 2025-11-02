@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://btjrdo0mrklry"]
+[gd_scene load_steps=18 format=3 uid="uid://btjrdo0mrklry"]
 
 [ext_resource type="Texture2D" uid="uid://chnecxepau4i1" path="res://assets/Ground.jpg" id="1_sugp2"]
 [ext_resource type="Script" uid="uid://ccb5pwd1qkktp" path="res://scripts/camera_movement.gd" id="2_0wfyh"]
@@ -26,6 +26,8 @@ uv1_scale = Vector3(10, 10, 10)
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_sugp2"]
 size = Vector2(10, 10)
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_tefeu"]
 
 [sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_jyhfs"]
 
@@ -62,6 +64,7 @@ material_override = SubResource("StandardMaterial3D_tbgi4")
 mesh = SubResource("PlaneMesh_sugp2")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="floor"]
+physics_material_override = SubResource("PhysicsMaterial_tefeu")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="floor/StaticBody3D"]
 shape = SubResource("WorldBoundaryShape3D_jyhfs")
