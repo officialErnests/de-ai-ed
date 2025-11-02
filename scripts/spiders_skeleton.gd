@@ -19,6 +19,12 @@ func _physics_process(delta: float) -> void:
 	spider.addVel(delta)
 	#make the agent connect to this and update after while velocities and get date
 
+func setCollLayers(p_layer):
+	for iter_bone in get_children().filter(func(x): return x is PhysicalBone3D):
+		iter_bone.set_collision_layer_value(1, false)
+		iter_bone.set_collision_layer_value(p_layer, true)
+		iter_bone.set_collision_mask_value(p_layer, true)
+
 class Spider:
 	var bone_base
 	var bone_base_start_transform
@@ -63,7 +69,6 @@ class Spider:
 	
 	func setVel(p_velocities):
 		velocity_set = true
-		print(p_velocities)
 		for i_vel in range(p_velocities.size() / 2.0):
 			leg_base_bones[i_vel].set_dir_velocity = p_velocities[i_vel * 2 - 1]
 			leg_upper_bones[i_vel].set_dir_velocity = p_velocities[i_vel * 2]

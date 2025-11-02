@@ -1,11 +1,27 @@
-[gd_scene load_steps=42 format=4 uid="uid://dirupln0p5560"]
+[gd_scene load_steps=47 format=4 uid="uid://dirupln0p5560"]
 
 [ext_resource type="Script" uid="uid://b7vlkktufxb4" path="res://scripts/agent.gd" id="1_algeo"]
 [ext_resource type="Script" uid="uid://bncjfqswqgssj" path="res://scripts/spiders_skeleton.gd" id="1_c7em6"]
+[ext_resource type="Texture2D" uid="uid://bwc1c2bbf5c44" path="res://assets/s4.jpg" id="2_k5hg5"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_d613k"]
+albedo_texture = ExtResource("2_k5hg5")
+
+[sub_resource type="SphereMesh" id="SphereMesh_evcmw"]
+radius = 0.25
+height = 0.5
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_k5hg5"]
+shading_mode = 0
+albedo_color = Color(1, 0.5176471, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_d613k"]
+size = Vector3(0.1, 0.1, 0.1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yavc1"]
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_kxefx"]
+resource_local_to_scene = true
 resource_name = "spider_Cube_001"
 _surfaces = [{
 "aabb": AABB(-0.5000001, -0.10000002, -0.25000006, 1.0000002, 0.20000003, 0.5000001),
@@ -105,6 +121,7 @@ bind/24/pose = Transform3D(-0.17565, -6.191779e-08, 0.9844523, -3.6160843e-09, 0
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3jtub"]
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_nppax"]
+resource_local_to_scene = true
 resource_name = "spider_Cube_002"
 _surfaces = [{
 "aabb": AABB(0.41464466, -0.070710674, 0.16464464, 0.6207108, 0.7778176, 0.6207108),
@@ -125,6 +142,7 @@ blend_shape_mode = 0
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lqd0h"]
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_ddvif"]
+resource_local_to_scene = true
 resource_name = "spider_Cube_003"
 _surfaces = [{
 "aabb": AABB(0.9146445, -0.070710674, 0.6646446, 0.62071085, 0.7778176, 0.62071085),
@@ -145,6 +163,7 @@ blend_shape_mode = 0
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_e4i0h"]
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_xrggn"]
+resource_local_to_scene = true
 resource_name = "spider_Cube_010"
 _surfaces = [{
 "aabb": AABB(0.4146446, -0.070710674, -0.7853555, 0.62071085, 0.7778176, 0.6207108),
@@ -165,6 +184,7 @@ blend_shape_mode = 0
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_x7u7m"]
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_r2oaj"]
+resource_local_to_scene = true
 resource_name = "spider_Cube_011"
 _surfaces = [{
 "aabb": AABB(0.9146446, -0.070710704, -1.2853554, 0.62071085, 0.77781785, 0.620711),
@@ -185,6 +205,7 @@ blend_shape_mode = 0
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7k7yg"]
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_umjw3"]
+resource_local_to_scene = true
 resource_name = "spider_Cube_012"
 _surfaces = [{
 "aabb": AABB(-1.0353558, -0.070710704, -0.7853554, 0.6207111, 0.7778177, 0.62071073),
@@ -205,6 +226,7 @@ blend_shape_mode = 0
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_n276a"]
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_4wx8k"]
+resource_local_to_scene = true
 resource_name = "spider_Cube_013"
 _surfaces = [{
 "aabb": AABB(-1.5353556, -0.0707107, -1.2853554, 0.620711, 0.7778178, 0.6207109),
@@ -225,6 +247,7 @@ blend_shape_mode = 0
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_p7q1i"]
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_bagqc"]
+resource_local_to_scene = true
 resource_name = "spider_Cube_014"
 _surfaces = [{
 "aabb": AABB(-1.0353554, -0.070710704, 0.16464467, 0.62071085, 0.7778178, 0.6207111),
@@ -245,6 +268,7 @@ blend_shape_mode = 0
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gqgmw"]
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_1juxn"]
+resource_local_to_scene = true
 resource_name = "spider_Cube_015"
 _surfaces = [{
 "aabb": AABB(-1.5353552, -0.07071067, 0.6646445, 0.6207107, 0.77781767, 0.62071085),
@@ -265,6 +289,7 @@ blend_shape_mode = 0
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8yj51"]
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_yldie"]
+resource_local_to_scene = true
 resource_name = "spider_Cube_016"
 _surfaces = [{
 "aabb": AABB(-0.32202867, -0.0707107, -0.9550469, 0.23354787, 0.7778178, 0.7833658),
@@ -285,6 +310,7 @@ blend_shape_mode = 0
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dvoun"]
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_1p66q"]
+resource_local_to_scene = true
 resource_name = "spider_Cube_017"
 _surfaces = [{
 "aabb": AABB(-0.4448161, -0.070710674, -1.651411, 0.23354746, 0.7778176, 0.78336567),
@@ -305,6 +331,7 @@ blend_shape_mode = 0
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qigwi"]
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_w767a"]
+resource_local_to_scene = true
 resource_name = "spider_Cube_018"
 _surfaces = [{
 "aabb": AABB(-0.32202774, -0.0707107, 0.17168121, 0.23354691, 0.7778178, 0.78336585),
@@ -325,6 +352,7 @@ blend_shape_mode = 0
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_71kcb"]
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_hf70y"]
+resource_local_to_scene = true
 resource_name = "spider_Cube_019"
 _surfaces = [{
 "aabb": AABB(-0.44481587, -0.070710704, 0.8680451, 0.2335472, 0.77781785, 0.78336585),
@@ -345,6 +373,7 @@ blend_shape_mode = 0
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vekqy"]
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_ofw7y"]
+resource_local_to_scene = true
 resource_name = "spider_Cube_020"
 _surfaces = [{
 "aabb": AABB(0.08848083, -0.0707107, 0.17168115, 0.23354745, 0.7778178, 0.78336585),
@@ -365,6 +394,7 @@ blend_shape_mode = 0
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s62ie"]
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_cjqdc"]
+resource_local_to_scene = true
 resource_name = "spider_Cube_021"
 _surfaces = [{
 "aabb": AABB(0.21126865, -0.0707107, 0.86804533, 0.23354737, 0.7778178, 0.78336585),
@@ -385,6 +415,7 @@ blend_shape_mode = 0
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_orm5s"]
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_kwhov"]
+resource_local_to_scene = true
 resource_name = "spider_Cube_022"
 _surfaces = [{
 "aabb": AABB(0.088480815, -0.0707107, -0.955047, 0.23354734, 0.7778178, 0.7833658),
@@ -405,6 +436,7 @@ blend_shape_mode = 0
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tv1ox"]
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_f36vh"]
+resource_local_to_scene = true
 resource_name = "spider_Cube_023"
 _surfaces = [{
 "aabb": AABB(0.21126868, -0.0707107, -1.6514112, 0.23354737, 0.7778178, 0.78336585),
@@ -425,6 +457,7 @@ blend_shape_mode = 0
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_337v8"]
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_avj5f"]
+resource_local_to_scene = true
 resource_name = "spider_Icosphere_001"
 _surfaces = [{
 "aabb": AABB(0.23167253, -0.10000005, -0.25519204, 0.5366551, 0.60000014, 0.5103841),
@@ -449,8 +482,25 @@ size = Vector3(1, 0.3, 0.2)
 radius = 0.05
 height = 0.8
 
-[node name="Spider" type="Node3D"]
+[node name="Spider" type="Node3D" node_paths=PackedStringArray("goal")]
 script = ExtResource("1_algeo")
+goal = NodePath("Goal")
+
+[node name="Goal" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+material_override = SubResource("StandardMaterial3D_d613k")
+mesh = SubResource("SphereMesh_evcmw")
+skeleton = NodePath("../..")
+
+[node name="Label3D" type="Label3D" parent="Goal"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+billboard = 1
+double_sided = false
+text = "Hello"
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Goal"]
+material_override = SubResource("StandardMaterial3D_k5hg5")
+mesh = SubResource("BoxMesh_d613k")
 
 [node name="Skeleton3D" type="Skeleton3D" parent="."]
 bones/0/name = "Body"
