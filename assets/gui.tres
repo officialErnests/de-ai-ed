@@ -1,0 +1,5 @@
+[gd_resource type="Theme" format=3 uid="uid://dumymur1yifht"]
+
+[resource]
+GraphNodeTitleLabel/font_sizes/font_size = 9
+Label/font_sizes/font_size = 10
