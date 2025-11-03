@@ -15,26 +15,31 @@ var neuron_layers = []
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	genGoal()
-	var res = []
-	for i in range(8):
-		res.append(rVector3D())
-		res.append(rVector3D())
-	spider.setVel(res)
 
 func genBrain():
-	print("GEN")
 	if LAYER_COUNT == 1:
-		neuron_layers.append(Neuron_Layer.new(51, NEURONS_IN_LAYER))
+		neuron_layers.append(Neuron_Layer.new(51, NEURONS_IN_LAYER, null))
 	else:
 		for iter_layer in LAYER_COUNT:
 			if iter_layer == 0:
-				neuron_layers.append(Neuron_Layer.new(51, NEURONS_IN_LAYER))
+				neuron_layers.append(Neuron_Layer.new(51, NEURONS_IN_LAYER, null))
 			else:
-				neuron_layers.append(Neuron_Layer.new(NEURONS_IN_LAYER, NEURONS_IN_LAYER))
-	neuron_layers.append(Neuron_Layer.new(NEURONS_IN_LAYER, 16))
+				neuron_layers.append(Neuron_Layer.new(NEURONS_IN_LAYER, NEURONS_IN_LAYER, null))
+	neuron_layers.append(Neuron_Layer.new(NEURONS_IN_LAYER, 16, null))
 
 func loadBrain(p_brain):
-	neuron_layers = p_brain
+	for iter in range(p_brain[0].size()):
+		var neuron_ammount = p_brain[0][iter]
+		var temp_neuron_layer = null
+		var params = p_brain[1][iter]
+		if iter == 0:
+			temp_neuron_layer = Neuron_Layer.new(51, neuron_ammount, params)
+		elif iter == p_brain[0].size():
+			temp_neuron_layer = Neuron_Layer.new(neuron_ammount, 16, params)
+		else:
+			temp_neuron_layer = Neuron_Layer.new(p_brain[0][iter - 1], neuron_ammount, params)
+		neuron_layers.append(temp_neuron_layer)
+	# neuron_layers.append()
 
 var timesss = 0
 func _process(delta: float) -> void:
@@ -64,8 +69,9 @@ func getBrain():
 	var layer_neurons = []
 	var res = []
 	for layer in neuron_layers:
-		res.append_array(layer.getLayer())
-	return res
+		layer_neurons.append(layer.neurons.size())
+		res.append(layer.getLayer())
+	return [layer_neurons, res]
 
 func updateVisualisation():
 	var distance = goal.global_position.distance_to(spider_skel.global_position)
@@ -85,14 +91,19 @@ func calculate(p_inputs):
 
 class Neuron_Layer:
 	var neurons = []
-	func _init(p_inputs, p_neurons) -> void:
-		for i in range(p_neurons):
-			neurons.append(Neuron.new(p_inputs))
-			neurons[i].scramble()
+	func _init(p_inputs, p_neurons, p_load) -> void:
+		if p_load:
+			for i in range(p_neurons):
+				neurons.append(Neuron.new(p_inputs))
+				neurons[i].load(p_load[i][0], p_load[i][1])
+		else:
+			for i in range(p_neurons):
+				neurons.append(Neuron.new(p_inputs))
+				neurons[i].scramble()
 	func getLayer():
 		var res = []
 		for iter_neuron in neurons:
-			res.append_array(iter_neuron.getNeuron())
+			res.append(iter_neuron.getNeuron())
 		return res
 	func calc(p_inputs):
 		var result = []
@@ -108,14 +119,20 @@ class Neuron:
 		inputs_size = p_inputs
 	func getNeuron():
 		return [weights, bias]
+	func load(p_weights, p_bias):
+		weights = p_weights
+		bias = p_bias
 	func scramble():
 		for i in range(inputs_size):
-			weights.append(randf_range(-1, 1))
-		bias = randf_range(-1, 1)
+			weights.append(randf_range(0, 0))
+		bias = randf_range(0, 0)
 	func calc(p_inputs):
 		var sum = 0
 		for iter in range(inputs_size):
 			sum += p_inputs[iter] * weights[iter]
 		sum += bias
+		# if sum != 0:
+		# 	print(sum, bias)
+		# 	return null
 		sum = clamp(sum, -1, 1)
 		return sum

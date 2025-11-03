@@ -84,7 +84,7 @@ class Spider:
 class Leg_bone extends Bone:
 	var bone_next
 	var bone_prev
-	var set_dir_velocity
+	var set_dir_velocity = Vector3.ZERO
 	func _init(p_bone: PhysicalBone3D, p_bone_prev, p_bone_next):
 		super (p_bone)
 		if p_bone_next: bone_next = p_bone_next
