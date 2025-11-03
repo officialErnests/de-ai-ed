@@ -1,10 +1,11 @@
-[gd_scene load_steps=18 format=3 uid="uid://btjrdo0mrklry"]
+[gd_scene load_steps=19 format=3 uid="uid://btjrdo0mrklry"]
 
 [ext_resource type="Texture2D" uid="uid://chnecxepau4i1" path="res://assets/Ground.jpg" id="1_sugp2"]
 [ext_resource type="Script" uid="uid://ccb5pwd1qkktp" path="res://scripts/camera_movement.gd" id="2_0wfyh"]
 [ext_resource type="Texture2D" uid="uid://dr7si1xjs4kh0" path="res://assets/loop.jpg" id="3_jyhfs"]
 [ext_resource type="Script" uid="uid://ci5qkkw67oieq" path="res://scripts/drager.gd" id="4_tbgi4"]
 [ext_resource type="Texture2D" uid="uid://wvphex60pobq" path="res://assets/s2.jpg" id="5_tefeu"]
+[ext_resource type="Script" uid="uid://c816g4tima81i" path="res://scripts/ai_visualisergd.gd" id="6_o6xl0"]
 [ext_resource type="Script" uid="uid://bu5yxtfh5srqp" path="res://scripts/spidersss.gd" id="7_tipki"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_o5qli"]
@@ -90,7 +91,23 @@ visible = false
 material_override = SubResource("StandardMaterial3D_o6xl0")
 mesh = SubResource("BoxMesh_tipki")
 
-[node name="Spidersss" type="Node3D" parent="."]
+[node name="CanvasLayer" type="CanvasLayer" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam"]
+scale = Vector2(0.5, 0.5)
+transform = Transform2D(0.5, 0, 0, 0.5, 0, 0)
+script = ExtResource("6_o6xl0")
+
+[node name="GraphEdit" type="GraphEdit" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/CanvasLayer"]
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 2.0
+grow_vertical = 2
+scroll_offset = Vector2(-320, -360)
+type_names = {
+0: "connection"
+}
+
+[node name="Spidersss" type="Node3D" parent="." node_paths=PackedStringArray("node_visualiser")]
 script = ExtResource("7_tipki")
-training_time = 5
+training_time = 1
 mutation_range = 1.0
+node_visualiser = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/CanvasLayer")

@@ -10,7 +10,7 @@ var spider_preload = preload("res://scenes/spider.tscn")
 @export var keep_best = true
 @export var mutation_chance = 1
 @export var mutation_range = 0.1
-
+@export var node_visualiser: Node
 var time_left = 0
 
 var spiders_arr = []
@@ -31,6 +31,7 @@ func _process(delta: float) -> void:
 		for spider in spiders_arr:
 			spider.queue_free()
 		spiders_arr.clear()
+		node_visualiser.drawAi(randomm_picker.getMax())
 		modifySummon(randomm_picker)
 
 func modifySummon(p_randomm_picker: WeightedRandom):
