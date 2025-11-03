@@ -4,16 +4,68 @@ var spider_preload = preload("res://scenes/spider.tscn")
 
 # Called when the node enters the scene tree for the first time.
 @export var spiders_batches = 1
+#MAX 31 SPIDERS
+@export var spiders_per_batch = 31
+@export var training_time = 10
+@export var keep_best = true
+
+
+var spiders_arr = []
 func _ready() -> void:
-	for i in range(spiders_batches):
-		for x in range(31):
+	summonSpiders()
+var time_left = training_time
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	time_left -= delta
+	if time_left < 0:
+		time_left = training_time
+		var point_arr = []
+		var creature_arr = []
+		for spider in spiders_arr:
+			point_arr.append(spider.getPoints())
+			creature_arr.append(spider.getBrain())
+		var randomm_picker = WeightedRandom.new(point_arr, creature_arr)
+		for spider in spiders_arr:
+			spider.queue_free()
+		spiders_arr.clear()
+		modifySummon(randomm_picker)
+
+
+func modifySummon(p_randomm_picker: WeightedRandom):
+	pass
+
+func summonSpiders():
+	for y in range(spiders_batches):
+		for x in range(spiders_per_batch):
 			var temp_spider = spider_preload.instantiate()
-			temp_spider.position = position
+			temp_spider.position = position + Vector3(20 * y, 0, 0)
 			var temp_node = temp_spider.get_node("Skeleton3D/PhysicalBoneSimulator3D")
 			temp_node.setCollLayers(x + 2)
 			add_child(temp_spider)
+			spiders_arr.append(temp_spider)
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
+class WeightedRandom:
+	var arr_probablity
+	var arr_index
+	var probablity_max = 0
+	var max_probablity = - INF
+	var max_index
+	func _init(p_probablity_arr, p_index_arr) -> void:
+		arr_probablity = p_probablity_arr
+		arr_index = p_index_arr
+		for iter in range(arr_probablity):
+			if max_probablity < arr_probablity[iter]:
+				max_probablity = arr_probablity[iter]
+				max_index = p_index_arr[iter]
+			probablity_max += arr_probablity[iter]
+	func getMax():
+		return max_index
+	func getRandom():
+		var probablity = randf_range(0, probablity_max)
+		var random_index = -1
+		for iter in range(arr_probablity):
+			probablity -= arr_probablity[iter]
+			if probablity <= 0:
+				random_index = iter
+				break
+		return arr_index[random_index]

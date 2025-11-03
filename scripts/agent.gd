@@ -10,10 +10,18 @@ extends Node3D
 @onready var spider_skel = $Skeleton3D/PhysicalBoneSimulator3D
 @onready var spider = spider_skel.spider
 var prev_range = INF
-
+var points = 0
 var neuron_layers = []
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	genGoal()
+	var res = []
+	for i in range(8):
+		res.append(rVector3D())
+		res.append(rVector3D())
+	spider.setVel(res)
+
+func genBrain():
 	if LAYER_COUNT == 1:
 		neuron_layers.append(Neuron_Layer.new(51, NEURONS_IN_LAYER))
 	else:
@@ -23,17 +31,14 @@ func _ready() -> void:
 			else:
 				neuron_layers.append(Neuron_Layer.new(NEURONS_IN_LAYER, NEURONS_IN_LAYER))
 	neuron_layers.append(Neuron_Layer.new(NEURONS_IN_LAYER, 16))
-	genGoal()
-	var res = []
-	for i in range(8):
-		res.append(rVector3D())
-		res.append(rVector3D())
-	spider.setVel(res)
+
+func loadBrain(p_brain):
+	neuron_layers = p_brain
 
 var timesss = 0
 func _process(delta: float) -> void:
 	timesss += delta
-	if timesss > 1:
+	if timesss > 0.1:
 		timesss = 0
 		var calculation = calculate(spider.getData())
 		var res = []
@@ -48,10 +53,18 @@ func rVector3D():
 func genGoal():
 	goal.global_position = spider_skel.global_position * Vector3(1, 0, 1) + Vector3(0, 1, 0) + Vector3(randf_range(-1, 1), 0, randf_range(-1, 1)).normalized() * 5
 
+func getPoints():
+	var distance = goal.global_position.distance_to(spider_skel.global_position)
+	points += max(0, 5 - distance)
+	return points
+
+func getBrain():
+	return neuron_layers
+
 func updateVisualisation():
 	var distance = goal.global_position.distance_to(spider_skel.global_position)
 	# line.material_override.albedo_color = Color(prev_range - distance, distance - prev_range, 0, 1)
-	line.material_override.albedo_color = Color((prev_range - distance) * 10, (distance - prev_range) * 10, 0, 1)
+	line.material_override.albedo_color = Color((distance - prev_range) * 5, (prev_range - distance) * 5, 0, 1)
 	prev_range = distance
 	text.text = str(round(distance * 10) / 10)
 	line.scale = Vector3(1, 1, distance * 20)

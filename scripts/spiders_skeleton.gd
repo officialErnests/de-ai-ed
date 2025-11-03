@@ -4,7 +4,6 @@ extends PhysicalBoneSimulator3D
 # Called when the node enters the scene tree for the first time.
 
 var time = 0
-@export var debuger: Node3D
 var start_vector
 var main_bone_start_inverse
 var spider

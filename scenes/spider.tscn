@@ -755,8 +755,9 @@ skin = SubResource("Skin_2ee2v")
 mesh = SubResource("ArrayMesh_avj5f")
 skin = SubResource("Skin_2ee2v")
 
-[node name="PhysicalBoneSimulator3D" type="PhysicalBoneSimulator3D" parent="Skeleton3D"]
+[node name="PhysicalBoneSimulator3D" type="PhysicalBoneSimulator3D" parent="Skeleton3D" node_paths=PackedStringArray("agent_node")]
 script = ExtResource("1_c7em6")
+agent_node = NodePath("../..")
 
 [node name="Physical Bone Body" type="PhysicalBone3D" parent="Skeleton3D/PhysicalBoneSimulator3D" groups=["Movable"]]
 bone_name = "Body"
