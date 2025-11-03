@@ -10,9 +10,9 @@ const SPEED = 10
 var distance = 3
 func _input(event):
 	if event.is_action_pressed("scroll_down"):
-		distance += 0.2
+		distance += 1
 	if event.is_action_pressed("scroll_up"):
-		distance -= 0.2
+		distance -= 1
 	if event.is_action_pressed("r_click"):
 		if Input.mouse_mode == Input.MOUSE_MODE_VISIBLE:
 			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED

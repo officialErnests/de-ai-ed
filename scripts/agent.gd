@@ -22,6 +22,7 @@ func _ready() -> void:
 	spider.setVel(res)
 
 func genBrain():
+	print("GEN")
 	if LAYER_COUNT == 1:
 		neuron_layers.append(Neuron_Layer.new(51, NEURONS_IN_LAYER))
 	else:
@@ -51,15 +52,20 @@ func rVector3D():
 	return Vector3(randf_range(-1, 1), randf_range(-1, 1), randf_range(-1, 1))
 
 func genGoal():
-	goal.global_position = spider_skel.global_position * Vector3(1, 0, 1) + Vector3(0, 1, 0) + Vector3(randf_range(-1, 1), 0, randf_range(-1, 1)).normalized() * 5
+	goal.global_position = spider_skel.global_position * Vector3(1, 0, 1) + Vector3(0, 1, 0) + Vector3(1, 0, 0).normalized() * 5
+	# goal.global_position = spider_skel.global_position * Vector3(1, 0, 1) + Vector3(0, 1, 0) + Vector3(randf_range(-1, 1), 0, randf_range(-1, 1)).normalized() * 5
 
 func getPoints():
 	var distance = goal.global_position.distance_to(spider_skel.global_position)
-	points += max(0, 5 - distance)
+	points += 1 / max(distance, 1)
 	return points
 
 func getBrain():
-	return neuron_layers
+	var layer_neurons = []
+	var res = []
+	for layer in neuron_layers:
+		res.append_array(layer.getLayer())
+	return res
 
 func updateVisualisation():
 	var distance = goal.global_position.distance_to(spider_skel.global_position)
@@ -83,7 +89,11 @@ class Neuron_Layer:
 		for i in range(p_neurons):
 			neurons.append(Neuron.new(p_inputs))
 			neurons[i].scramble()
-
+	func getLayer():
+		var res = []
+		for iter_neuron in neurons:
+			res.append_array(iter_neuron.getNeuron())
+		return res
 	func calc(p_inputs):
 		var result = []
 		for i in range(neurons.size()):
@@ -96,12 +106,12 @@ class Neuron:
 	var inputs_size
 	func _init(p_inputs) -> void:
 		inputs_size = p_inputs
-	
+	func getNeuron():
+		return [weights, bias]
 	func scramble():
 		for i in range(inputs_size):
 			weights.append(randf_range(-1, 1))
 		bias = randf_range(-1, 1)
-
 	func calc(p_inputs):
 		var sum = 0
 		for iter in range(inputs_size):
