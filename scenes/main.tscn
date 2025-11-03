@@ -93,3 +93,5 @@ mesh = SubResource("BoxMesh_tipki")
 [node name="Spidersss" type="Node3D" parent="."]
 script = ExtResource("7_tipki")
 training_time = 5
+mutation_chance = 100
+mutation_range = 100.0

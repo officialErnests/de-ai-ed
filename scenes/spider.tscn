@@ -485,6 +485,7 @@ height = 0.8
 
 [node name="Spider" type="Node3D" node_paths=PackedStringArray("goal", "text", "line")]
 script = ExtResource("1_algeo")
+LAYER_COUNT = 2
 goal = NodePath("Goal")
 text = NodePath("Goal/Label3D")
 line = NodePath("Goal/MeshInstance3D")

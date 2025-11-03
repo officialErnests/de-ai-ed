@@ -57,6 +57,10 @@ func getPoints():
 func getBrain():
 	return neuron_layers
 
+func flavoring(p_mutation_chance, p_mutation_range):
+	for iter_neuron_layer in neuron_layers:
+		iter_neuron_layer.flavor(p_mutation_chance, p_mutation_range)
+
 func updateVisualisation():
 	var distance = goal.global_position.distance_to(spider_skel.global_position)
 	# line.material_override.albedo_color = Color(prev_range - distance, distance - prev_range, 0, 1)
@@ -84,6 +88,9 @@ class Neuron_Layer:
 			for i in range(p_neurons):
 				neurons.append(Neuron.new(p_inputs))
 				neurons[i].scramble()
+	func flavor(p_mutation_chance, p_mutation_range):
+		for iter_neuron in neurons:
+			iter_neuron.flavorful(p_mutation_chance, p_mutation_range)
 	func calc(p_inputs):
 		var result = []
 		for i in range(neurons.size()):
@@ -99,6 +106,15 @@ class Neuron:
 	func load(p_weights, p_bias):
 		weights = p_weights
 		bias = p_bias
+	func flavorful(p_mutation_chance, p_mutation_range):
+		for iter_weight in weights:
+			if randf_range(0, 100) < p_mutation_chance:
+				iter_weight += randf_range(-p_mutation_range, p_mutation_range)
+				iter_weight *= 0.99
+		if randf_range(0, 100) < p_mutation_chance:
+			bias += randf_range(-p_mutation_range, p_mutation_range)
+			bias *= 0.99
+
 	func scramble():
 		for i in range(inputs_size):
 			weights.append(randf_range(-1, 1))

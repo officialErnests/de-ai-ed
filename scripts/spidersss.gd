@@ -8,6 +8,8 @@ var spider_preload = preload("res://scenes/spider.tscn")
 @export var spiders_per_batch = 31
 @export var training_time = 10
 @export var keep_best = true
+@export var mutation_chance = 1
+@export var mutation_range = 0.1
 
 var time_left = 0
 
@@ -34,19 +36,18 @@ func _process(delta: float) -> void:
 func modifySummon(p_randomm_picker: WeightedRandom):
 	for y in range(spiders_batches):
 		for x in range(spiders_per_batch):
-			if keep_best:
-				if x == 0:
-					pass
-				spawnSpider(x + 2, y, p_randomm_picker.getMax())
+			if keep_best and x == 0:
+				spawnSpider(x + 2, y, p_randomm_picker.getMax(), false)
 				continue
-			spawnSpider(x + 2, y, p_randomm_picker.getRandom())
+			spawnSpider(x + 2, y, p_randomm_picker.getRandom(), true)
+
 
 func summonSpiders():
 	for y in range(spiders_batches):
 		for x in range(spiders_per_batch):
-			spawnSpider(x + 2, y, null)
+			spawnSpider(x + 2, y, null, false)
 
-func spawnSpider(col_layer, y_indx, p_loaded_brain):
+func spawnSpider(col_layer, y_indx, p_loaded_brain, p_flavoring):
 	var temp_spider = spider_preload.instantiate()
 	temp_spider.position = position + Vector3(20 * y_indx, 0, 0)
 	var temp_node = temp_spider.get_node("Skeleton3D/PhysicalBoneSimulator3D")
@@ -55,6 +56,8 @@ func spawnSpider(col_layer, y_indx, p_loaded_brain):
 	spiders_arr.append(temp_spider)
 	if p_loaded_brain:
 		temp_spider.loadBrain(p_loaded_brain)
+		if p_flavoring:
+			temp_spider.flavoring(mutation_chance, mutation_range)
 	else:
 		temp_spider.genBrain()
 
