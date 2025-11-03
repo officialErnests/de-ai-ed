@@ -41,7 +41,6 @@ func modifySummon(p_randomm_picker: WeightedRandom):
 				continue
 			spawnSpider(x + 2, y, p_randomm_picker.getRandom(), true)
 
-
 func summonSpiders():
 	for y in range(spiders_batches):
 		for x in range(spiders_per_batch):

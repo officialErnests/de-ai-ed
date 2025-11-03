@@ -28,8 +28,9 @@ func genBrain():
 	neuron_layers.append(Neuron_Layer.new(NEURONS_IN_LAYER, 16, null))
 
 func loadBrain(p_brain):
-	neuron_layers = p_brain
-
+	for iter_neuron_layers in p_brain:
+		neuron_layers.append(Neuron_Layer.new(null, null, iter_neuron_layers))
+		
 var timesss = 0
 func _process(delta: float) -> void:
 	timesss += delta
@@ -55,7 +56,10 @@ func getPoints():
 	return points
 
 func getBrain():
-	return neuron_layers
+	var res = []
+	for iter_neuron_layer in neuron_layers:
+		res.append(iter_neuron_layer.getNeuronLayer())
+	return res
 
 func flavoring(p_mutation_chance, p_mutation_range):
 	for iter_neuron_layer in neuron_layers:
@@ -81,13 +85,17 @@ class Neuron_Layer:
 	var neurons = []
 	func _init(p_inputs, p_neurons, p_load) -> void:
 		if p_load:
-			for i in range(p_neurons):
-				neurons.append(Neuron.new(p_inputs))
-				neurons[i].load(p_load[i][0], p_load[i][1])
+			for neuron in p_load:
+				neurons.append(Neuron.new(neuron[0].size()).load(neuron[0], neuron[1]))
 		else:
 			for i in range(p_neurons):
 				neurons.append(Neuron.new(p_inputs))
 				neurons[i].scramble()
+	func getNeuronLayer():
+		var res = []
+		for iter_neuron in neurons:
+			res.append(iter_neuron.getNeuron())
+		return res
 	func flavor(p_mutation_chance, p_mutation_range):
 		for iter_neuron in neurons:
 			iter_neuron.flavorful(p_mutation_chance, p_mutation_range)
@@ -106,6 +114,8 @@ class Neuron:
 	func load(p_weights, p_bias):
 		weights = p_weights
 		bias = p_bias
+		return self
+		print("A" + p_weights)
 	func flavorful(p_mutation_chance, p_mutation_range):
 		for iter_weight in weights:
 			if randf_range(0, 100) < p_mutation_chance:
@@ -114,7 +124,8 @@ class Neuron:
 		if randf_range(0, 100) < p_mutation_chance:
 			bias += randf_range(-p_mutation_range, p_mutation_range)
 			bias *= 0.99
-
+	func getNeuron():
+		return [weights, bias]
 	func scramble():
 		for i in range(inputs_size):
 			weights.append(randf_range(-1, 1))
