@@ -1,7 +1,6 @@
 extends Camera3D
 
 @export var enabled = true
-
 @onready var pointer: Node3D = $Pointer
 
 var REACH = 100

@@ -6,6 +6,7 @@ extends Node3D
 @export var MEMOR_NEURON_COUNT := 2
 @export_category("Others")
 @export var goal: Node3D
+@export var main_body: Node3D
 @export var text: Label3D
 @export var line: MeshInstance3D
 @onready var spider_skel = $Skeleton3D/PhysicalBoneSimulator3D
@@ -20,14 +21,16 @@ func _ready() -> void:
 
 func genBrain():
 	if LAYER_COUNT == 1:
-		neuron_layers.append(Neuron_Layer.new(51, NEURONS_IN_LAYER, null))
+		neuron_layers.append(Neuron_Layer.new(51 + MEMOR_NEURON_COUNT, NEURONS_IN_LAYER, null))
 	else:
 		for iter_layer in LAYER_COUNT:
 			if iter_layer == 0:
 				neuron_layers.append(Neuron_Layer.new(51, NEURONS_IN_LAYER, null))
 			else:
 				neuron_layers.append(Neuron_Layer.new(NEURONS_IN_LAYER, NEURONS_IN_LAYER, null))
-	neuron_layers.append(Neuron_Layer.new(NEURONS_IN_LAYER, 28, null))
+	neuron_layers.append(Neuron_Layer.new(NEURONS_IN_LAYER, 28 + MEMOR_NEURON_COUNT, null))
+	for i in range(MEMOR_NEURON_COUNT):
+		memory_neurons.append(0)
 
 func loadBrain(p_brain):
 	for iter_neuron_layers in p_brain:
@@ -42,9 +45,6 @@ func _process(delta: float) -> void:
 		var upper_leg = []
 		var base_leg = []
 		for i in range(calculation.size() / 3.0):
-		# for i in range(8):
-			# upper_leg.append(Vector3(0, 0, 0))
-			# base_leg.append(Vector3(0, 10, 0))
 			upper_leg.append(Vector3(calculation[i], 0, 0))
 			base_leg.append(Vector3(calculation[i], calculation[i + 1], 0))
 		spider.setVel(upper_leg, base_leg)
@@ -83,6 +83,9 @@ func updateVisualisation():
 	line.look_at(spider_skel.global_position, Vector3.UP)
 
 func calculate(p_inputs):
+	if goal.global_position.distance_to(main_body.global_position) < 1:
+		genGoal()
+		points += 5
 	var inputs = p_inputs
 	inputs.append_array(memory_neurons)
 	for iter_neuron_layer in neuron_layers:

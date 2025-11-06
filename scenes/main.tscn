@@ -109,8 +109,14 @@ type_names = {
 1: "b"
 }
 
-[node name="Spidersss" type="Node3D" parent="." node_paths=PackedStringArray("node_visualiser")]
+[node name="CanvasLayer2" type="CanvasLayer" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam"]
+
+[node name="Label" type="Label" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/CanvasLayer2"]
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="Spidersss" type="Node3D" parent="." node_paths=PackedStringArray("node_visualiser", "generation_count")]
 script = ExtResource("7_tipki")
-training_time = 5
-mutation_chance = 10
+training_time = 3
 node_visualiser = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/CanvasLayer")
+generation_count = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/CanvasLayer2/Label")

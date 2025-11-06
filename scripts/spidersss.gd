@@ -11,23 +11,26 @@ var spider_preload = preload("res://scenes/spider.tscn")
 @export var mutation_chance = 1
 @export var mutation_range = 0.1
 @export var node_visualiser: Node
+@export var generation_count: Label
 var time_left = 0
 
 var spiders_arr = []
 func _ready() -> void:
 	summonSpiders()
 	time_left = training_time
+	generation_count.text = "Gen: " + str(intss)
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	time_left -= delta
 	if time_left < 0:
+		intss += 1
+		generation_count.text = "Gen: " + str(intss)
 		time_left = training_time
 		var point_arr = []
 		var creature_arr = []
 		for spider in spiders_arr:
 			point_arr.append(spider.getPoints())
 			creature_arr.append(spider.getBrain())
-		print(point_arr)
 		var randomm_picker = WeightedRandom.new(point_arr, creature_arr)
 		for spider in spiders_arr:
 			spider.queue_free()
@@ -48,6 +51,7 @@ func summonSpiders():
 		for x in range(spiders_per_batch):
 			spawnSpider(x + 2, y, null, false)
 
+var intss = 0
 func spawnSpider(col_layer, y_indx, p_loaded_brain, p_flavoring):
 	var temp_spider = spider_preload.instantiate()
 	temp_spider.position = position + Vector3(20 * y_indx, 0, 0)
@@ -77,14 +81,14 @@ class WeightedRandom:
 			if max_probablity < probablity:
 				max_probablity = probablity
 				max_index = p_index_arr[iter]
-			probablity_max += probablity
+			probablity_max += probablity + 1
 	func getMax():
 		return max_index
 	func getRandom():
 		var probablity = randf_range(0, probablity_max)
 		var random_index = -1
 		for iter in range(arr_probablity.size()):
-			probablity -= arr_probablity[iter]
+			probablity -= arr_probablity[iter] + arr_probablity.size() - iter
 			if probablity <= 0:
 				random_index = iter
 				break

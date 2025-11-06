@@ -2,7 +2,6 @@ extends PhysicalBoneSimulator3D
 
 
 # Called when the node enters the scene tree for the first time.
-
 var time = 0
 var start_vector
 var main_bone_start_inverse
@@ -11,6 +10,7 @@ var velocity_arr = []
 @export var main_bone: PhysicalBone3D
 @export var main_body: MeshInstance3D
 @export var agent: Node3D
+@export var pain_pos := 0.5
 func _ready() -> void:
 	physical_bones_start_simulation()
 	spider = Spider.new(get_children().filter(func(x): return x is PhysicalBone3D), self)
@@ -19,8 +19,8 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	spider.addVel(delta)
 	main_body.material_override.albedo_color = Color(1 - main_bone.global_position.y * 3, main_bone.global_position.y * 3, 0, 1)
-	if main_bone.global_position.y < 0.3:
-		agent.points -= delta * (0.3 - main_bone.global_position.y) * 0.1
+	if main_bone.global_position.y < pain_pos:
+		agent.points -= delta * (pain_pos - main_bone.global_position.y) * 0.1
 	#make the agent connect to this and update after while velocities and get date
 func setCollLayers(p_layer):
 	for iter_bone in get_children().filter(func(x): return x is PhysicalBone3D):
@@ -82,8 +82,8 @@ class Spider:
 
 	func addVel(delta):
 		if not velocity_set: return
-		for i in leg_base_bones: i.addVel(delta * 200)
-		for i in leg_upper_bones: i.addVel(delta * 200)
+		for i in leg_base_bones: i.addVel(delta * 150)
+		for i in leg_upper_bones: i.addVel(delta * 150)
 			
 
 class Leg_bone extends Bone:
