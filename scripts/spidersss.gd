@@ -27,6 +27,7 @@ func _process(delta: float) -> void:
 		for spider in spiders_arr:
 			point_arr.append(spider.getPoints())
 			creature_arr.append(spider.getBrain())
+		print(point_arr)
 		var randomm_picker = WeightedRandom.new(point_arr, creature_arr)
 		for spider in spiders_arr:
 			spider.queue_free()
@@ -65,16 +66,18 @@ class WeightedRandom:
 	var arr_probablity
 	var arr_index
 	var probablity_max = 0
-	var max_probablity = - INF
+	var max_probablity = 0
 	var max_index
 	func _init(p_probablity_arr, p_index_arr) -> void:
 		arr_probablity = p_probablity_arr
 		arr_index = p_index_arr
+		var temp_min = arr_probablity.min()
 		for iter in range(arr_probablity.size()):
-			if max_probablity < arr_probablity[iter]:
-				max_probablity = arr_probablity[iter]
+			var probablity = arr_probablity[iter] + temp_min
+			if max_probablity < probablity:
+				max_probablity = probablity
 				max_index = p_index_arr[iter]
-			probablity_max += arr_probablity[iter]
+			probablity_max += probablity
 	func getMax():
 		return max_index
 	func getRandom():

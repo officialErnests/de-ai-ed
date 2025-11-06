@@ -3,6 +3,7 @@ extends Node3D
 @export_category("Neurons")
 @export var NEURONS_IN_LAYER := 51
 @export var LAYER_COUNT := 1
+@export var MEMOR_NEURON_COUNT := 2
 @export_category("Others")
 @export var goal: Node3D
 @export var text: Label3D
@@ -12,6 +13,7 @@ extends Node3D
 var prev_range = INF
 var points = 0
 var neuron_layers = []
+var memory_neurons = []
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	genGoal()
@@ -25,7 +27,7 @@ func genBrain():
 				neuron_layers.append(Neuron_Layer.new(51, NEURONS_IN_LAYER, null))
 			else:
 				neuron_layers.append(Neuron_Layer.new(NEURONS_IN_LAYER, NEURONS_IN_LAYER, null))
-	neuron_layers.append(Neuron_Layer.new(NEURONS_IN_LAYER, 16, null))
+	neuron_layers.append(Neuron_Layer.new(NEURONS_IN_LAYER, 28, null))
 
 func loadBrain(p_brain):
 	for iter_neuron_layers in p_brain:
@@ -37,10 +39,15 @@ func _process(delta: float) -> void:
 	if timesss > 0.1:
 		timesss = 0
 		var calculation = calculate(spider.getData())
-		var res = []
+		var upper_leg = []
+		var base_leg = []
+		# for i in range(calculation.size() / 3.0):
 		for i in range(calculation.size() / 3.0):
-			res.append(Vector3(calculation[i], calculation[i + 1], calculation[i + 2]))
-		spider.setVel(res)
+			upper_leg.append(Vector3(0, 0, 0))
+			base_leg.append(Vector3(1, 0, 0))
+			# upper_leg.append(Vector3(calculation[i], calculation[i + 1], calculation[i + 2]))
+			# base_leg.append(Vector3(calculation[i], calculation[i + 1], calculation[i + 2]))
+		spider.setVel(upper_leg, base_leg)
 		updateVisualisation()
 
 func rVector3D():
@@ -52,7 +59,7 @@ func genGoal():
 
 func getPoints():
 	var distance = goal.global_position.distance_to(spider_skel.global_position)
-	points += 1 / max(distance, 1)
+	points += (1 / max(distance, 1)) ** 2
 	return points
 
 func getBrain():
@@ -77,8 +84,12 @@ func updateVisualisation():
 
 func calculate(p_inputs):
 	var inputs = p_inputs
+	inputs.append_array(memory_neurons)
 	for iter_neuron_layer in neuron_layers:
 		inputs = iter_neuron_layer.calc(inputs)
+	memory_neurons.clear()
+	for i in range(inputs.size() - 51):
+		memory_neurons.append(inputs[i])
 	return inputs
 
 class Neuron_Layer:
@@ -115,7 +126,6 @@ class Neuron:
 		weights = p_weights
 		bias = p_bias
 		return self
-		print("A" + p_weights)
 	func flavorful(p_mutation_chance, p_mutation_range):
 		for iter_weight in weights:
 			if randf_range(0, 100) < p_mutation_chance:

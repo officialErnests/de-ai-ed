@@ -8,7 +8,9 @@ var start_vector
 var main_bone_start_inverse
 var spider
 var velocity_arr = []
-
+@export var main_bone: PhysicalBone3D
+@export var main_body: MeshInstance3D
+@export var agent: Node3D
 func _ready() -> void:
 	physical_bones_start_simulation()
 	spider = Spider.new(get_children().filter(func(x): return x is PhysicalBone3D), self)
@@ -16,8 +18,10 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	spider.addVel(delta)
+	main_body.material_override.albedo_color = Color(1 - main_bone.global_position.y * 3, main_bone.global_position.y * 3, 0, 1)
+	if main_bone.global_position.y < 0.3:
+		agent.points -= delta * (0.3 - main_bone.global_position.y) * 0.1
 	#make the agent connect to this and update after while velocities and get date
-
 func setCollLayers(p_layer):
 	for iter_bone in get_children().filter(func(x): return x is PhysicalBone3D):
 		iter_bone.set_collision_layer_value(1, false)
@@ -33,18 +37,20 @@ class Spider:
 	var skeleton_main_node
 	func _init(p_bones, p_main) -> void:
 		skeleton_main_node = p_main
-		for x in range(p_bones.size() / 2.0):
+		for x in range((p_bones.size() + 3) / 2.0):
 			if x == 0:
 				bone_base = Leg_bone.new(p_bones[x], null, null)
 				bone_base_start_transform = p_bones[x].transform
+				continue
+			print(x * 2 - 3)
 			leg_base_bones.append(Leg_bone.new(
-				p_bones[x * 2 - 1],
+				p_bones[x * 2 - 3],
 				bone_base.bone,
-				p_bones[x * 2]
+				p_bones[x * 2 - 2]
 			))
 			leg_upper_bones.append(Leg_bone.new(
-					p_bones[x * 2],
-					p_bones[x * 2 - 1],
+					p_bones[x * 2 - 2],
+					p_bones[x * 2 - 3],
 					null
 			))
 	
@@ -69,11 +75,13 @@ class Spider:
 			result.append(t_bone_direction.z)
 		return result
 	
-	func setVel(p_velocities):
+	func setVel(p_upper_leg, p_base_leg):
 		velocity_set = true
-		for i_vel in range(p_velocities.size() / 2.0):
-			leg_base_bones[i_vel].set_dir_velocity = p_velocities[i_vel * 2 - 1]
-			leg_upper_bones[i_vel].set_dir_velocity = p_velocities[i_vel * 2]
+		print(leg_base_bones.size())
+		print(leg_upper_bones.size())
+		for i_vel in range(leg_base_bones.size()):
+			leg_base_bones[i_vel].set_dir_velocity = p_base_leg[i_vel]
+			leg_upper_bones[i_vel].set_dir_velocity = p_upper_leg[i_vel]
 
 	func addVel(delta):
 		if not velocity_set: return

@@ -9,6 +9,7 @@ func _ready() -> void:
 	pass # Replace with function body.
 
 func drawAi(p_brain):
+	return
 	for child in layer_frames:
 		child.queue_free()
 	layer_frames.clear()

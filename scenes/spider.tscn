@@ -1,4 +1,4 @@
-[gd_scene load_steps=47 format=4 uid="uid://dirupln0p5560"]
+[gd_scene load_steps=48 format=4 uid="uid://dirupln0p5560"]
 
 [ext_resource type="Script" uid="uid://b7vlkktufxb4" path="res://scripts/agent.gd" id="1_algeo"]
 [ext_resource type="Script" uid="uid://bncjfqswqgssj" path="res://scripts/spiders_skeleton.gd" id="1_c7em6"]
@@ -18,6 +18,9 @@ albedo_color = Color(1, 0.5176471, 0, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_d613k"]
 size = Vector3(0.05, 0.05, 0.05)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_evcmw"]
+resource_local_to_scene = true
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yavc1"]
 
@@ -485,6 +488,8 @@ height = 0.8
 
 [node name="Spider" type="Node3D" node_paths=PackedStringArray("goal", "text", "line")]
 script = ExtResource("1_algeo")
+NEURONS_IN_LAYER = 70
+LAYER_COUNT = 2
 goal = NodePath("Goal")
 text = NodePath("Goal/Label3D")
 line = NodePath("Goal/MeshInstance3D")
@@ -683,6 +688,7 @@ bones/24/rotation = Quaternion(0.001878533, 8.319631e-08, 0.92387766, 0.3826834)
 bones/24/scale = Vector3(1, 1, 1)
 
 [node name="Cube" type="MeshInstance3D" parent="Skeleton3D"]
+material_override = SubResource("StandardMaterial3D_evcmw")
 mesh = SubResource("ArrayMesh_kxefx")
 skin = SubResource("Skin_2ee2v")
 
@@ -754,8 +760,11 @@ skin = SubResource("Skin_2ee2v")
 mesh = SubResource("ArrayMesh_avj5f")
 skin = SubResource("Skin_2ee2v")
 
-[node name="PhysicalBoneSimulator3D" type="PhysicalBoneSimulator3D" parent="Skeleton3D"]
+[node name="PhysicalBoneSimulator3D" type="PhysicalBoneSimulator3D" parent="Skeleton3D" node_paths=PackedStringArray("main_bone", "main_body", "agent")]
 script = ExtResource("1_c7em6")
+main_bone = NodePath("Physical Bone Body")
+main_body = NodePath("../Cube")
+agent = NodePath("../..")
 
 [node name="Physical Bone Body" type="PhysicalBone3D" parent="Skeleton3D/PhysicalBoneSimulator3D" groups=["Movable"]]
 bone_name = "Body"
