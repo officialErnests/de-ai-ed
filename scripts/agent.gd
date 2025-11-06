@@ -41,12 +41,12 @@ func _process(delta: float) -> void:
 		var calculation = calculate(spider.getData())
 		var upper_leg = []
 		var base_leg = []
-		# for i in range(calculation.size() / 3.0):
 		for i in range(calculation.size() / 3.0):
-			upper_leg.append(Vector3(0, 0, 0))
-			base_leg.append(Vector3(1, 0, 0))
-			# upper_leg.append(Vector3(calculation[i], calculation[i + 1], calculation[i + 2]))
-			# base_leg.append(Vector3(calculation[i], calculation[i + 1], calculation[i + 2]))
+		# for i in range(8):
+			# upper_leg.append(Vector3(0, 0, 0))
+			# base_leg.append(Vector3(0, 10, 0))
+			upper_leg.append(Vector3(calculation[i], 0, 0))
+			base_leg.append(Vector3(calculation[i], calculation[i + 1], 0))
 		spider.setVel(upper_leg, base_leg)
 		updateVisualisation()
 

@@ -37,20 +37,19 @@ class Spider:
 	var skeleton_main_node
 	func _init(p_bones, p_main) -> void:
 		skeleton_main_node = p_main
-		for x in range((p_bones.size() + 3) / 2.0):
+		for x in range((p_bones.size() + 1) / 2.0):
 			if x == 0:
 				bone_base = Leg_bone.new(p_bones[x], null, null)
 				bone_base_start_transform = p_bones[x].transform
 				continue
-			print(x * 2 - 3)
 			leg_base_bones.append(Leg_bone.new(
-				p_bones[x * 2 - 3],
+				p_bones[x * 2 - 1],
 				bone_base.bone,
-				p_bones[x * 2 - 2]
+				p_bones[x * 2]
 			))
 			leg_upper_bones.append(Leg_bone.new(
-					p_bones[x * 2 - 2],
-					p_bones[x * 2 - 3],
+					p_bones[x * 2],
+					p_bones[x * 2 - 1],
 					null
 			))
 	
@@ -77,8 +76,6 @@ class Spider:
 	
 	func setVel(p_upper_leg, p_base_leg):
 		velocity_set = true
-		print(leg_base_bones.size())
-		print(leg_upper_bones.size())
 		for i_vel in range(leg_base_bones.size()):
 			leg_base_bones[i_vel].set_dir_velocity = p_base_leg[i_vel]
 			leg_upper_bones[i_vel].set_dir_velocity = p_upper_leg[i_vel]
