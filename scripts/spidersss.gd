@@ -3,41 +3,77 @@ extends Node3D
 var spider_preload = preload("res://scenes/spider.tscn")
 
 # Called when the node enters the scene tree for the first time.
+
+@export_category("Main")
+@export var start: Button
+@export var pause_button: Button
+@export var force_stop_button: Button
+@export_category("Simulation")
+@export var training_time: SpinBox
+@export_category("Others")
+@export var timer: Timer
 @export var spiders_batches = 1
 #MAX 31 SPIDERS
 @export var spiders_per_batch = 31
-@export var training_time = 10
 @export var keep_best = true
 @export var mutation_chance = 1
 @export var mutation_range = 0.1
 @export var node_visualiser: Node
 @export var generation_count: Label
-var time_left = 0
 
+var intss = 0
 var spiders_arr = []
 func _ready() -> void:
-	summonSpiders()
-	time_left = training_time
+	generation_count.text = "Awaiting start"
+	timer.timeout.connect(trainLoop)
+
+	start.pressed.connect(restart)
+	pause_button.pressed.connect(pauseTimer)
+	force_stop_button.pressed.connect(forceEnd)
+
+func pauseTimer():
+	if timer.paused:
+		pause_button.text = "pause"
+		timer.paused = false
+	else:
+		pause_button.text = "resume"
+		timer.paused = true
+
+func restart():
+	timer.paused = false
+	start.text = "Restart training"
+	startTraining()
+
+func startTraining():
+	timer.paused = false
+	for spider in spiders_arr: spider.queue_free()
+	spiders_arr.clear()
+	intss = 0
+	trainLoop()
+
+func forceEnd():
+	timer.stop()
+	trainLoop()
+
+func trainLoop():
+	if spiders_arr.is_empty():
+		summonSpiders()
+
+	timer.start(training_time.value)
+	intss += 1
 	generation_count.text = "Gen: " + str(intss)
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	time_left -= delta
-	if time_left < 0:
-		intss += 1
-		generation_count.text = "Gen: " + str(intss)
-		time_left = training_time
-		var point_arr = []
-		var creature_arr = []
-		for spider in spiders_arr:
-			point_arr.append(spider.getPoints())
-			creature_arr.append(spider.getBrain())
-		var randomm_picker = WeightedRandom.new(point_arr, creature_arr)
-		for spider in spiders_arr:
-			spider.queue_free()
-		spiders_arr.clear()
-		print(point_arr)
-		node_visualiser.drawAi(randomm_picker.getMax())
-		modifySummon(randomm_picker)
+
+	var point_arr = []
+	var creature_arr = []
+	for spider in spiders_arr:
+		point_arr.append(spider.getPoints())
+		creature_arr.append(spider.getBrain())
+	var randomm_picker = WeightedRandom.new(point_arr, creature_arr)
+
+	for spider in spiders_arr: spider.queue_free()
+	spiders_arr.clear()
+	node_visualiser.drawAi(randomm_picker.getMax())
+	modifySummon(randomm_picker)
 
 func modifySummon(p_randomm_picker: WeightedRandom):
 	for y in range(spiders_batches):
@@ -53,7 +89,6 @@ func summonSpiders():
 		for x in range(spiders_per_batch):
 			spawnSpider(x + 2, y, null, false)
 
-var intss = 0
 func spawnSpider(col_layer, y_indx, p_loaded_brain, p_flavoring):
 	var temp_spider = spider_preload.instantiate()
 	temp_spider.position = position + Vector3(20 * y_indx, 0, 0)
