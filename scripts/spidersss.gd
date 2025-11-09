@@ -25,7 +25,10 @@ const SAVE_PATH = "user://saves/"
 
 var intss = 0
 var spiders_arr = []
-var stats_arr = []
+var stats_arr = {
+	"generation" = 1,
+	"generation_statistics" = []
+}
 var best_spider = []
 func _ready() -> void:
 	generation_count.text = "Awaiting start"
@@ -66,6 +69,10 @@ func restart():
 	startTraining()
 
 func startTraining():
+	stats_arr = {
+		"generation" = 1,
+		"generation_statistics" = []
+	}
 	timer.paused = false
 	for spider in spiders_arr: spider.queue_free()
 	spiders_arr.clear()
@@ -82,6 +89,7 @@ func trainLoop():
 
 	timer.start(training_time.value)
 	intss += 1
+	stats_arr["generation"] = intss
 	generation_count.text = "Gen: " + str(intss)
 
 	var point_arr = []
@@ -97,6 +105,14 @@ func trainLoop():
 	modifySummon(randomm_picker)
 
 func modifySummon(p_randomm_picker: WeightedRandom):
+	stats_arr["generation_statistics"].append(
+		{
+			"min" = p_randomm_picker.arr_min,
+			"avg" = p_randomm_picker.arr_max,
+			"max" = p_randomm_picker.arr_avg,
+			"mod" = p_randomm_picker.arr_mod,
+		}
+	)
 	for y in range(spiders_batches):
 		for x in range(spiders_per_batch):
 			if keep_best and x == 0:
@@ -132,12 +148,21 @@ class WeightedRandom:
 	var max_probablity = 0
 	var max_index
 	var arr_min
+	var arr_max
+	var arr_avg = 0
+	var arr_mod
 	func _init(p_probablity_arr, p_index_arr) -> void:
 		arr_probablity = p_probablity_arr
 		arr_index = p_index_arr
 		arr_min = arr_probablity.min()
+		arr_max = arr_probablity.max()
+		if (arr_probablity.size() / 2) % 1 == 0:
+			arr_mod = arr_probablity[arr_probablity.size() / 2.0]
+		else:
+			arr_mod = arr_probablity[floor(arr_probablity.size() / 2.0)] + arr_probablity[ceil(arr_probablity.size() / 2.0)]
 		for iter in range(arr_probablity.size()):
 			var probablity = arr_probablity[iter] - arr_min
+			arr_avg += arr_probablity[iter] / arr_probablity.size()
 			if max_probablity < probablity:
 				max_probablity = probablity
 				max_index = p_index_arr[iter]
