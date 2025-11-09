@@ -2,12 +2,14 @@ extends Node3D
 
 var spider_preload = preload("res://scenes/spider.tscn")
 
-# Called when the node enters the scene tree for the first time.
+const SAVE_PATH = "user://saves/"
 
 @export_category("Main")
 @export var start: Button
 @export var pause_button: Button
 @export var force_stop_button: Button
+@export var save_button: Button
+@export var open_button: Button
 @export_category("Simulation")
 @export var training_time: SpinBox
 @export_category("Others")
@@ -23,6 +25,7 @@ var spider_preload = preload("res://scenes/spider.tscn")
 
 var intss = 0
 var spiders_arr = []
+var stats_arr = []
 func _ready() -> void:
 	generation_count.text = "Awaiting start"
 	timer.timeout.connect(trainLoop)
@@ -30,6 +33,22 @@ func _ready() -> void:
 	start.pressed.connect(restart)
 	pause_button.pressed.connect(pauseTimer)
 	force_stop_button.pressed.connect(forceEnd)
+	save_button.pressed.connect(saveAi)
+	open_button.pressed.connect(openExplorer)
+
+func saveAi():
+	var dirAccess = DirAccess.open("user://")
+	dirAccess.make_dir(SAVE_PATH)
+
+	var file_name = SAVE_PATH + "TERRYS_" + Time.get_date_string_from_system() + ".ai"
+	print(file_name)
+	var fileSave = FileAccess.open(file_name, FileAccess.WRITE)
+	print(fileSave)
+	fileSave.store_string(JSON.stringify([stats_arr, spiders_arr]))
+
+func openExplorer():
+	print("explorer.exe " + '/select,"' + str(ProjectSettings.globalize_path(SAVE_PATH)).replace("/", "\\") + '"')
+	OS.execute("explorer.exe", ['/select', str(ProjectSettings.globalize_path(SAVE_PATH)).replace("/", "\\")])
 
 func pauseTimer():
 	if timer.paused:
@@ -38,6 +57,7 @@ func pauseTimer():
 	else:
 		pause_button.text = "resume"
 		timer.paused = true
+
 
 func restart():
 	timer.paused = false
