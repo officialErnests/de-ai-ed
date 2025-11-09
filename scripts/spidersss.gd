@@ -26,6 +26,7 @@ const SAVE_PATH = "user://saves/"
 var intss = 0
 var spiders_arr = []
 var stats_arr = []
+var best_spider = []
 func _ready() -> void:
 	generation_count.text = "Awaiting start"
 	timer.timeout.connect(trainLoop)
@@ -39,16 +40,16 @@ func _ready() -> void:
 func saveAi():
 	var dirAccess = DirAccess.open("user://")
 	dirAccess.make_dir(SAVE_PATH)
+	var now_time = Time.get_datetime_dict_from_system()
+	var file_name = SAVE_PATH + "TERRYS_" + str(now_time["month"]) + str(now_time["day"]) + str(now_time["hour"]) + str(now_time["minute"]) + str(now_time["second"]) + ".ai"
 
-	var file_name = SAVE_PATH + "TERRYS_" + Time.get_date_string_from_system() + ".ai"
 	print(file_name)
 	var fileSave = FileAccess.open(file_name, FileAccess.WRITE)
 	print(fileSave)
-	fileSave.store_string(JSON.stringify([stats_arr, spiders_arr]))
+	fileSave.store_string(JSON.stringify([stats_arr, best_spider]))
 
 func openExplorer():
-	print("explorer.exe " + '/select,"' + str(ProjectSettings.globalize_path(SAVE_PATH)).replace("/", "\\") + '"')
-	OS.execute("explorer.exe", ['/select', str(ProjectSettings.globalize_path(SAVE_PATH)).replace("/", "\\")])
+	OS.execute("explorer.exe", [str(ProjectSettings.globalize_path(SAVE_PATH)).replace("/", "\\")])
 
 func pauseTimer():
 	if timer.paused:
@@ -99,6 +100,7 @@ func modifySummon(p_randomm_picker: WeightedRandom):
 	for y in range(spiders_batches):
 		for x in range(spiders_per_batch):
 			if keep_best and x == 0:
+				best_spider = p_randomm_picker.getMax()
 				spawnSpider(x + 2, y, p_randomm_picker.getMax(), false)
 				spiders_arr[0].setMain()
 				continue
