@@ -10,6 +10,8 @@ const SAVE_PATH = "user://saves/"
 @export var force_stop_button: Button
 @export var save_button: Button
 @export var open_button: Button
+@export var load_button: Button
+@export var load_file_diologue: FileDialog
 @export_category("Simulation")
 @export var training_time: SpinBox
 @export_category("Others")
@@ -39,6 +41,7 @@ func _ready() -> void:
 	force_stop_button.pressed.connect(forceEnd)
 	save_button.pressed.connect(saveAi)
 	open_button.pressed.connect(openExplorer)
+	load_button.pressed.connect(openExplorer)
 
 func saveAi():
 	var dirAccess = DirAccess.open("user://")
@@ -53,6 +56,18 @@ func saveAi():
 
 func openExplorer():
 	OS.execute("explorer.exe", [str(ProjectSettings.globalize_path(SAVE_PATH)).replace("/", "\\")])
+	
+func loadAi():
+	load_file_diologue["visible"] = true
+	load_file_diologue.close_requested.connect(
+		func():
+			load_file_diologue.visible = false
+			load_file_diologue.file_selected.disconnect(loadFile)
+	)
+	load_file_diologue.file_selected.connect(loadFile)
+
+func loadFile(p_path):
+	print(p_path)
 
 func pauseTimer():
 	if timer.paused:

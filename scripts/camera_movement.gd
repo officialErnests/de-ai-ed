@@ -13,6 +13,8 @@ func _input(event):
 		distance += 1
 	if event.is_action_pressed("scroll_up"):
 		distance -= 1
+	if event.is_action_pressed("ui_cancel"):
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	if event.is_action_pressed("r_click"):
 		if Input.mouse_mode == Input.MOUSE_MODE_VISIBLE:
 			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
