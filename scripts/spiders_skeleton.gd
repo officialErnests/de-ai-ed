@@ -10,7 +10,7 @@ var velocity_arr = []
 @export var main_bone: PhysicalBone3D
 @export var main_body: MeshInstance3D
 @export var agent: Node3D
-@export var pain_pos := 0.5
+@export var pain_pos: float = 1
 func _ready() -> void:
 	physical_bones_start_simulation()
 	spider = Spider.new(get_children().filter(func(x): return x is PhysicalBone3D), self)
@@ -18,10 +18,11 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	spider.addVel(delta)
-	main_body.material_override.albedo_color = Color(1 - main_bone.global_position.y * 3, main_bone.global_position.y * 3, 0, 1)
 	if main_bone.global_position.y < pain_pos:
-		agent.points -= delta * (pain_pos - main_bone.global_position.y) * 0.1
-	#make the agent connect to this and update after while velocities and get date
+		agent.points -= - (main_bone.global_position.y - pain_pos) * delta
+		main_body.material_override.albedo_color = Color(1, 0, 0, 1)
+	else:
+		main_body.material_override.albedo_color = Color(1, 1, 1, 1)
 func setCollLayers(p_layer):
 	for iter_bone in get_children().filter(func(x): return x is PhysicalBone3D):
 		iter_bone.set_collision_layer_value(1, false)
@@ -83,7 +84,7 @@ class Spider:
 	func addVel(delta):
 		if not velocity_set: return
 		for i in leg_base_bones: i.addVel(delta * 150)
-		for i in leg_upper_bones: i.addVel(delta * 150)
+		for i in leg_upper_bones: i.addVel(delta * 100)
 			
 
 class Leg_bone extends Bone:

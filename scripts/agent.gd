@@ -19,6 +19,9 @@ var memory_neurons = []
 func _ready() -> void:
 	genGoal()
 
+func setMain():
+	spider_skel.main_body.material_override.no_depth_test = true
+
 func genBrain():
 	if LAYER_COUNT == 1:
 		neuron_layers.append(Neuron_Layer.new(51 + MEMOR_NEURON_COUNT, NEURONS_IN_LAYER, null))
@@ -59,7 +62,7 @@ func genGoal():
 
 func getPoints():
 	var distance = goal.global_position.distance_to(spider_skel.global_position)
-	points += (1 / max(distance, 1)) ** 2
+	points += 5 - distance
 	return points
 
 func getBrain():
@@ -148,8 +151,5 @@ class Neuron:
 		for iter in range(inputs_size):
 			sum += p_inputs[iter] * weights[iter]
 		sum += bias
-		# if sum != 0:
-		# 	print(sum, bias)
-		# 	return null
 		sum = clamp(sum, -1, 1)
 		return sum

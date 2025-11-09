@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://btjrdo0mrklry"]
+[gd_scene load_steps=21 format=3 uid="uid://btjrdo0mrklry"]
 
 [ext_resource type="Texture2D" uid="uid://chnecxepau4i1" path="res://assets/Ground.jpg" id="1_sugp2"]
 [ext_resource type="Script" uid="uid://ccb5pwd1qkktp" path="res://scripts/camera_movement.gd" id="2_0wfyh"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" uid="uid://c816g4tima81i" path="res://scripts/ai_visualisergd.gd" id="6_o6xl0"]
 [ext_resource type="Theme" uid="uid://dumymur1yifht" path="res://assets/gui.tres" id="7_85g3d"]
 [ext_resource type="Script" uid="uid://bu5yxtfh5srqp" path="res://scripts/spidersss.gd" id="7_tipki"]
+[ext_resource type="Script" uid="uid://dyqngqnchhak1" path="res://scripts/close_open_panel.gd" id="8_85g3d"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_o5qli"]
 sky_top_color = Color(0.26750416, 0.6006932, 0.68498224, 1)
@@ -112,11 +113,216 @@ type_names = {
 [node name="CanvasLayer2" type="CanvasLayer" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam"]
 
 [node name="Label" type="Label" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/CanvasLayer2"]
-offset_right = 40.0
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
 offset_bottom = 23.0
+grow_horizontal = 0
+
+[node name="CanvasLayer3" type="CanvasLayer" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam"]
+
+[node name="Main" type="HBoxContainer" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/CanvasLayer3"]
+anchors_preset = -1
+anchor_right = 0.5
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="Panel" type="Panel" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/CanvasLayer3/Main"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/CanvasLayer3/Main/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -10.0
+
+[node name="Label" type="Label" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/CanvasLayer3/Main/Panel/VBoxContainer"]
+layout_mode = 2
+text = "Main"
+horizontal_alignment = 1
+
+[node name="Button" type="Button" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/CanvasLayer3/Main/Panel/VBoxContainer"]
+layout_mode = 2
+text = "Start training"
+
+[node name="Button2" type="Button" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/CanvasLayer3/Main/Panel/VBoxContainer"]
+layout_mode = 2
+text = "Save"
+
+[node name="Button3" type="Button" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/CanvasLayer3/Main/Panel/VBoxContainer"]
+layout_mode = 2
+text = "Load"
+
+[node name="Control" type="Control" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/CanvasLayer3/Main"]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/CanvasLayer3/Main/Control" node_paths=PackedStringArray("node")]
+layout_mode = 0
+offset_top = 6.0
+offset_right = 40.0
+offset_bottom = 46.0
+scale = Vector2(0.5, 0.5)
+text = "O"
+script = ExtResource("8_85g3d")
+node = NodePath("../..")
+slide_offset = Vector2(-300, 0)
+slide_steps = 10.0
+slider_open_text = "<"
+slider_close_text = "> Main"
+is_open = false
+
+[node name="Simulation" type="HBoxContainer" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/CanvasLayer3"]
+anchors_preset = -1
+anchor_right = 0.5
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="Panel" type="Panel" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/CanvasLayer3/Simulation"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/CanvasLayer3/Simulation/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -10.0
+
+[node name="Label" type="Label" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/CanvasLayer3/Simulation/Panel/VBoxContainer"]
+layout_mode = 2
+text = "Simulation"
+horizontal_alignment = 1
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/CanvasLayer3/Simulation/Panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/CanvasLayer3/Simulation/Panel/VBoxContainer/HBoxContainer4"]
+layout_mode = 2
+text = "Round Time"
+
+[node name="SpinBox" type="SpinBox" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/CanvasLayer3/Simulation/Panel/VBoxContainer/HBoxContainer4"]
+layout_mode = 2
+min_value = 1.0
+value = 5.0
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/CanvasLayer3/Simulation/Panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/CanvasLayer3/Simulation/Panel/VBoxContainer/HBoxContainer5"]
+layout_mode = 2
+text = "Pause round time"
+
+[node name="CheckBox" type="CheckBox" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/CanvasLayer3/Simulation/Panel/VBoxContainer/HBoxContainer5"]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/CanvasLayer3/Simulation"]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/CanvasLayer3/Simulation/Control" node_paths=PackedStringArray("node")]
+layout_mode = 0
+offset_top = 30.0
+offset_right = 40.0
+offset_bottom = 69.99997
+scale = Vector2(0.5, 0.5)
+text = "O"
+script = ExtResource("8_85g3d")
+node = NodePath("../..")
+slide_offset = Vector2(-300, 0)
+slide_steps = 10.0
+slider_open_text = "<"
+slider_close_text = "> Simulatio"
+is_open = false
+
+[node name="Spider" type="HBoxContainer" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/CanvasLayer3"]
+anchors_preset = -1
+anchor_right = 0.5
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="Panel" type="Panel" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/CanvasLayer3/Spider"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/CanvasLayer3/Spider/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -10.0
+
+[node name="Label" type="Label" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/CanvasLayer3/Spider/Panel/VBoxContainer"]
+layout_mode = 2
+text = "Spiders"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/CanvasLayer3/Spider/Panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/CanvasLayer3/Spider/Panel/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Ai hidden layers"
+
+[node name="SpinBox" type="SpinBox" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/CanvasLayer3/Spider/Panel/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+value = 1.0
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/CanvasLayer3/Spider/Panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/CanvasLayer3/Spider/Panel/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "Neurons per layer"
+
+[node name="SpinBox" type="SpinBox" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/CanvasLayer3/Spider/Panel/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+min_value = 1.0
+max_value = 200.0
+value = 51.0
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/CanvasLayer3/Spider/Panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/CanvasLayer3/Spider/Panel/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+text = "Memory neurons"
+
+[node name="SpinBox" type="SpinBox" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/CanvasLayer3/Spider/Panel/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/CanvasLayer3/Spider"]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/CanvasLayer3/Spider/Control" node_paths=PackedStringArray("node")]
+layout_mode = 0
+offset_top = 54.0
+offset_right = 40.0
+offset_bottom = 93.999985
+scale = Vector2(0.5, 0.5)
+text = "O"
+script = ExtResource("8_85g3d")
+node = NodePath("../..")
+slide_offset = Vector2(-300, 0)
+slide_steps = 10.0
+slider_open_text = "<"
+slider_close_text = "> Spider"
+is_open = false
 
 [node name="Spidersss" type="Node3D" parent="." node_paths=PackedStringArray("node_visualiser", "generation_count")]
 script = ExtResource("7_tipki")
-training_time = 3
+spiders_per_batch = 10
+mutation_chance = 10
+mutation_range = 10.0
 node_visualiser = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/CanvasLayer")
 generation_count = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/CanvasLayer2/Label")

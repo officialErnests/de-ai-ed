@@ -21,6 +21,7 @@ size = Vector3(0.05, 0.05, 0.05)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_evcmw"]
 resource_local_to_scene = true
+albedo_color = Color(1, 1, 1, 0.4627451)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yavc1"]
 
@@ -490,7 +491,6 @@ height = 0.8
 script = ExtResource("1_algeo")
 NEURONS_IN_LAYER = 70
 LAYER_COUNT = 2
-MEMOR_NEURON_COUNT = 0
 goal = NodePath("Goal")
 main_body = NodePath("Skeleton3D/PhysicalBoneSimulator3D/Physical Bone Body")
 text = NodePath("Goal/Label3D")
@@ -695,70 +695,87 @@ mesh = SubResource("ArrayMesh_kxefx")
 skin = SubResource("Skin_2ee2v")
 
 [node name="Cube_001" type="MeshInstance3D" parent="Skeleton3D"]
+material_override = SubResource("StandardMaterial3D_evcmw")
 mesh = SubResource("ArrayMesh_nppax")
 skin = SubResource("Skin_2ee2v")
 
 [node name="Cube_002" type="MeshInstance3D" parent="Skeleton3D"]
+material_override = SubResource("StandardMaterial3D_evcmw")
 mesh = SubResource("ArrayMesh_ddvif")
 skin = SubResource("Skin_2ee2v")
 
 [node name="Cube_003" type="MeshInstance3D" parent="Skeleton3D"]
+material_override = SubResource("StandardMaterial3D_evcmw")
 mesh = SubResource("ArrayMesh_xrggn")
 skin = SubResource("Skin_2ee2v")
 
 [node name="Cube_004" type="MeshInstance3D" parent="Skeleton3D"]
+material_override = SubResource("StandardMaterial3D_evcmw")
 mesh = SubResource("ArrayMesh_r2oaj")
 skin = SubResource("Skin_2ee2v")
 
 [node name="Cube_005" type="MeshInstance3D" parent="Skeleton3D"]
+material_override = SubResource("StandardMaterial3D_evcmw")
 mesh = SubResource("ArrayMesh_umjw3")
 skin = SubResource("Skin_2ee2v")
 
 [node name="Cube_006" type="MeshInstance3D" parent="Skeleton3D"]
+material_override = SubResource("StandardMaterial3D_evcmw")
 mesh = SubResource("ArrayMesh_4wx8k")
 skin = SubResource("Skin_2ee2v")
 
 [node name="Cube_007" type="MeshInstance3D" parent="Skeleton3D"]
+material_override = SubResource("StandardMaterial3D_evcmw")
 mesh = SubResource("ArrayMesh_bagqc")
 skin = SubResource("Skin_2ee2v")
 
 [node name="Cube_008" type="MeshInstance3D" parent="Skeleton3D"]
+material_override = SubResource("StandardMaterial3D_evcmw")
 mesh = SubResource("ArrayMesh_1juxn")
 skin = SubResource("Skin_2ee2v")
 
 [node name="Cube_009" type="MeshInstance3D" parent="Skeleton3D"]
+material_override = SubResource("StandardMaterial3D_evcmw")
 mesh = SubResource("ArrayMesh_yldie")
 skin = SubResource("Skin_2ee2v")
 
 [node name="Cube_010" type="MeshInstance3D" parent="Skeleton3D"]
+material_override = SubResource("StandardMaterial3D_evcmw")
 mesh = SubResource("ArrayMesh_1p66q")
 skin = SubResource("Skin_2ee2v")
 
 [node name="Cube_011" type="MeshInstance3D" parent="Skeleton3D"]
+material_override = SubResource("StandardMaterial3D_evcmw")
 mesh = SubResource("ArrayMesh_w767a")
 skin = SubResource("Skin_2ee2v")
 
 [node name="Cube_012" type="MeshInstance3D" parent="Skeleton3D"]
+material_override = SubResource("StandardMaterial3D_evcmw")
 mesh = SubResource("ArrayMesh_hf70y")
 skin = SubResource("Skin_2ee2v")
 
 [node name="Cube_013" type="MeshInstance3D" parent="Skeleton3D"]
+material_override = SubResource("StandardMaterial3D_evcmw")
 mesh = SubResource("ArrayMesh_ofw7y")
 skin = SubResource("Skin_2ee2v")
 
 [node name="Cube_014" type="MeshInstance3D" parent="Skeleton3D"]
+material_override = SubResource("StandardMaterial3D_evcmw")
 mesh = SubResource("ArrayMesh_cjqdc")
 skin = SubResource("Skin_2ee2v")
 
 [node name="Cube_015" type="MeshInstance3D" parent="Skeleton3D"]
+material_override = SubResource("StandardMaterial3D_evcmw")
 mesh = SubResource("ArrayMesh_kwhov")
 skin = SubResource("Skin_2ee2v")
 
 [node name="Cube_016" type="MeshInstance3D" parent="Skeleton3D"]
+material_override = SubResource("StandardMaterial3D_evcmw")
 mesh = SubResource("ArrayMesh_f36vh")
 skin = SubResource("Skin_2ee2v")
 
 [node name="Icosphere" type="MeshInstance3D" parent="Skeleton3D"]
+material_override = SubResource("StandardMaterial3D_evcmw")
 mesh = SubResource("ArrayMesh_avj5f")
 skin = SubResource("Skin_2ee2v")
 
@@ -767,6 +784,7 @@ script = ExtResource("1_c7em6")
 main_bone = NodePath("Physical Bone Body")
 main_body = NodePath("../Cube")
 agent = NodePath("../..")
+pain_pos = 0.4
 
 [node name="Physical Bone Body" type="PhysicalBone3D" parent="Skeleton3D/PhysicalBoneSimulator3D" groups=["Movable"]]
 bone_name = "Body"
@@ -792,8 +810,8 @@ joint_constraints/x/linear_equilibrium_point = 0.0
 joint_constraints/x/linear_restitution = 0.5
 joint_constraints/x/linear_damping = 1.0
 joint_constraints/x/angular_limit_enabled = true
-joint_constraints/x/angular_limit_upper = 45.0
-joint_constraints/x/angular_limit_lower = -45.0
+joint_constraints/x/angular_limit_upper = 0.0
+joint_constraints/x/angular_limit_lower = -90.0
 joint_constraints/x/angular_limit_softness = 0.5
 joint_constraints/x/angular_restitution = 0.0
 joint_constraints/x/angular_damping = 1.0
@@ -814,7 +832,7 @@ joint_constraints/y/linear_restitution = 0.5
 joint_constraints/y/linear_damping = 1.0
 joint_constraints/y/angular_limit_enabled = true
 joint_constraints/y/angular_limit_upper = 45.0
-joint_constraints/y/angular_limit_lower = -45.0
+joint_constraints/y/angular_limit_lower = -53.999996
 joint_constraints/y/angular_limit_softness = 0.5
 joint_constraints/y/angular_restitution = 0.0
 joint_constraints/y/angular_damping = 1.0
@@ -940,8 +958,8 @@ joint_constraints/x/linear_equilibrium_point = 0.0
 joint_constraints/x/linear_restitution = 0.5
 joint_constraints/x/linear_damping = 1.0
 joint_constraints/x/angular_limit_enabled = true
-joint_constraints/x/angular_limit_upper = 45.0
-joint_constraints/x/angular_limit_lower = -45.0
+joint_constraints/x/angular_limit_upper = 0.0
+joint_constraints/x/angular_limit_lower = -90.0
 joint_constraints/x/angular_limit_softness = 0.5
 joint_constraints/x/angular_restitution = 0.0
 joint_constraints/x/angular_damping = 1.0
@@ -961,8 +979,8 @@ joint_constraints/y/linear_equilibrium_point = 0.0
 joint_constraints/y/linear_restitution = 0.5
 joint_constraints/y/linear_damping = 1.0
 joint_constraints/y/angular_limit_enabled = true
-joint_constraints/y/angular_limit_upper = 0.0
-joint_constraints/y/angular_limit_lower = 0.0
+joint_constraints/y/angular_limit_upper = 45.0
+joint_constraints/y/angular_limit_lower = -53.999996
 joint_constraints/y/angular_limit_softness = 0.5
 joint_constraints/y/angular_restitution = 0.0
 joint_constraints/y/angular_damping = 1.0
@@ -1088,8 +1106,8 @@ joint_constraints/x/linear_equilibrium_point = 0.0
 joint_constraints/x/linear_restitution = 0.5
 joint_constraints/x/linear_damping = 1.0
 joint_constraints/x/angular_limit_enabled = true
-joint_constraints/x/angular_limit_upper = 45.0
-joint_constraints/x/angular_limit_lower = -45.0
+joint_constraints/x/angular_limit_upper = 0.0
+joint_constraints/x/angular_limit_lower = -90.0
 joint_constraints/x/angular_limit_softness = 0.5
 joint_constraints/x/angular_restitution = 0.0
 joint_constraints/x/angular_damping = 1.0
@@ -1109,8 +1127,8 @@ joint_constraints/y/linear_equilibrium_point = 0.0
 joint_constraints/y/linear_restitution = 0.5
 joint_constraints/y/linear_damping = 1.0
 joint_constraints/y/angular_limit_enabled = true
-joint_constraints/y/angular_limit_upper = 0.0
-joint_constraints/y/angular_limit_lower = 0.0
+joint_constraints/y/angular_limit_upper = 45.0
+joint_constraints/y/angular_limit_lower = -53.999996
 joint_constraints/y/angular_limit_softness = 0.5
 joint_constraints/y/angular_restitution = 0.0
 joint_constraints/y/angular_damping = 1.0
@@ -1236,8 +1254,8 @@ joint_constraints/x/linear_equilibrium_point = 0.0
 joint_constraints/x/linear_restitution = 0.5
 joint_constraints/x/linear_damping = 1.0
 joint_constraints/x/angular_limit_enabled = true
-joint_constraints/x/angular_limit_upper = 45.0
-joint_constraints/x/angular_limit_lower = -45.0
+joint_constraints/x/angular_limit_upper = 0.0
+joint_constraints/x/angular_limit_lower = -90.0
 joint_constraints/x/angular_limit_softness = 0.5
 joint_constraints/x/angular_restitution = 0.0
 joint_constraints/x/angular_damping = 1.0
@@ -1257,8 +1275,8 @@ joint_constraints/y/linear_equilibrium_point = 0.0
 joint_constraints/y/linear_restitution = 0.5
 joint_constraints/y/linear_damping = 1.0
 joint_constraints/y/angular_limit_enabled = true
-joint_constraints/y/angular_limit_upper = 0.0
-joint_constraints/y/angular_limit_lower = 0.0
+joint_constraints/y/angular_limit_upper = 45.0
+joint_constraints/y/angular_limit_lower = -53.999996
 joint_constraints/y/angular_limit_softness = 0.5
 joint_constraints/y/angular_restitution = 0.0
 joint_constraints/y/angular_damping = 1.0
@@ -1384,8 +1402,8 @@ joint_constraints/x/linear_equilibrium_point = 0.0
 joint_constraints/x/linear_restitution = 0.5
 joint_constraints/x/linear_damping = 1.0
 joint_constraints/x/angular_limit_enabled = true
-joint_constraints/x/angular_limit_upper = 45.0
-joint_constraints/x/angular_limit_lower = -45.0
+joint_constraints/x/angular_limit_upper = 0.0
+joint_constraints/x/angular_limit_lower = -90.0
 joint_constraints/x/angular_limit_softness = 0.5
 joint_constraints/x/angular_restitution = 0.0
 joint_constraints/x/angular_damping = 1.0
@@ -1405,8 +1423,8 @@ joint_constraints/y/linear_equilibrium_point = 0.0
 joint_constraints/y/linear_restitution = 0.5
 joint_constraints/y/linear_damping = 1.0
 joint_constraints/y/angular_limit_enabled = true
-joint_constraints/y/angular_limit_upper = 0.0
-joint_constraints/y/angular_limit_lower = 0.0
+joint_constraints/y/angular_limit_upper = 45.0
+joint_constraints/y/angular_limit_lower = -53.999996
 joint_constraints/y/angular_limit_softness = 0.5
 joint_constraints/y/angular_restitution = 0.0
 joint_constraints/y/angular_damping = 1.0
@@ -1532,8 +1550,8 @@ joint_constraints/x/linear_equilibrium_point = 0.0
 joint_constraints/x/linear_restitution = 0.5
 joint_constraints/x/linear_damping = 1.0
 joint_constraints/x/angular_limit_enabled = true
-joint_constraints/x/angular_limit_upper = 45.0
-joint_constraints/x/angular_limit_lower = -45.0
+joint_constraints/x/angular_limit_upper = 0.0
+joint_constraints/x/angular_limit_lower = -90.0
 joint_constraints/x/angular_limit_softness = 0.5
 joint_constraints/x/angular_restitution = 0.0
 joint_constraints/x/angular_damping = 1.0
@@ -1553,8 +1571,8 @@ joint_constraints/y/linear_equilibrium_point = 0.0
 joint_constraints/y/linear_restitution = 0.5
 joint_constraints/y/linear_damping = 1.0
 joint_constraints/y/angular_limit_enabled = true
-joint_constraints/y/angular_limit_upper = 0.0
-joint_constraints/y/angular_limit_lower = 0.0
+joint_constraints/y/angular_limit_upper = 45.0
+joint_constraints/y/angular_limit_lower = -53.999996
 joint_constraints/y/angular_limit_softness = 0.5
 joint_constraints/y/angular_restitution = 0.0
 joint_constraints/y/angular_damping = 1.0
@@ -1680,8 +1698,8 @@ joint_constraints/x/linear_equilibrium_point = 0.0
 joint_constraints/x/linear_restitution = 0.5
 joint_constraints/x/linear_damping = 1.0
 joint_constraints/x/angular_limit_enabled = true
-joint_constraints/x/angular_limit_upper = 45.0
-joint_constraints/x/angular_limit_lower = -45.0
+joint_constraints/x/angular_limit_upper = 0.0
+joint_constraints/x/angular_limit_lower = -90.0
 joint_constraints/x/angular_limit_softness = 0.5
 joint_constraints/x/angular_restitution = 0.0
 joint_constraints/x/angular_damping = 1.0
@@ -1701,8 +1719,8 @@ joint_constraints/y/linear_equilibrium_point = 0.0
 joint_constraints/y/linear_restitution = 0.5
 joint_constraints/y/linear_damping = 1.0
 joint_constraints/y/angular_limit_enabled = true
-joint_constraints/y/angular_limit_upper = 0.0
-joint_constraints/y/angular_limit_lower = 0.0
+joint_constraints/y/angular_limit_upper = 45.0
+joint_constraints/y/angular_limit_lower = -53.999996
 joint_constraints/y/angular_limit_softness = 0.5
 joint_constraints/y/angular_restitution = 0.0
 joint_constraints/y/angular_damping = 1.0
@@ -1828,8 +1846,8 @@ joint_constraints/x/linear_equilibrium_point = 0.0
 joint_constraints/x/linear_restitution = 0.5
 joint_constraints/x/linear_damping = 1.0
 joint_constraints/x/angular_limit_enabled = true
-joint_constraints/x/angular_limit_upper = 45.0
-joint_constraints/x/angular_limit_lower = -45.0
+joint_constraints/x/angular_limit_upper = 0.0
+joint_constraints/x/angular_limit_lower = -90.0
 joint_constraints/x/angular_limit_softness = 0.5
 joint_constraints/x/angular_restitution = 0.0
 joint_constraints/x/angular_damping = 1.0
@@ -1849,8 +1867,8 @@ joint_constraints/y/linear_equilibrium_point = 0.0
 joint_constraints/y/linear_restitution = 0.5
 joint_constraints/y/linear_damping = 1.0
 joint_constraints/y/angular_limit_enabled = true
-joint_constraints/y/angular_limit_upper = 0.0
-joint_constraints/y/angular_limit_lower = 0.0
+joint_constraints/y/angular_limit_upper = 45.0
+joint_constraints/y/angular_limit_lower = -53.999996
 joint_constraints/y/angular_limit_softness = 0.5
 joint_constraints/y/angular_restitution = 0.0
 joint_constraints/y/angular_damping = 1.0

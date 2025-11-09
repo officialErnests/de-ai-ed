@@ -35,6 +35,7 @@ func _process(delta: float) -> void:
 		for spider in spiders_arr:
 			spider.queue_free()
 		spiders_arr.clear()
+		print(point_arr)
 		node_visualiser.drawAi(randomm_picker.getMax())
 		modifySummon(randomm_picker)
 
@@ -43,6 +44,7 @@ func modifySummon(p_randomm_picker: WeightedRandom):
 		for x in range(spiders_per_batch):
 			if keep_best and x == 0:
 				spawnSpider(x + 2, y, p_randomm_picker.getMax(), false)
+				spiders_arr[0].setMain()
 				continue
 			spawnSpider(x + 2, y, p_randomm_picker.getRandom(), true)
 
@@ -72,23 +74,24 @@ class WeightedRandom:
 	var probablity_max = 0
 	var max_probablity = 0
 	var max_index
+	var arr_min
 	func _init(p_probablity_arr, p_index_arr) -> void:
 		arr_probablity = p_probablity_arr
 		arr_index = p_index_arr
-		var temp_min = arr_probablity.min()
+		arr_min = arr_probablity.min()
 		for iter in range(arr_probablity.size()):
-			var probablity = arr_probablity[iter] + temp_min
+			var probablity = arr_probablity[iter] - arr_min
 			if max_probablity < probablity:
 				max_probablity = probablity
 				max_index = p_index_arr[iter]
-			probablity_max += probablity + 1
+			probablity_max += probablity - arr_min
 	func getMax():
 		return max_index
 	func getRandom():
 		var probablity = randf_range(0, probablity_max)
 		var random_index = -1
 		for iter in range(arr_probablity.size()):
-			probablity -= arr_probablity[iter] + arr_probablity.size() - iter
+			probablity -= arr_probablity[iter] - arr_min
 			if probablity <= 0:
 				random_index = iter
 				break
