@@ -19,7 +19,7 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	spider.addVel(delta)
 	if main_bone.global_position.y < pain_pos:
-		agent.points -= (main_bone.global_position.y - pain_pos) * delta * 2
+		agent.points += (main_bone.global_position.y - pain_pos) * delta * 2
 		main_body.material_override.albedo_color = Color(1, 0, 0, 1)
 	else:
 		main_body.material_override.albedo_color = Color(1, 1, 1, 1)
