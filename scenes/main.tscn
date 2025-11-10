@@ -391,8 +391,7 @@ load_button_storage = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/
 training_time = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Simulation/Panel/VBoxContainer/Timer/SpinBox")
 timer = NodePath("../Lerning")
 spiders_per_batch = 10
-mutation_chance = 10
-mutation_range = 10.0
+mutation_range = 0.5
 node_visualiser = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/AiNodes")
 generation_count = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/GenCount/Label")
 

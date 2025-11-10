@@ -83,7 +83,31 @@ func refreshFiles():
 
 func loadFile(p_path):
 	print(p_path)
-	# var loaded_ai = 
+	var file_loaded_ai = FileAccess.open(SAVE_PATH + p_path, FileAccess.READ)
+	if not file_loaded_ai:
+		save_text.text = "ERROR - failed to find"
+		return
+	var json_loaded_ai = JSON.parse_string(file_loaded_ai.get_line())
+
+	if not json_loaded_ai:
+		save_text.text = "ERROR - failed to load"
+		return
+	if not json_loaded_ai[0]:
+		save_text.text = "ERROR - no data"
+		return
+	if not json_loaded_ai[1]:
+		save_text.text = "ERROR - no spider ai"
+		return
+
+	save_text.text = p_path.substr(0, p_path.length() - 3)
+	stats_arr = json_loaded_ai[0]
+	intss = json_loaded_ai[0]["generation"]
+	timer.paused = false
+	for spider in spiders_arr: spider.queue_free()
+	spiders_arr.clear()
+	best_spider = json_loaded_ai[1]
+	loadSpiders(json_loaded_ai[1])
+	trainLoop()
 
 func pauseTimer():
 	if timer.paused:
@@ -157,6 +181,12 @@ func summonSpiders():
 	for y in range(spiders_batches):
 		for x in range(spiders_per_batch):
 			spawnSpider(x + 2, y, null, false)
+
+func loadSpiders(p_brain):
+	for y in range(spiders_batches):
+		for x in range(spiders_per_batch):
+			print("LOAD")
+			spawnSpider(x + 2, y, p_brain, false)
 
 func spawnSpider(col_layer, y_indx, p_loaded_brain, p_flavoring):
 	var temp_spider = preload_spider.instantiate()
