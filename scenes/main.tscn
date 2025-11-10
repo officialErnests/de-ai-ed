@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://btjrdo0mrklry"]
+[gd_scene load_steps=23 format=3 uid="uid://btjrdo0mrklry"]
 
 [ext_resource type="Texture2D" uid="uid://chnecxepau4i1" path="res://assets/Ground.jpg" id="1_sugp2"]
 [ext_resource type="Script" uid="uid://ccb5pwd1qkktp" path="res://scripts/camera_movement.gd" id="2_0wfyh"]
@@ -10,6 +10,7 @@
 [ext_resource type="Script" uid="uid://bu5yxtfh5srqp" path="res://scripts/spidersss.gd" id="7_tipki"]
 [ext_resource type="Script" uid="uid://dyqngqnchhak1" path="res://scripts/close_open_panel.gd" id="8_85g3d"]
 [ext_resource type="Script" uid="uid://dja83xsbpu3ad" path="res://scripts/timer_to_label.gd" id="8_choun"]
+[ext_resource type="Script" uid="uid://cstg6n1g4ctwb" path="res://scripts/save_texts.gd" id="9_ya4ey"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_o5qli"]
 sky_top_color = Color(0.26750416, 0.6006932, 0.68498224, 1)
@@ -133,15 +134,6 @@ script = ExtResource("8_choun")
 timer = NodePath("../../../../../../Lerning")
 metadata/_custom_type_script = "uid://dja83xsbpu3ad"
 
-[node name="FileDialog" type="FileDialog" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/GenCount"]
-oversampling_override = 1.0
-title = "Open a File"
-visible = true
-file_mode = 0
-display_mode = 1
-access = 1
-filters = PackedStringArray("*.ai")
-
 [node name="Gui" type="CanvasLayer" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam"]
 
 [node name="Main" type="HBoxContainer" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui"]
@@ -181,17 +173,35 @@ text = "Pause"
 layout_mode = 2
 text = "End batch"
 
-[node name="Save" type="Button" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Main/Panel/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Main/Panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="Save" type="Button" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Main/Panel/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 text = "Save"
+
+[node name="TextEdit" type="TextEdit" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Main/Panel/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(232, 0)
+layout_mode = 2
+emoji_menu_enabled = false
+script = ExtResource("9_ya4ey")
 
 [node name="Open" type="Button" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Main/Panel/VBoxContainer"]
 layout_mode = 2
 text = "Open saves"
 
-[node name="Load" type="Button" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Main/Panel/VBoxContainer"]
+[node name="Refresh saves" type="Button" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Main/Panel/VBoxContainer"]
 layout_mode = 2
-text = "Load"
+text = "Refresh saves"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Main/Panel/VBoxContainer"]
+custom_minimum_size = Vector2(0, 103)
+layout_mode = 2
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Main/Panel/VBoxContainer/ScrollContainer"]
+layout_mode = 2
 
 [node name="Control" type="Control" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Main"]
 z_index = -1
@@ -368,19 +378,20 @@ slider_open_text = "<"
 slider_close_text = "> Spider"
 is_open = false
 
-[node name="Spidersss" type="Node3D" parent="." node_paths=PackedStringArray("start", "pause_button", "force_stop_button", "save_button", "open_button", "load_button", "training_time", "timer", "node_visualiser", "generation_count")]
+[node name="Spidersss" type="Node3D" parent="." node_paths=PackedStringArray("start", "pause_button", "force_stop_button", "save_button", "save_text", "open_button", "refresh_button", "load_button_storage", "training_time", "timer", "node_visualiser", "generation_count")]
 script = ExtResource("7_tipki")
 start = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Main/Panel/VBoxContainer/Start")
 pause_button = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Main/Panel/VBoxContainer/Pause")
 force_stop_button = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Main/Panel/VBoxContainer/End")
-save_button = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Main/Panel/VBoxContainer/Save")
+save_button = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Main/Panel/VBoxContainer/HBoxContainer/Save")
+save_text = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Main/Panel/VBoxContainer/HBoxContainer/TextEdit")
 open_button = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Main/Panel/VBoxContainer/Open")
-load_button = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Main/Panel/VBoxContainer/Load")
+refresh_button = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Main/Panel/VBoxContainer/Refresh saves")
+load_button_storage = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Main/Panel/VBoxContainer/ScrollContainer/VBoxContainer")
 training_time = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Simulation/Panel/VBoxContainer/Timer/SpinBox")
 timer = NodePath("../Lerning")
 spiders_per_batch = 10
-mutation_chance = 10
-mutation_range = 10.0
+mutation_range = 0.5
 node_visualiser = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/AiNodes")
 generation_count = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/GenCount/Label")
 

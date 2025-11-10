@@ -1,6 +1,7 @@
 extends Node3D
 
-var spider_preload = preload("res://scenes/spider.tscn")
+var preload_spider = preload("res://scenes/spider.tscn")
+var preload_load_button = preload("res://scenes/load_button.tscn")
 
 const SAVE_PATH = "user://saves/"
 
@@ -9,9 +10,10 @@ const SAVE_PATH = "user://saves/"
 @export var pause_button: Button
 @export var force_stop_button: Button
 @export var save_button: Button
+@export var save_text: TextEdit
 @export var open_button: Button
-@export var load_button: Button
-@export var load_file_diologue: FileDialog
+@export var refresh_button: Button
+@export var load_button_storage: Control
 @export_category("Simulation")
 @export var training_time: SpinBox
 @export_category("Others")
@@ -32,7 +34,10 @@ var stats_arr = {
 	"generation_statistics" = []
 }
 var best_spider = []
+var load_button_arr: Array[Control] = []
+
 func _ready() -> void:
+	refreshFiles()
 	generation_count.text = "Awaiting start"
 	timer.timeout.connect(trainLoop)
 
@@ -41,33 +46,68 @@ func _ready() -> void:
 	force_stop_button.pressed.connect(forceEnd)
 	save_button.pressed.connect(saveAi)
 	open_button.pressed.connect(openExplorer)
-	load_button.pressed.connect(openExplorer)
+	refresh_button.pressed.connect(refreshFiles)
 
 func saveAi():
 	var dirAccess = DirAccess.open("user://")
-	dirAccess.make_dir(SAVE_PATH)
-	var now_time = Time.get_datetime_dict_from_system()
-	var file_name = SAVE_PATH + "TERRYS_" + str(now_time["month"]) + str(now_time["day"]) + str(now_time["hour"]) + str(now_time["minute"]) + str(now_time["second"]) + ".ai"
-
-	print(file_name)
-	var fileSave = FileAccess.open(file_name, FileAccess.WRITE)
-	print(fileSave)
+	var file_name = save_text.text
+	var file_path = SAVE_PATH + file_name + ".ai"
+	if FileAccess.file_exists(file_path):
+		save_text.genText()
+		return
+	var fileSave = FileAccess.open(file_path, FileAccess.WRITE)
+	if not fileSave:
+		save_text.text = "ERROR - bad name"
+		return
 	fileSave.store_string(JSON.stringify([stats_arr, best_spider]))
+	refreshFiles()
 
 func openExplorer():
 	OS.execute("explorer.exe", [str(ProjectSettings.globalize_path(SAVE_PATH)).replace("/", "\\")])
-	
-func loadAi():
-	load_file_diologue["visible"] = true
-	load_file_diologue.close_requested.connect(
-		func():
-			load_file_diologue.visible = false
-			load_file_diologue.file_selected.disconnect(loadFile)
-	)
-	load_file_diologue.file_selected.connect(loadFile)
+
+func refreshFiles():
+	for iter_load_button in load_button_arr:
+		iter_load_button.queue_free()
+	load_button_arr.clear()
+
+	var directory = DirAccess.open(SAVE_PATH)
+	var regex = RegEx.new()
+	regex.compile("(.ai$)")
+	for file_str in directory.get_files():
+		if regex.search(file_str):
+			var load_button = preload_load_button.instantiate()
+			load_button.get_node("Button").pressed.connect(loadFile.bind(file_str))
+			load_button.get_node("Label").text = file_str
+			load_button_storage.add_child(load_button)
+			load_button_arr.append(load_button)
 
 func loadFile(p_path):
 	print(p_path)
+	var file_loaded_ai = FileAccess.open(SAVE_PATH + p_path, FileAccess.READ)
+	if not file_loaded_ai:
+		save_text.text = "ERROR - failed to find"
+		return
+	var json_loaded_ai = JSON.parse_string(file_loaded_ai.get_line())
+
+	if not json_loaded_ai:
+		save_text.text = "ERROR - failed to load"
+		return
+	if not json_loaded_ai[0]:
+		save_text.text = "ERROR - no data"
+		return
+	if not json_loaded_ai[1]:
+		save_text.text = "ERROR - no spider ai"
+		return
+
+	save_text.text = p_path.substr(0, p_path.length() - 3)
+	stats_arr = json_loaded_ai[0]
+	intss = json_loaded_ai[0]["generation"]
+	timer.paused = false
+	for spider in spiders_arr: spider.queue_free()
+	spiders_arr.clear()
+	best_spider = json_loaded_ai[1]
+	loadSpiders(json_loaded_ai[1])
+	trainLoop()
 
 func pauseTimer():
 	if timer.paused:
@@ -142,8 +182,14 @@ func summonSpiders():
 		for x in range(spiders_per_batch):
 			spawnSpider(x + 2, y, null, false)
 
+func loadSpiders(p_brain):
+	for y in range(spiders_batches):
+		for x in range(spiders_per_batch):
+			print("LOAD")
+			spawnSpider(x + 2, y, p_brain, false)
+
 func spawnSpider(col_layer, y_indx, p_loaded_brain, p_flavoring):
-	var temp_spider = spider_preload.instantiate()
+	var temp_spider = preload_spider.instantiate()
 	temp_spider.position = position + Vector3(20 * y_indx, 0, 0)
 	var temp_node = temp_spider.get_node("Skeleton3D/PhysicalBoneSimulator3D")
 	temp_node.setCollLayers(col_layer)
