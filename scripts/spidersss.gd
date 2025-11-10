@@ -14,6 +14,7 @@ const SAVE_PATH = "user://saves/"
 @export var open_button: Button
 @export var refresh_button: Button
 @export var load_button_storage: Control
+@export var save_generation: int = 50
 @export_category("Simulation")
 @export var training_time: SpinBox
 @export_category("Others")
@@ -31,7 +32,8 @@ var intss = 0
 var spiders_arr = []
 var stats_arr = {
 	"generation" = 1,
-	"generation_statistics" = []
+	"generation_statistics" = [],
+	"spider_saves" = [],
 }
 var best_spider = []
 var load_button_arr: Array[Control] = []
@@ -126,7 +128,8 @@ func restart():
 func startTraining():
 	stats_arr = {
 		"generation" = 1,
-		"generation_statistics" = []
+		"generation_statistics" = [],
+		"spider_saves" = [],
 	}
 	timer.paused = false
 	for spider in spiders_arr: spider.queue_free()
@@ -144,7 +147,6 @@ func trainLoop():
 
 	timer.start(training_time.value)
 	intss += 1
-	stats_arr["generation"] = intss
 	generation_count.text = "Gen: " + str(intss)
 
 	var point_arr = []
@@ -157,6 +159,14 @@ func trainLoop():
 	for spider in spiders_arr: spider.queue_free()
 	spiders_arr.clear()
 	node_visualiser.drawAi(randomm_picker.getMax())
+	stats_arr["generation"] = intss
+	if intss % save_generation == 0:
+		stats_arr["spider_saves"].append(
+			{
+				"gen" = intss,
+				"brain" = randomm_picker.getMax()
+			}
+		)
 	modifySummon(randomm_picker)
 
 func modifySummon(p_randomm_picker: WeightedRandom):
@@ -166,6 +176,9 @@ func modifySummon(p_randomm_picker: WeightedRandom):
 			"avg" = p_randomm_picker.arr_max,
 			"max" = p_randomm_picker.arr_avg,
 			"mod" = p_randomm_picker.arr_mod,
+			"sec" = training_time.value,
+			"bat" = spiders_batches,
+			"spd" = spiders_per_batch,
 		}
 	)
 	for y in range(spiders_batches):

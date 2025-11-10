@@ -388,6 +388,7 @@ save_text = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Main/P
 open_button = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Main/Panel/VBoxContainer/Open")
 refresh_button = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Main/Panel/VBoxContainer/Refresh saves")
 load_button_storage = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Main/Panel/VBoxContainer/ScrollContainer/VBoxContainer")
+save_generation = 25
 training_time = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Simulation/Panel/VBoxContainer/Timer/SpinBox")
 timer = NodePath("../Lerning")
 mutation_range = 0.5
