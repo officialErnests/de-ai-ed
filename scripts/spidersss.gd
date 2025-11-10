@@ -9,6 +9,7 @@ const SAVE_PATH = "user://saves/"
 @export var pause_button: Button
 @export var force_stop_button: Button
 @export var save_button: Button
+@export var save_text: TextEdit
 @export var open_button: Button
 @export var load_button: Button
 @export var load_file_diologue: FileDialog
@@ -41,17 +42,19 @@ func _ready() -> void:
 	force_stop_button.pressed.connect(forceEnd)
 	save_button.pressed.connect(saveAi)
 	open_button.pressed.connect(openExplorer)
-	load_button.pressed.connect(openExplorer)
+	# load_button.pressed.connect(loadAi)
 
 func saveAi():
 	var dirAccess = DirAccess.open("user://")
-	dirAccess.make_dir(SAVE_PATH)
-	var now_time = Time.get_datetime_dict_from_system()
-	var file_name = SAVE_PATH + "TERRYS_" + str(now_time["month"]) + str(now_time["day"]) + str(now_time["hour"]) + str(now_time["minute"]) + str(now_time["second"]) + ".ai"
-
-	print(file_name)
-	var fileSave = FileAccess.open(file_name, FileAccess.WRITE)
-	print(fileSave)
+	var file_name = save_text.text
+	var file_path = SAVE_PATH + file_name + ".ai"
+	if FileAccess.file_exists(file_path):
+		save_text.genText()
+		return
+	var fileSave = FileAccess.open(file_path, FileAccess.WRITE)
+	if not fileSave:
+		save_text.text = "ERROR - bad name"
+		return
 	fileSave.store_string(JSON.stringify([stats_arr, best_spider]))
 
 func openExplorer():
