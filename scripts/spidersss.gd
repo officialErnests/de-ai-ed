@@ -112,7 +112,6 @@ func refreshFiles():
 			load_button_arr.append(load_button)
 
 func loadFile(p_path):
-	print(p_path)
 	var file_loaded_ai = FileAccess.open(SAVE_PATH + p_path, FileAccess.READ)
 	if not file_loaded_ai:
 		save_text.text = "ERROR - failed to find"
@@ -226,9 +225,7 @@ func modifySummon(p_randomm_picker: WeightedRandom) -> void:
 			if keep_best.button_pressed and x == 0:
 				spawnSpider(x + 2, y, p_randomm_picker.getMax(), false)
 				continue
-			print(x, y)
 			spawnSpider(x + 2, y, p_randomm_picker.getRandom(), true)
-	print(p_randomm_picker.picked_randoms)
 
 func summonSpiders() -> void:
 	for y in range(spiders_batches.value):
@@ -242,7 +239,7 @@ func loadSpiders(p_brain):
 
 func spawnSpider(col_layer, y_indx, p_loaded_brain, p_flavoring):
 	var temp_spider = preload_spider.instantiate()
-	temp_spider.position = position + Vector3(20 * y_indx, 0, 0)
+	temp_spider.position = position + Vector3(0, 0, 10 * y_indx)
 	var temp_node = temp_spider.get_node("Skeleton3D/PhysicalBoneSimulator3D")
 	temp_node.setCollLayers(col_layer)
 	if p_loaded_brain:

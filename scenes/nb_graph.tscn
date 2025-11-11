@@ -1,0 +1,80 @@
+[gd_scene load_steps=12 format=3 uid="uid://diq5camko5oth"]
+
+[ext_resource type="Script" uid="uid://civtn64gfy7f2" path="res://scripts/nb_graph_3D.gd" id="1_xslft"]
+[ext_resource type="Script" uid="uid://d1bsjo0vmeucg" path="res://scripts/3d_graph_draw.gd" id="2_2i1i1"]
+[ext_resource type="PackedScene" uid="uid://u0fdh7nhsura" path="res://scenes/nb_label_3d.tscn" id="3_2i1i1"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2i1i1"]
+albedo_color = Color(0, 0, 1, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_p3rfi"]
+size = Vector3(0.1, 0.1, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tpkau"]
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_dhf4w"]
+size = Vector3(0.1, 0.1, 0.1)
+
+[sub_resource type="PrismMesh" id="PrismMesh_eolry"]
+size = Vector3(0.2, 0.2, 0.2)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7gfm3"]
+albedo_color = Color(0, 1, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_2i1i1"]
+size = Vector3(0.1, 0.1, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wyqm6"]
+albedo_color = Color(0, 1, 0, 1)
+
+[node name="Graph" type="Node3D"]
+script = ExtResource("1_xslft")
+value_dict = Dictionary[String, float]({
+"gen 1": 0.5,
+"gen 2": 1.0,
+"gen 3": 2.0,
+"gen 4": 0.75
+})
+
+[node name="3DGraphDraw" type="Node" parent="." node_paths=PackedStringArray("x_axis_line", "x_axis_head", "x_axis_markins", "y_axis_line", "y_axis_head", "y_axis_markins", "value_parent")]
+script = ExtResource("2_2i1i1")
+x_axis_line = NodePath("../Axis/X")
+x_axis_head = NodePath("../Axis/X/X head")
+x_axis_markins = NodePath("../Axis/X_markings")
+y_axis_line = NodePath("../Axis/Y")
+y_axis_head = NodePath("../Axis/Y/Y head")
+y_axis_markins = NodePath("../Axis/Y_markings")
+text_packed_scene = ExtResource("3_2i1i1")
+value_parent = NodePath("../Axis/Graph_Values")
+
+[node name="Axis" type="Node3D" parent="."]
+
+[node name="ZeroPoint" type="MeshInstance3D" parent="Axis"]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, 0)
+material_override = SubResource("StandardMaterial3D_2i1i1")
+mesh = SubResource("BoxMesh_p3rfi")
+
+[node name="X" type="MeshInstance3D" parent="Axis"]
+material_override = SubResource("StandardMaterial3D_tpkau")
+mesh = SubResource("BoxMesh_dhf4w")
+
+[node name="X head" type="MeshInstance3D" parent="Axis/X"]
+transform = Transform3D(-4.371138e-08, 1, -4.3711385e-08, -1, -4.3711392e-08, 4.371138e-08, 4.3711374e-08, 4.371139e-08, 1, 0.2, -8.742277e-09, -1.4901161e-08)
+material_override = SubResource("StandardMaterial3D_tpkau")
+mesh = SubResource("PrismMesh_eolry")
+
+[node name="Y" type="MeshInstance3D" parent="Axis"]
+material_override = SubResource("StandardMaterial3D_7gfm3")
+mesh = SubResource("BoxMesh_2i1i1")
+
+[node name="Y head" type="MeshInstance3D" parent="Axis/Y"]
+transform = Transform3D(1, 4.371139e-08, -4.371139e-08, -4.3711395e-08, 1, 3.5527137e-15, 4.3711385e-08, 3.5527135e-15, 1, 8.742278e-09, 0.2, -8.742278e-09)
+material_override = SubResource("StandardMaterial3D_wyqm6")
+mesh = SubResource("PrismMesh_eolry")
+
+[node name="Graph_Values" type="Node3D" parent="Axis"]
+
+[node name="X_markings" type="Node3D" parent="Axis"]
+
+[node name="Y_markings" type="Node3D" parent="Axis"]
