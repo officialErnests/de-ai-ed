@@ -12,6 +12,7 @@ const SAVE_PATH = "user://saves/"
 @export var save_button: Button
 @export var save_text: TextEdit
 @export var open_button: Button
+@export var open_dialogue: FileDialog
 @export var refresh_button: Button
 @export var load_button_storage: Control
 @export var save_generation: int = 50
@@ -65,7 +66,8 @@ func saveAi():
 	refreshFiles()
 
 func openExplorer():
-	OS.execute("explorer.exe", [str(ProjectSettings.globalize_path(SAVE_PATH)).replace("/", "\\")])
+	open_dialogue.visible = true
+	# OS.execute("explorer.exe", [str(ProjectSettings.globalize_path(SAVE_PATH)).replace("/", "\\")])
 
 func refreshFiles():
 	for iter_load_button in load_button_arr:
@@ -104,12 +106,10 @@ func loadFile(p_path):
 	save_text.text = p_path.substr(0, p_path.length() - 3)
 	stats_arr = json_loaded_ai[0]
 	intss = json_loaded_ai[0]["generation"]
-	timer.paused = false
-	for spider in spiders_arr: spider.queue_free()
-	spiders_arr.clear()
+	clear_spiders()
 	best_spider = json_loaded_ai[1]
 	loadSpiders(json_loaded_ai[1])
-	trainLoop()
+	startRound()
 
 func pauseTimer():
 	if timer.paused:
@@ -132,42 +132,53 @@ func startTraining():
 		"spider_saves" = [],
 	}
 	timer.paused = false
-	for spider in spiders_arr: spider.queue_free()
-	spiders_arr.clear()
+	clear_spiders()
 	intss = 0
 	trainLoop()
 
+func clear_spiders():
+	for spider in spiders_arr: spider.queue_free()
+	spiders_arr.clear()
+
 func forceEnd():
-	timer.stop()
+	timer.paused = true
 	trainLoop()
 
+func startRound():
+	timer.paused = false
+	timer.start(training_time.value)
+	generation_count.text = "Gen: " + str(intss)
+
 func trainLoop():
+	intss += 1
+	startRound()
+
 	if spiders_arr.is_empty():
 		summonSpiders()
 
-	timer.start(training_time.value)
-	intss += 1
-	generation_count.text = "Gen: " + str(intss)
+	else:
+		var point_arr = []
+		var creature_arr = []
+		for spider in spiders_arr:
+			point_arr.append(spider.getPoints())
+			creature_arr.append(spider.getBrain())
+		var randomm_picker = WeightedRandom.new(point_arr, creature_arr)
 
-	var point_arr = []
-	var creature_arr = []
-	for spider in spiders_arr:
-		point_arr.append(spider.getPoints())
-		creature_arr.append(spider.getBrain())
-	var randomm_picker = WeightedRandom.new(point_arr, creature_arr)
+		clear_spiders()
+		node_visualiser.drawAi(randomm_picker.getMax())
 
-	for spider in spiders_arr: spider.queue_free()
-	spiders_arr.clear()
-	node_visualiser.drawAi(randomm_picker.getMax())
-	stats_arr["generation"] = intss
-	if intss % save_generation == 0:
-		stats_arr["spider_saves"].append(
-			{
-				"gen" = intss,
-				"brain" = randomm_picker.getMax()
-			}
-		)
-	modifySummon(randomm_picker)
+		#saving
+		best_spider = randomm_picker.getMax()
+		stats_arr["generation"] = intss
+		if fmod(intss, save_generation) == 0:
+			stats_arr["spider_saves"].append(
+				{
+					"gen" = intss,
+					"brain" = randomm_picker.getMax()
+				}
+			)
+
+		modifySummon(randomm_picker)
 
 func modifySummon(p_randomm_picker: WeightedRandom):
 	stats_arr["generation_statistics"].append(
@@ -184,9 +195,7 @@ func modifySummon(p_randomm_picker: WeightedRandom):
 	for y in range(spiders_batches):
 		for x in range(spiders_per_batch):
 			if keep_best and x == 0:
-				best_spider = p_randomm_picker.getMax()
 				spawnSpider(x + 2, y, p_randomm_picker.getMax(), false)
-				spiders_arr[0].setMain()
 				continue
 			spawnSpider(x + 2, y, p_randomm_picker.getRandom(), true)
 
@@ -198,7 +207,6 @@ func summonSpiders():
 func loadSpiders(p_brain):
 	for y in range(spiders_batches):
 		for x in range(spiders_per_batch):
-			print("LOAD")
 			spawnSpider(x + 2, y, p_brain, false)
 
 func spawnSpider(col_layer, y_indx, p_loaded_brain, p_flavoring):
@@ -206,14 +214,18 @@ func spawnSpider(col_layer, y_indx, p_loaded_brain, p_flavoring):
 	temp_spider.position = position + Vector3(20 * y_indx, 0, 0)
 	var temp_node = temp_spider.get_node("Skeleton3D/PhysicalBoneSimulator3D")
 	temp_node.setCollLayers(col_layer)
-	add_child(temp_spider)
-	spiders_arr.append(temp_spider)
 	if p_loaded_brain:
+		print("LOAD")
 		temp_spider.loadBrain(p_loaded_brain)
 		if p_flavoring:
 			temp_spider.flavoring(mutation_chance, mutation_range)
 	else:
+		print("GEN")
 		temp_spider.genBrain()
+	add_child(temp_spider)
+	if spiders_arr.is_empty():
+		temp_spider.setMain()
+	spiders_arr.append(temp_spider)
 
 class WeightedRandom:
 	var arr_probablity
@@ -230,7 +242,7 @@ class WeightedRandom:
 		arr_index = p_index_arr
 		arr_min = arr_probablity.min()
 		arr_max = arr_probablity.max()
-		if (arr_probablity.size() / 2) % 1 == 0:
+		if fmod((arr_probablity.size() / 2), 1) == 0:
 			arr_mod = arr_probablity[arr_probablity.size() / 2.0]
 		else:
 			arr_mod = arr_probablity[floor(arr_probablity.size() / 2.0)] + arr_probablity[ceil(arr_probablity.size() / 2.0)]

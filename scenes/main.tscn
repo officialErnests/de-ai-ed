@@ -134,6 +134,16 @@ script = ExtResource("8_choun")
 timer = NodePath("../../../../../../Lerning")
 metadata/_custom_type_script = "uid://dja83xsbpu3ad"
 
+[node name="SeeFiles" type="FileDialog" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/GenCount"]
+oversampling_override = 1.0
+title = "Open a File or Directory"
+ok_button_text = "back"
+file_mode = 3
+display_mode = 1
+access = 1
+filters = PackedStringArray("*.ai")
+use_native_dialog = true
+
 [node name="Gui" type="CanvasLayer" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam"]
 
 [node name="Main" type="HBoxContainer" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui"]
@@ -378,7 +388,7 @@ slider_open_text = "<"
 slider_close_text = "> Spider"
 is_open = false
 
-[node name="Spidersss" type="Node3D" parent="." node_paths=PackedStringArray("start", "pause_button", "force_stop_button", "save_button", "save_text", "open_button", "refresh_button", "load_button_storage", "training_time", "timer", "node_visualiser", "generation_count")]
+[node name="Spidersss" type="Node3D" parent="." node_paths=PackedStringArray("start", "pause_button", "force_stop_button", "save_button", "save_text", "open_button", "open_dialogue", "refresh_button", "load_button_storage", "training_time", "timer", "node_visualiser", "generation_count")]
 script = ExtResource("7_tipki")
 start = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Main/Panel/VBoxContainer/Start")
 pause_button = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Main/Panel/VBoxContainer/Pause")
@@ -386,6 +396,7 @@ force_stop_button = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gu
 save_button = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Main/Panel/VBoxContainer/HBoxContainer/Save")
 save_text = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Main/Panel/VBoxContainer/HBoxContainer/TextEdit")
 open_button = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Main/Panel/VBoxContainer/Open")
+open_dialogue = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/GenCount/SeeFiles")
 refresh_button = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Main/Panel/VBoxContainer/Refresh saves")
 load_button_storage = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Main/Panel/VBoxContainer/ScrollContainer/VBoxContainer")
 save_generation = 25
