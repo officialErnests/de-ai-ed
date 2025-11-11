@@ -75,7 +75,9 @@ func _ready() -> void:
 	refresh_button.pressed.connect(refreshFiles)
 
 func saveAi():
-	var dirAccess = DirAccess.open("user://")
+	var dirAccess = DirAccess.open(SAVE_PATH)
+	if not dirAccess:
+		DirAccess.make_dir_absolute(SAVE_PATH)
 	var file_name = save_text.text
 	var file_path = SAVE_PATH + file_name + ".ai"
 	if FileAccess.file_exists(file_path):
