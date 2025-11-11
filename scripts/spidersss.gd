@@ -30,6 +30,10 @@ const SAVE_PATH = "user://saves/"
 @export var goal_distance: SpinBox
 @export var goal_reward: SpinBox
 @export var goal_distance_reward: SpinBox
+@export_category("Spider")
+@export var hidden_layers: SpinBox
+@export var neurons_per_layer: SpinBox
+@export var memory_neurons: SpinBox
 @export_category("Others")
 @export var timer: Timer
 #MAX 31 SPIDERS
@@ -40,6 +44,9 @@ var intss = 0
 var spiders_arr = []
 var stats_arr = {
 	"generation" = 1,
+	"hidden_layers" = 2,
+	"neurons_per_layer" = 51,
+	"memory_neurons" = 8,
 	"generation_statistics" = [],
 	"spider_saves" = [],
 }
@@ -47,6 +54,15 @@ var best_spider = []
 var load_button_arr: Array[Control] = []
 
 func _ready() -> void:
+	stats_arr = {
+		"generation" = 1,
+		"hidden_layers" = hidden_layers.value,
+		"neurons_per_layer" = neurons_per_layer.value,
+		"memory_neurons" = memory_neurons.value,
+		"generation_statistics" = [],
+		"spider_saves" = [],
+	}
+
 	refreshFiles()
 	generation_count.text = "Awaiting start"
 	timer.timeout.connect(trainLoop)
@@ -84,6 +100,7 @@ func refreshFiles():
 	var directory = DirAccess.open(SAVE_PATH)
 	var regex = RegEx.new()
 	regex.compile("(.ai$)")
+	if not directory: return
 	for file_str in directory.get_files():
 		if regex.search(file_str):
 			var load_button = preload_load_button.instantiate()
@@ -135,6 +152,9 @@ func restart():
 func startTraining():
 	stats_arr = {
 		"generation" = 1,
+		"hidden_layers" = hidden_layers.value,
+		"neurons_per_layer" = neurons_per_layer.value,
+		"memory_neurons" = memory_neurons.value,
 		"generation_statistics" = [],
 		"spider_saves" = [],
 	}
@@ -237,6 +257,10 @@ func spawnSpider(col_layer, y_indx, p_loaded_brain, p_flavoring):
 	temp_spider.goal_distance = goal_distance.value
 	temp_spider.goal_reward = goal_reward.value
 	temp_spider.goal_distance_reward = goal_distance_reward.value
+
+	temp_spider.LAYER_COUNT = stats_arr["hidden_layers"]
+	temp_spider.NEURONS_IN_LAYER = stats_arr["neurons_per_layer"]
+	temp_spider.MEMOR_NEURON_COUNT = stats_arr["memory_neurons"]
 
 	add_child(temp_spider)
 	if spiders_arr.is_empty():

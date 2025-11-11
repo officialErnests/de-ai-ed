@@ -484,6 +484,13 @@ layout_mode = 2
 text = "Spiders"
 horizontal_alignment = 1
 
+[node name="Label2" type="Label" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Spider/Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.68307734, 0.6830774, 0.68307734, 1)
+theme_override_font_sizes/font_size = 13
+text = "(only applies when starting new ai training)"
+horizontal_alignment = 1
+
 [node name="HBoxContainer" type="HBoxContainer" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Spider/Panel/VBoxContainer"]
 layout_mode = 2
 
@@ -493,7 +500,7 @@ text = "Ai hidden layers"
 
 [node name="SpinBox" type="SpinBox" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Spider/Panel/VBoxContainer/HBoxContainer"]
 layout_mode = 2
-value = 1.0
+value = 2.0
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Spider/Panel/VBoxContainer"]
 layout_mode = 2
@@ -506,7 +513,7 @@ text = "Neurons per layer"
 layout_mode = 2
 min_value = 1.0
 max_value = 200.0
-value = 51.0
+value = 100.0
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Spider/Panel/VBoxContainer"]
 layout_mode = 2
@@ -517,6 +524,7 @@ text = "Memory neurons"
 
 [node name="SpinBox" type="SpinBox" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Spider/Panel/VBoxContainer/HBoxContainer3"]
 layout_mode = 2
+value = 10.0
 
 [node name="Control" type="Control" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Spider"]
 z_index = -1
@@ -536,7 +544,7 @@ slider_open_text = "<"
 slider_close_text = "> Spider"
 is_open = false
 
-[node name="Spidersss" type="Node3D" parent="." node_paths=PackedStringArray("start", "pause_button", "force_stop_button", "save_button", "save_text", "open_button", "open_dialogue", "refresh_button", "load_button_storage", "training_time", "mutation_chance", "mutation_amount", "spiders_batches", "spiders_per_batch", "keep_best", "ground_height", "ground_pain", "random_goal", "goal_distance", "goal_reward", "goal_distance_reward", "timer", "node_visualiser", "generation_count")]
+[node name="Spidersss" type="Node3D" parent="." node_paths=PackedStringArray("start", "pause_button", "force_stop_button", "save_button", "save_text", "open_button", "open_dialogue", "refresh_button", "load_button_storage", "training_time", "mutation_chance", "mutation_amount", "spiders_batches", "spiders_per_batch", "keep_best", "ground_height", "ground_pain", "random_goal", "goal_distance", "goal_reward", "goal_distance_reward", "hidden_layers", "neurons_per_layer", "memory_neurons", "timer", "node_visualiser", "generation_count")]
 script = ExtResource("7_tipki")
 start = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Main/Panel/VBoxContainer/Start")
 pause_button = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Main/Panel/VBoxContainer/Pause")
@@ -560,6 +568,9 @@ random_goal = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Rewa
 goal_distance = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Rewards/Panel/VBoxContainer/GoalDistance/SpinBox")
 goal_reward = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Rewards/Panel/VBoxContainer/GoalReward/SpinBox")
 goal_distance_reward = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Rewards/Panel/VBoxContainer/GoalDistanceReward/SpinBox")
+hidden_layers = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Spider/Panel/VBoxContainer/HBoxContainer/SpinBox")
+neurons_per_layer = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Spider/Panel/VBoxContainer/HBoxContainer2/SpinBox")
+memory_neurons = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Spider/Panel/VBoxContainer/HBoxContainer3/SpinBox")
 timer = NodePath("../Lerning")
 node_visualiser = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/AiNodes")
 generation_count = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/GenCount/Label")
