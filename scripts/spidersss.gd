@@ -23,7 +23,7 @@ const SAVE_PATH = "user://saves/"
 @export var spiders_batches: SpinBox
 @export var spiders_per_batch: SpinBox
 @export var keep_best: CheckBox
-@export_category("Simulation")
+@export_category("Rewards")
 @export var ground_height: SpinBox
 @export var ground_pain: SpinBox
 @export var random_goal: CheckBox
@@ -233,7 +233,7 @@ func spawnSpider(col_layer, y_indx, p_loaded_brain, p_flavoring):
 	#spider param setup
 	temp_spider.ground_height = ground_height.value
 	temp_spider.ground_pain = ground_pain.value
-	temp_spider.random_goal = random_goal.value
+	temp_spider.random_goal = random_goal.button_pressed
 	temp_spider.goal_distance = goal_distance.value
 	temp_spider.goal_reward = goal_reward.value
 	temp_spider.goal_distance_reward = goal_distance_reward.value
