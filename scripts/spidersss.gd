@@ -18,14 +18,14 @@ const SAVE_PATH = "user://saves/"
 @export var save_generation: int = 50
 @export_category("Simulation")
 @export var training_time: SpinBox
+@export var mutation_chance: SpinBox
+@export var mutation_amount: SpinBox
+@export var spiders_batches: SpinBox
+@export var spiders_per_batch: SpinBox
+@export var keep_best: CheckBox
 @export_category("Others")
 @export var timer: Timer
-@export var spiders_batches = 1
 #MAX 31 SPIDERS
-@export var spiders_per_batch = 31
-@export var keep_best = true
-@export var mutation_chance = 1
-@export var mutation_range = 0.1
 @export var node_visualiser: Node
 @export var generation_count: Label
 
@@ -188,25 +188,25 @@ func modifySummon(p_randomm_picker: WeightedRandom):
 			"max" = p_randomm_picker.arr_avg,
 			"mod" = p_randomm_picker.arr_mod,
 			"sec" = training_time.value,
-			"bat" = spiders_batches,
-			"spd" = spiders_per_batch,
+			"bat" = spiders_batches.value,
+			"spd" = spiders_per_batch.value,
 		}
 	)
-	for y in range(spiders_batches):
-		for x in range(spiders_per_batch):
-			if keep_best and x == 0:
+	for y in range(spiders_batches.value):
+		for x in range(spiders_per_batch.value):
+			if keep_best.button_pressed and x == 0:
 				spawnSpider(x + 2, y, p_randomm_picker.getMax(), false)
 				continue
 			spawnSpider(x + 2, y, p_randomm_picker.getRandom(), true)
 
 func summonSpiders():
-	for y in range(spiders_batches):
-		for x in range(spiders_per_batch):
+	for y in range(spiders_batches.value):
+		for x in range(spiders_per_batch.value):
 			spawnSpider(x + 2, y, null, false)
 
 func loadSpiders(p_brain):
-	for y in range(spiders_batches):
-		for x in range(spiders_per_batch):
+	for y in range(spiders_batches.value):
+		for x in range(spiders_per_batch.value):
 			spawnSpider(x + 2, y, p_brain, false)
 
 func spawnSpider(col_layer, y_indx, p_loaded_brain, p_flavoring):
@@ -218,7 +218,7 @@ func spawnSpider(col_layer, y_indx, p_loaded_brain, p_flavoring):
 		print("LOAD")
 		temp_spider.loadBrain(p_loaded_brain)
 		if p_flavoring:
-			temp_spider.flavoring(mutation_chance, mutation_range)
+			temp_spider.flavoring(mutation_chance.value, mutation_amount.value)
 	else:
 		print("GEN")
 		temp_spider.genBrain()

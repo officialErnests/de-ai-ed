@@ -11,6 +11,7 @@ var velocity_arr = []
 @export var main_body: MeshInstance3D
 @export var agent: Node3D
 @export var pain_pos: float = 1
+@export var pain_amount: float = 10
 func _ready() -> void:
 	physical_bones_start_simulation()
 	spider = Spider.new(get_children().filter(func(x): return x is PhysicalBone3D), self)
@@ -19,7 +20,7 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	spider.addVel(delta)
 	if main_bone.global_position.y < pain_pos:
-		agent.points += (main_bone.global_position.y - pain_pos) * delta * 10
+		agent.points += (main_bone.global_position.y - pain_pos) * delta * pain_amount
 		main_body.material_override.albedo_color = Color(1, 0, 0, 1)
 	else:
 		main_body.material_override.albedo_color = Color(1, 1, 1, 1)
