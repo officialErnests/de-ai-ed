@@ -105,7 +105,7 @@ func loadFile(p_path):
 
 	save_text.text = p_path.substr(0, p_path.length() - 3)
 	stats_arr = json_loaded_ai[0]
-	intss = json_loaded_ai[0]["generation"]
+	intss = int(json_loaded_ai[0]["generation"])
 	clear_spiders()
 	best_spider = json_loaded_ai[1]
 	loadSpiders(json_loaded_ai[1])
