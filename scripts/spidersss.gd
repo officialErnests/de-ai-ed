@@ -18,14 +18,21 @@ const SAVE_PATH = "user://saves/"
 @export var save_generation: int = 50
 @export_category("Simulation")
 @export var training_time: SpinBox
+@export var mutation_chance: SpinBox
+@export var mutation_amount: SpinBox
+@export var spiders_batches: SpinBox
+@export var spiders_per_batch: SpinBox
+@export var keep_best: CheckBox
+@export_category("Rewards")
+@export var ground_height: SpinBox
+@export var ground_pain: SpinBox
+@export var random_goal: CheckBox
+@export var goal_distance: SpinBox
+@export var goal_reward: SpinBox
+@export var goal_distance_reward: SpinBox
 @export_category("Others")
 @export var timer: Timer
-@export var spiders_batches = 1
 #MAX 31 SPIDERS
-@export var spiders_per_batch = 31
-@export var keep_best = true
-@export var mutation_chance = 1
-@export var mutation_range = 0.1
 @export var node_visualiser: Node
 @export var generation_count: Label
 
@@ -180,7 +187,7 @@ func trainLoop():
 
 		modifySummon(randomm_picker)
 
-func modifySummon(p_randomm_picker: WeightedRandom):
+func modifySummon(p_randomm_picker: WeightedRandom) -> void:
 	stats_arr["generation_statistics"].append(
 		{
 			"min" = p_randomm_picker.arr_min,
@@ -188,25 +195,27 @@ func modifySummon(p_randomm_picker: WeightedRandom):
 			"max" = p_randomm_picker.arr_avg,
 			"mod" = p_randomm_picker.arr_mod,
 			"sec" = training_time.value,
-			"bat" = spiders_batches,
-			"spd" = spiders_per_batch,
+			"bat" = spiders_batches.value,
+			"spd" = spiders_per_batch.value,
 		}
 	)
-	for y in range(spiders_batches):
-		for x in range(spiders_per_batch):
-			if keep_best and x == 0:
+	for y in range(spiders_batches.value):
+		for x in range(spiders_per_batch.value):
+			if keep_best.button_pressed and x == 0:
 				spawnSpider(x + 2, y, p_randomm_picker.getMax(), false)
 				continue
+			print(x, y)
 			spawnSpider(x + 2, y, p_randomm_picker.getRandom(), true)
+	print(p_randomm_picker.picked_randoms)
 
-func summonSpiders():
-	for y in range(spiders_batches):
-		for x in range(spiders_per_batch):
+func summonSpiders() -> void:
+	for y in range(spiders_batches.value):
+		for x in range(spiders_per_batch.value):
 			spawnSpider(x + 2, y, null, false)
 
 func loadSpiders(p_brain):
-	for y in range(spiders_batches):
-		for x in range(spiders_per_batch):
+	for y in range(spiders_batches.value):
+		for x in range(spiders_per_batch.value):
 			spawnSpider(x + 2, y, p_brain, false)
 
 func spawnSpider(col_layer, y_indx, p_loaded_brain, p_flavoring):
@@ -215,13 +224,20 @@ func spawnSpider(col_layer, y_indx, p_loaded_brain, p_flavoring):
 	var temp_node = temp_spider.get_node("Skeleton3D/PhysicalBoneSimulator3D")
 	temp_node.setCollLayers(col_layer)
 	if p_loaded_brain:
-		print("LOAD")
 		temp_spider.loadBrain(p_loaded_brain)
 		if p_flavoring:
-			temp_spider.flavoring(mutation_chance, mutation_range)
+			temp_spider.flavoring(mutation_chance.value, mutation_amount.value)
 	else:
-		print("GEN")
 		temp_spider.genBrain()
+	
+	#spider param setup
+	temp_spider.ground_height = ground_height.value
+	temp_spider.ground_pain = ground_pain.value
+	temp_spider.random_goal = random_goal.button_pressed
+	temp_spider.goal_distance = goal_distance.value
+	temp_spider.goal_reward = goal_reward.value
+	temp_spider.goal_distance_reward = goal_distance_reward.value
+
 	add_child(temp_spider)
 	if spiders_arr.is_empty():
 		temp_spider.setMain()
@@ -237,6 +253,7 @@ class WeightedRandom:
 	var arr_max
 	var arr_avg = 0
 	var arr_mod
+	var picked_randoms = {}
 	func _init(p_probablity_arr, p_index_arr) -> void:
 		arr_probablity = p_probablity_arr
 		arr_index = p_index_arr
@@ -252,7 +269,7 @@ class WeightedRandom:
 			if max_probablity < probablity:
 				max_probablity = probablity
 				max_index = p_index_arr[iter]
-			probablity_max += probablity - arr_min
+			probablity_max += probablity
 	func getMax():
 		return max_index
 	func getRandom():
@@ -261,6 +278,11 @@ class WeightedRandom:
 		for iter in range(arr_probablity.size()):
 			probablity -= arr_probablity[iter] - arr_min
 			if probablity <= 0:
+				var temp_val = round((arr_probablity[iter] - arr_min) / probablity_max * 100)
+				if picked_randoms.has(temp_val):
+					picked_randoms[temp_val] += 1
+				else:
+					picked_randoms[temp_val] = 1
 				random_index = iter
 				break
 		return arr_index[random_index]

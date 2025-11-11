@@ -11,13 +11,39 @@ extends Node3D
 @export var line: MeshInstance3D
 @onready var spider_skel = $Skeleton3D/PhysicalBoneSimulator3D
 @onready var spider = spider_skel.spider
+
+
 var prev_range = INF
 var points = 0
 var neuron_layers = []
 var memory_neurons = []
+var timesss = 0
+
+var ground_height: float
+var ground_pain: float
+var random_goal: bool
+var goal_distance: float
+var goal_reward: float
+var goal_distance_reward: float
+
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	genGoal()
+
+func _process(delta: float) -> void:
+	timesss += delta
+	if timesss > 0.1:
+		timesss = 0
+		var calculation = calculate(spider.getData())
+		var upper_leg = []
+		var base_leg = []
+		for i in range(calculation.size() / 3.0):
+			upper_leg.append(Vector3(calculation[i], 0, 0))
+			base_leg.append(Vector3(calculation[i], calculation[i + 1], 0))
+		spider.setVel(upper_leg, base_leg)
+		updateVisualisation()
+
 
 func setMain():
 	spider_skel.main_body.material_override.no_depth_test = true
@@ -39,30 +65,18 @@ func loadBrain(p_brain):
 	for iter_neuron_layers in p_brain:
 		neuron_layers.append(Neuron_Layer.new(null, null, iter_neuron_layers))
 		
-var timesss = 0
-func _process(delta: float) -> void:
-	timesss += delta
-	if timesss > 0.1:
-		timesss = 0
-		var calculation = calculate(spider.getData())
-		var upper_leg = []
-		var base_leg = []
-		for i in range(calculation.size() / 3.0):
-			upper_leg.append(Vector3(calculation[i], 0, 0))
-			base_leg.append(Vector3(calculation[i], calculation[i + 1], 0))
-		spider.setVel(upper_leg, base_leg)
-		updateVisualisation()
-
 func rVector3D():
 	return Vector3(randf_range(-1, 1), randf_range(-1, 1), randf_range(-1, 1))
 
 func genGoal():
-	goal.global_position = spider_skel.global_position * Vector3(1, 0, 1) + Vector3(0, 1, 0) + Vector3(1, 0, 0).normalized() * 5
-	# goal.global_position = spider_skel.global_position * Vector3(1, 0, 1) + Vector3(0, 1, 0) + Vector3(randf_range(-1, 1), 0, randf_range(-1, 1)).normalized() * 5
+	if random_goal:
+		goal.global_position = spider_skel.global_position * Vector3(1, 0, 1) + Vector3(0, 1, 0) + Vector3(randf_range(-1, 1), 0, randf_range(-1, 1)).normalized() * goal_distance
+	else:
+		goal.global_position = spider_skel.global_position * Vector3(1, 0, 1) + Vector3(0, 1, 0) + Vector3(1, 0, 0).normalized() * goal_distance
 
 func getPoints():
 	var distance = goal.global_position.distance_to(spider_skel.global_position)
-	points += 5 - distance
+	points += (goal_distance - distance) * goal_distance_reward
 	return points
 
 func getBrain():
@@ -88,7 +102,7 @@ func updateVisualisation():
 func calculate(p_inputs):
 	if goal.global_position.distance_to(main_body.global_position) < 1:
 		genGoal()
-		points += 5
+		points += goal_reward
 	var inputs = p_inputs
 	inputs.append_array(memory_neurons)
 	for iter_neuron_layer in neuron_layers:
