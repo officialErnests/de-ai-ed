@@ -5,6 +5,7 @@
 [ext_resource type="Material" uid="uid://d15beec8rxitd" path="res://assets/nb_label_3d_WHITE.tres" id="2_wxsu7"]
 
 [sub_resource type="TextMesh" id="TextMesh_pglt7"]
+resource_local_to_scene = true
 text = "Hello world"
 horizontal_alignment = 0
 curve_step = 10.0

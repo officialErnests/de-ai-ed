@@ -19,12 +19,55 @@ extends Node
 
 
 var graph: Node3D
+var graph_meshes_arr = []
+var last_graph_size: int
 
 func _ready() -> void:
 	graph = get_parent()
+	last_graph_size = graph.value_dict.size()
 	graph.updateGraph.connect(updateGraph)
 
 func updateGraph() -> void:
+	if last_graph_size + 1 == graph.value_dict.size():
+		halfUpdate()
+	else:
+		fullReset()
+	last_graph_size = graph.value_dict.size()
+func halfUpdate() -> void:
+	var value_dict: Dictionary[String, float] = graph.value_dict
+	var graph_size_x: float = value_dict.size()
+
+	x_axis_line.mesh.size.x = graph_size_x * segment_size.x + graph_size_x * x_padding
+	x_axis_line.position.x = (graph_size_x * segment_size.x + graph_size_x * x_padding + 0.3) / 2
+	x_axis_head.position.x = (graph_size_x * segment_size.x + graph_size_x * x_padding + 0.4) / 2
+	y_axis_line.mesh.size.y = graph_size_x * segment_size.y
+	y_axis_line.position.y = (graph_size_x * segment_size.y + 0.2) / 2
+	y_axis_head.position.y = (graph_size_x * segment_size.y + 0.3) / 2
+	
+	var iter_item_value: float = value_dict[value_dict.keys()[-1]]
+	var x_axis_offset := value_dict.size()
+
+	var graph_value_mesh := MeshInstance3D.new()
+	graph_value_mesh.mesh = BoxMesh.new()
+	graph_value_mesh.material_override = graph_material
+	graph_value_mesh.mesh.size = Vector3(segment_size.x, iter_item_value, z_size)
+	graph_value_mesh.position.x = x_axis_offset * segment_size.x + x_axis_offset * x_padding + 0.1 - segment_size.x / 2
+	graph_value_mesh.position.y = iter_item_value / 2 + 0.1
+	value_parent.add_child(graph_value_mesh)
+	graph_meshes_arr.append(graph_value_mesh)
+
+	var graph_value_text := text_packed_scene.instantiate()
+	graph_value_text.value = str(round(iter_item_value * 10) / 10)
+	graph_value_text.update()
+	graph_value_text.position.x = graph_value_mesh.position.x - segment_size.x / 2
+	graph_value_text.position.y = iter_item_value + 0.1 + 0.2
+	value_parent.add_child(graph_value_text)
+	graph_meshes_arr.append(graph_value_text)
+
+func fullReset() -> void:
+	for iter_grhap_mesh in graph_meshes_arr: iter_grhap_mesh.queue_free()
+	graph_meshes_arr.clear()
+
 	var value_dict: Dictionary[String, float] = graph.value_dict
 	var graph_size_x: float = value_dict.size()
 
@@ -47,6 +90,7 @@ func updateGraph() -> void:
 		graph_value_mesh.position.x = x_axis_offset * segment_size.x + x_axis_offset * x_padding + 0.1 - segment_size.x / 2
 		graph_value_mesh.position.y = iter_item_value / 2 + 0.1
 		value_parent.add_child(graph_value_mesh)
+		graph_meshes_arr.append(graph_value_mesh)
 
 		var graph_value_text := text_packed_scene.instantiate()
 		graph_value_text.value = str(round(iter_item_value * 10) / 10)
@@ -54,3 +98,4 @@ func updateGraph() -> void:
 		graph_value_text.position.x = graph_value_mesh.position.x - segment_size.x / 2
 		graph_value_text.position.y = iter_item_value + 0.1 + 0.2
 		value_parent.add_child(graph_value_text)
+		graph_meshes_arr.append(graph_value_text)

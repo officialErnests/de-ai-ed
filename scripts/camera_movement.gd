@@ -54,6 +54,7 @@ func _process(delta):
 	
 	dir.y = 0
 	dir = dir.normalized()
-	position += dir * delta * SPEED
+	var sprintMul = 10 if Input.is_action_pressed("fast") else 1
+	position += dir * delta * SPEED * sprintMul
 	$NeckOrSmthing/Dron.position = Vector3.BACK * distance
 	$NeckOrSmthing/Dron.global_position.y = max($NeckOrSmthing/Dron.global_position.y, 0.1)
