@@ -630,7 +630,7 @@ slider_open_text = "<"
 slider_close_text = "> Stats"
 is_open = false
 
-[node name="Spidersss" type="Node3D" parent="." node_paths=PackedStringArray("start", "pause_button", "force_stop_button", "save_button", "save_text", "open_button", "open_dialogue", "refresh_button", "load_button_storage", "training_time", "mutation_chance", "mutation_amount", "spiders_batches", "spiders_per_batch", "keep_best", "ground_height", "ground_pain", "random_goal", "goal_distance", "goal_reward", "goal_distance_reward", "hidden_layers", "neurons_per_layer", "memory_neurons", "timer", "node_visualiser", "generation_count", "graph_min_node")]
+[node name="Spidersss" type="Node3D" parent="." node_paths=PackedStringArray("start", "pause_button", "force_stop_button", "save_button", "save_text", "open_button", "open_dialogue", "refresh_button", "load_button_storage", "training_time", "mutation_chance", "mutation_amount", "spiders_batches", "spiders_per_batch", "keep_best", "ground_height", "ground_pain", "random_goal", "goal_distance", "goal_reward", "goal_distance_reward", "hidden_layers", "neurons_per_layer", "memory_neurons", "timer", "node_visualiser", "generation_count", "graph_min_node", "graph_avg_node", "graph_max_node", "graph_spiders", "graph_time")]
 script = ExtResource("7_tipki")
 start = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Main/Panel/VBoxContainer/Start")
 pause_button = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Main/Panel/VBoxContainer/Pause")
@@ -661,6 +661,10 @@ timer = NodePath("../Lerning")
 node_visualiser = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/AiNodes")
 generation_count = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/GenCount/Label")
 graph_min_node = NodePath("../MinGraph")
+graph_avg_node = NodePath("../AvgGraph")
+graph_max_node = NodePath("../MaxGraph")
+graph_spiders = NodePath("../SpiderGraph")
+graph_time = NodePath("../TimeGraph")
 
 [node name="Lerning" type="Timer" parent="."]
 one_shot = true
@@ -675,4 +679,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.14971972, 2.1, -7.4286256)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.14971972, 2.1, -8.428625)
 
 [node name="SpiderGraph" parent="." instance=ExtResource("12_eb6dy")]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0.14971972, 1.6999998, -6.028625)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.14971972, 2.1, -11.428625)
+visible = false
+
+[node name="TimeGraph" parent="." instance=ExtResource("12_eb6dy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.14971972, 2.1, -12.428625)
+visible = false

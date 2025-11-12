@@ -43,6 +43,8 @@ const SAVE_PATH = "user://saves/"
 @export var graph_min_node: Node3D
 @export var graph_avg_node: Node3D
 @export var graph_max_node: Node3D
+@export var graph_spiders: Node3D
+@export var graph_time: Node3D
 
 var intss = 0
 var spiders_arr = []
@@ -85,16 +87,24 @@ func refreshGraphs():
 	var res_min_value_dict: Dictionary[String, float] = {}
 	var res_avg_value_dict: Dictionary[String, float] = {}
 	var res_max_value_dict: Dictionary[String, float] = {}
+	var res_spider_dict: Dictionary[String, float] = {}
+	var res_time_dict: Dictionary[String, float] = {}
 	for i in range(stats_arr["generation_statistics"].size()):
 		res_min_value_dict["gen " + str(i)] = stats_arr["generation_statistics"][i]["min"]
 		res_avg_value_dict["gen " + str(i)] = stats_arr["generation_statistics"][i]["avg"]
 		res_max_value_dict["gen " + str(i)] = stats_arr["generation_statistics"][i]["max"]
+		res_spider_dict["gen " + str(i)] = stats_arr["generation_statistics"][i]["bat"] * stats_arr["generation_statistics"][i]["spd"]
+		res_time_dict["gen " + str(i)] = stats_arr["generation_statistics"][i]["sec"]
 	graph_min_node.value_dict = res_min_value_dict
 	graph_avg_node.value_dict = res_avg_value_dict
 	graph_max_node.value_dict = res_max_value_dict
+	graph_spiders.value_dict = res_spider_dict
+	graph_time.value_dict = res_time_dict
 	graph_min_node.update()
 	graph_avg_node.update()
 	graph_max_node.update()
+	graph_spiders.update()
+	graph_time.update()
 
 func saveAi():
 	var dirAccess = DirAccess.open(SAVE_PATH)

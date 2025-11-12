@@ -31,12 +31,6 @@ albedo_color = Color(0, 1, 0, 1)
 
 [node name="Graph" type="Node3D"]
 script = ExtResource("1_xslft")
-value_dict = Dictionary[String, float]({
-"gen 1": 0.5,
-"gen 2": 1.0,
-"gen 3": 2.0,
-"gen 4": 0.75
-})
 
 [node name="3DGraphDraw" type="Node" parent="." node_paths=PackedStringArray("x_axis_line", "x_axis_head", "x_axis_markins", "y_axis_line", "y_axis_head", "y_axis_markins", "value_parent")]
 script = ExtResource("2_2i1i1")
