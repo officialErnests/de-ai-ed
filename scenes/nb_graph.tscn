@@ -1,8 +1,9 @@
-[gd_scene load_steps=12 format=3 uid="uid://diq5camko5oth"]
+[gd_scene load_steps=13 format=3 uid="uid://diq5camko5oth"]
 
 [ext_resource type="Script" uid="uid://civtn64gfy7f2" path="res://scripts/nb_graph_3D.gd" id="1_xslft"]
 [ext_resource type="Script" uid="uid://d1bsjo0vmeucg" path="res://scripts/3d_graph_draw.gd" id="2_2i1i1"]
 [ext_resource type="PackedScene" uid="uid://u0fdh7nhsura" path="res://scenes/nb_label_3d.tscn" id="3_2i1i1"]
+[ext_resource type="Material" uid="uid://d15beec8rxitd" path="res://assets/nb_label_3d_WHITE.tres" id="4_p3rfi"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2i1i1"]
 albedo_color = Color(0, 0, 1, 1)
@@ -47,6 +48,7 @@ y_axis_head = NodePath("../Axis/Y/Y head")
 y_axis_markins = NodePath("../Axis/Y_markings")
 text_packed_scene = ExtResource("3_2i1i1")
 value_parent = NodePath("../Axis/Graph_Values")
+graph_material = ExtResource("4_p3rfi")
 
 [node name="Axis" type="Node3D" parent="."]
 
