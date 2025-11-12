@@ -571,47 +571,60 @@ layout_mode = 2
 text = "Stats"
 horizontal_alignment = 1
 
-[node name="Label" type="Label" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Statistics/Panel/VBoxContainer"]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.68307734, 0.6830774, 0.68307734, 1)
-theme_override_font_sizes/font_size = 13
-text = "-- curent generation --"
-horizontal_alignment = 1
-
 [node name="HBoxContainer" type="HBoxContainer" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Statistics/Panel/VBoxContainer"]
 layout_mode = 2
 
 [node name="Label" type="Label" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Statistics/Panel/VBoxContainer/HBoxContainer"]
 layout_mode = 2
-text = "Ai hidden layers"
+text = "Show spider amount"
 
-[node name="SpinBox" type="SpinBox" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Statistics/Panel/VBoxContainer/HBoxContainer"]
+[node name="CheckBox" type="CheckBox" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Statistics/Panel/VBoxContainer/HBoxContainer"]
 layout_mode = 2
-value = 2.0
+button_pressed = true
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Statistics/Panel/VBoxContainer"]
 layout_mode = 2
 
 [node name="Label" type="Label" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Statistics/Panel/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
-text = "Neurons per layer"
+text = "Show time"
 
-[node name="SpinBox" type="SpinBox" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Statistics/Panel/VBoxContainer/HBoxContainer2"]
+[node name="CheckBox" type="CheckBox" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Statistics/Panel/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
-min_value = 1.0
-max_value = 200.0
-value = 100.0
+button_pressed = true
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Statistics/Panel/VBoxContainer"]
 layout_mode = 2
 
 [node name="Label" type="Label" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Statistics/Panel/VBoxContainer/HBoxContainer3"]
 layout_mode = 2
-text = "Memory neurons"
+text = "Show max"
 
-[node name="SpinBox" type="SpinBox" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Statistics/Panel/VBoxContainer/HBoxContainer3"]
+[node name="CheckBox" type="CheckBox" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Statistics/Panel/VBoxContainer/HBoxContainer3"]
 layout_mode = 2
-value = 10.0
+button_pressed = true
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Statistics/Panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Statistics/Panel/VBoxContainer/HBoxContainer4"]
+layout_mode = 2
+text = "Show average"
+
+[node name="CheckBox" type="CheckBox" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Statistics/Panel/VBoxContainer/HBoxContainer4"]
+layout_mode = 2
+button_pressed = true
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Statistics/Panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Statistics/Panel/VBoxContainer/HBoxContainer5"]
+layout_mode = 2
+text = "Show min"
+
+[node name="CheckBox" type="CheckBox" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Statistics/Panel/VBoxContainer/HBoxContainer5"]
+layout_mode = 2
+button_pressed = true
 
 [node name="Control" type="Control" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Statistics"]
 z_index = -1
@@ -631,7 +644,118 @@ slider_open_text = "<"
 slider_close_text = "> Stats"
 is_open = false
 
-[node name="Spidersss" type="Node3D" parent="." node_paths=PackedStringArray("start", "pause_button", "force_stop_button", "save_button", "save_text", "open_button", "open_dialogue", "refresh_button", "load_button_storage", "training_time", "mutation_chance", "mutation_amount", "spiders_batches", "spiders_per_batch", "keep_best", "ground_height", "ground_pain", "random_goal", "goal_distance", "goal_reward", "goal_distance_reward", "hidden_layers", "neurons_per_layer", "memory_neurons", "timer", "node_visualiser", "generation_count", "graph_min_node", "graph_avg_node", "graph_max_node", "graph_spiders", "graph_time")]
+[node name="Tools" type="HBoxContainer" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui"]
+anchors_preset = -1
+anchor_right = 0.5
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="Panel" type="Panel" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Tools"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Tools/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -10.0
+
+[node name="main" type="Label" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Tools/Panel/VBoxContainer"]
+layout_mode = 2
+text = "Tools"
+horizontal_alignment = 1
+
+[node name="View2" type="Button" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Tools/Panel/VBoxContainer"]
+layout_mode = 2
+text = "Recap"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Tools/Panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Tools/Panel/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+text = "Time per terry"
+
+[node name="SpinBox" type="SpinBox" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Tools/Panel/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+max_value = 600.0
+value = 1.0
+
+[node name="Button" type="Button" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Tools/Panel/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+text = "Load"
+
+[node name="Label" type="Label" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Tools/Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.68307734, 0.6830774, 0.68307734, 1)
+theme_override_font_sizes/font_size = 13
+text = "-- for funnies :DD --"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Tools/Panel/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="View" type="Button" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Tools/Panel/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Viewer"
+
+[node name="Drag" type="Button" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Tools/Panel/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Drager
+"
+
+[node name="Killer" type="Button" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Tools/Panel/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Killer
+"
+
+[node name="Warning" type="Label" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Tools/Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.68307734, 0.6830774, 0.68307734, 1)
+theme_override_font_sizes/font_size = 13
+text = "-- errases curent trainning --"
+horizontal_alignment = 1
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Tools/Panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Tools/Panel/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "Load preview"
+
+[node name="SpinBox" type="SpinBox" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Tools/Panel/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+max_value = 1.0
+value = 1.0
+
+[node name="Button" type="Button" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Tools/Panel/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "Load"
+
+[node name="Control" type="Control" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Tools"]
+z_index = -1
+layout_mode = 2
+
+[node name="Button" type="Button" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Tools/Control" node_paths=PackedStringArray("node")]
+layout_mode = 0
+offset_top = 126.0
+offset_right = 40.0
+offset_bottom = 165.99998
+scale = Vector2(0.5, 0.5)
+text = "O"
+script = ExtResource("8_85g3d")
+node = NodePath("../..")
+slide_offset = Vector2(-300, 0)
+slider_open_text = "<"
+slider_close_text = "> Tools"
+is_open = false
+
+[node name="Spidersss" type="Node3D" parent="." node_paths=PackedStringArray("start", "pause_button", "force_stop_button", "save_button", "save_text", "open_button", "open_dialogue", "refresh_button", "load_button_storage", "training_time", "mutation_chance", "mutation_amount", "spiders_batches", "spiders_per_batch", "keep_best", "ground_height", "ground_pain", "random_goal", "goal_distance", "goal_reward", "goal_distance_reward", "hidden_layers", "neurons_per_layer", "memory_neurons", "graph_show_spiders", "graph_show_time", "graph_show_max", "graph_show_avg", "graph_show_min", "timer", "node_visualiser", "generation_count", "graph_min_node", "graph_avg_node", "graph_max_node", "graph_spiders", "graph_time")]
 script = ExtResource("7_tipki")
 start = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Main/Panel/VBoxContainer/Start")
 pause_button = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Main/Panel/VBoxContainer/Pause")
@@ -658,6 +782,11 @@ goal_distance_reward = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam
 hidden_layers = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Spider/Panel/VBoxContainer/HBoxContainer/SpinBox")
 neurons_per_layer = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Spider/Panel/VBoxContainer/HBoxContainer2/SpinBox")
 memory_neurons = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Spider/Panel/VBoxContainer/HBoxContainer3/SpinBox")
+graph_show_spiders = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Statistics/Panel/VBoxContainer/HBoxContainer/CheckBox")
+graph_show_time = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Statistics/Panel/VBoxContainer/HBoxContainer2/CheckBox")
+graph_show_max = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Statistics/Panel/VBoxContainer/HBoxContainer3/CheckBox")
+graph_show_avg = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Statistics/Panel/VBoxContainer/HBoxContainer4/CheckBox")
+graph_show_min = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Statistics/Panel/VBoxContainer/HBoxContainer5/CheckBox")
 timer = NodePath("../Lerning")
 node_visualiser = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/AiNodes")
 generation_count = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/GenCount/Label")
@@ -674,10 +803,10 @@ one_shot = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.14971972, 2.1, -6.4286256)
 
 [node name="AvgGraph" parent="." instance=ExtResource("12_eb6dy")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.14971972, 2.1, -8.428625)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.14971972, 2.1, -7.428625)
 
 [node name="MaxGraph" parent="." instance=ExtResource("12_eb6dy")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.14971972, 2.1, -7.428625)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.14971972, 2.1, -8.428625)
 
 [node name="SpiderGraph" parent="." instance=ExtResource("12_eb6dy")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.14971972, 2.1, -13.428625)

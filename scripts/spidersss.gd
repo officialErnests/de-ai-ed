@@ -34,6 +34,12 @@ const SAVE_PATH = "user://saves/"
 @export var hidden_layers: SpinBox
 @export var neurons_per_layer: SpinBox
 @export var memory_neurons: SpinBox
+@export_category("Stats")
+@export var graph_show_spiders: CheckBox
+@export var graph_show_time: CheckBox
+@export var graph_show_max: CheckBox
+@export var graph_show_avg: CheckBox
+@export var graph_show_min: CheckBox
 @export_category("Others")
 @export var timer: Timer
 #MAX 31 SPIDERS
@@ -79,32 +85,38 @@ func _ready() -> void:
 	open_button.pressed.connect(openExplorer)
 	refresh_button.pressed.connect(refreshFiles)
 
+	graph_show_spiders.pressed.connect(graphShowSpiders)
+	graph_show_time.pressed.connect(graphShowTime)
+	graph_show_max.pressed.connect(graphShowMax)
+	graph_show_avg.pressed.connect(graphShowAvg)
+	graph_show_min.pressed.connect(graphShowMin)
+
 	refreshFiles()
 	refreshGraphs()
 
+func graphShowSpiders(): graph_spiders.visible = graph_show_spiders.button_pressed
+func graphShowTime(): graph_time.visible = graph_show_time.button_pressed
+func graphShowMax(): graph_max_node.visible = graph_show_max.button_pressed
+func graphShowAvg(): graph_avg_node.visible = graph_show_avg.button_pressed
+func graphShowMin(): graph_min_node.visible = graph_show_min.button_pressed
+
 func refreshGraphs():
 	if stats_arr["generation_statistics"].size() == 0: return
-	var res_min_value_dict: Dictionary[String, float] = {}
-	var res_avg_value_dict: Dictionary[String, float] = {}
-	var res_max_value_dict: Dictionary[String, float] = {}
-	var res_spider_dict: Dictionary[String, float] = {}
-	var res_time_dict: Dictionary[String, float] = {}
+	if graph_min_node.visible: updateGraph(graph_min_node, "min")
+	if graph_avg_node.visible: updateGraph(graph_avg_node, "avg")
+	if graph_max_node.visible: updateGraph(graph_max_node, "max")
+	if graph_spiders.visible: updateGraph(graph_spiders, "bat")
+	if graph_time.visible: updateGraph(graph_time, "sec")
+
+func updateGraph(graph_node, value: String):
+	var result: Dictionary[String, float] = {}
 	for i in range(stats_arr["generation_statistics"].size()):
-		res_min_value_dict["gen " + str(i)] = stats_arr["generation_statistics"][i]["min"]
-		res_avg_value_dict["gen " + str(i)] = stats_arr["generation_statistics"][i]["avg"]
-		res_max_value_dict["gen " + str(i)] = stats_arr["generation_statistics"][i]["max"]
-		res_spider_dict["gen " + str(i)] = stats_arr["generation_statistics"][i]["bat"] * stats_arr["generation_statistics"][i]["spd"]
-		res_time_dict["gen " + str(i)] = stats_arr["generation_statistics"][i]["sec"]
-	graph_min_node.value_dict = res_min_value_dict
-	graph_avg_node.value_dict = res_avg_value_dict
-	graph_max_node.value_dict = res_max_value_dict
-	graph_spiders.value_dict = res_spider_dict
-	graph_time.value_dict = res_time_dict
-	graph_min_node.update()
-	graph_avg_node.update()
-	graph_max_node.update()
-	graph_spiders.update()
-	graph_time.update()
+		if value == "bat" or value == "spd":
+			result["gen " + str(i)] = stats_arr["generation_statistics"][i]["bat"] * stats_arr["generation_statistics"][i]["spd"]
+		else:
+			result["gen " + str(i)] = stats_arr["generation_statistics"][i][value]
+	graph_node.value_dict = result
+	graph_node.update()
 
 func saveAi():
 	var dirAccess = DirAccess.open(SAVE_PATH)
@@ -241,8 +253,8 @@ func trainLoop():
 		stats_arr["generation_statistics"].append(
 			{
 				"min" = randomm_picker.arr_min,
-				"avg" = randomm_picker.arr_max,
-				"max" = randomm_picker.arr_avg,
+				"avg" = randomm_picker.arr_avg,
+				"max" = randomm_picker.arr_max,
 				"mod" = randomm_picker.arr_mod,
 				"sec" = training_time.value,
 				"bat" = spiders_batches.value,

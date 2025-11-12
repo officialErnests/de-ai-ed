@@ -33,6 +33,7 @@ func updateGraph() -> void:
 	else:
 		fullReset()
 	last_graph_size = graph.value_dict.size()
+
 func halfUpdate() -> void:
 	var value_dict: Dictionary[String, float] = graph.value_dict
 	var graph_size_x: float = value_dict.size()
