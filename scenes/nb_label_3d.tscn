@@ -1,0 +1,23 @@
+[gd_scene load_steps=5 format=3 uid="uid://u0fdh7nhsura"]
+
+[ext_resource type="Script" uid="uid://x6hvds0pqupm" path="res://scripts/nb_label_3d.gd" id="1_pglt7"]
+[ext_resource type="Script" uid="uid://c2rda1bappxlr" path="res://scripts/hl_textLoad.gd" id="2_s02sc"]
+[ext_resource type="Material" uid="uid://d15beec8rxitd" path="res://assets/nb_label_3d_WHITE.tres" id="2_wxsu7"]
+
+[sub_resource type="TextMesh" id="TextMesh_pglt7"]
+resource_local_to_scene = true
+text = "Hello world"
+horizontal_alignment = 0
+curve_step = 10.0
+
+[node name="NbLabel3D" type="Node3D"]
+script = ExtResource("1_pglt7")
+value = "HELLO"
+
+[node name="Text" type="MeshInstance3D" parent="."]
+material_override = ExtResource("2_wxsu7")
+mesh = SubResource("TextMesh_pglt7")
+
+[node name="TextLoad" type="Node" parent="." node_paths=PackedStringArray("text_to_update")]
+script = ExtResource("2_s02sc")
+text_to_update = NodePath("../Text")

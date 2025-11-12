@@ -34,11 +34,23 @@ const SAVE_PATH = "user://saves/"
 @export var hidden_layers: SpinBox
 @export var neurons_per_layer: SpinBox
 @export var memory_neurons: SpinBox
+@export_category("Stats")
+@export var graph_show_spiders: CheckBox
+@export var graph_show_time: CheckBox
+@export var graph_show_max: CheckBox
+@export var graph_show_avg: CheckBox
+@export var graph_show_min: CheckBox
 @export_category("Others")
 @export var timer: Timer
 #MAX 31 SPIDERS
 @export var node_visualiser: Node
 @export var generation_count: Label
+@export_category("Graphs")
+@export var graph_min_node: Node3D
+@export var graph_avg_node: Node3D
+@export var graph_max_node: Node3D
+@export var graph_spiders: Node3D
+@export var graph_time: Node3D
 
 var intss = 0
 var spiders_arr = []
@@ -63,7 +75,6 @@ func _ready() -> void:
 		"spider_saves" = [],
 	}
 
-	refreshFiles()
 	generation_count.text = "Awaiting start"
 	timer.timeout.connect(trainLoop)
 
@@ -73,6 +84,39 @@ func _ready() -> void:
 	save_button.pressed.connect(saveAi)
 	open_button.pressed.connect(openExplorer)
 	refresh_button.pressed.connect(refreshFiles)
+
+	graph_show_spiders.pressed.connect(graphShowSpiders)
+	graph_show_time.pressed.connect(graphShowTime)
+	graph_show_max.pressed.connect(graphShowMax)
+	graph_show_avg.pressed.connect(graphShowAvg)
+	graph_show_min.pressed.connect(graphShowMin)
+
+	refreshFiles()
+	refreshGraphs()
+
+func graphShowSpiders(): graph_spiders.visible = graph_show_spiders.button_pressed
+func graphShowTime(): graph_time.visible = graph_show_time.button_pressed
+func graphShowMax(): graph_max_node.visible = graph_show_max.button_pressed
+func graphShowAvg(): graph_avg_node.visible = graph_show_avg.button_pressed
+func graphShowMin(): graph_min_node.visible = graph_show_min.button_pressed
+
+func refreshGraphs():
+	if stats_arr["generation_statistics"].size() == 0: return
+	if graph_min_node.visible: updateGraph(graph_min_node, "min")
+	if graph_avg_node.visible: updateGraph(graph_avg_node, "avg")
+	if graph_max_node.visible: updateGraph(graph_max_node, "max")
+	if graph_spiders.visible: updateGraph(graph_spiders, "bat")
+	if graph_time.visible: updateGraph(graph_time, "sec")
+
+func updateGraph(graph_node, value: String):
+	var result: Dictionary[String, float] = {}
+	for i in range(stats_arr["generation_statistics"].size()):
+		if value == "bat" or value == "spd":
+			result["gen " + str(i)] = stats_arr["generation_statistics"][i]["bat"] * stats_arr["generation_statistics"][i]["spd"]
+		else:
+			result["gen " + str(i)] = stats_arr["generation_statistics"][i][value]
+	graph_node.value_dict = result
+	graph_node.update()
 
 func saveAi():
 	var dirAccess = DirAccess.open(SAVE_PATH)
@@ -112,7 +156,6 @@ func refreshFiles():
 			load_button_arr.append(load_button)
 
 func loadFile(p_path):
-	print(p_path)
 	var file_loaded_ai = FileAccess.open(SAVE_PATH + p_path, FileAccess.READ)
 	if not file_loaded_ai:
 		save_text.text = "ERROR - failed to find"
@@ -135,6 +178,7 @@ func loadFile(p_path):
 	clear_spiders()
 	best_spider = json_loaded_ai[1]
 	loadSpiders(json_loaded_ai[1])
+	refreshGraphs()
 	startRound()
 
 func pauseTimer():
@@ -206,29 +250,28 @@ func trainLoop():
 					"brain" = randomm_picker.getMax()
 				}
 			)
+		stats_arr["generation_statistics"].append(
+			{
+				"min" = randomm_picker.arr_min,
+				"avg" = randomm_picker.arr_avg,
+				"max" = randomm_picker.arr_max,
+				"mod" = randomm_picker.arr_mod,
+				"sec" = training_time.value,
+				"bat" = spiders_batches.value,
+				"spd" = spiders_per_batch.value,
+			}
+		)
+		refreshGraphs()
 
 		modifySummon(randomm_picker)
 
 func modifySummon(p_randomm_picker: WeightedRandom) -> void:
-	stats_arr["generation_statistics"].append(
-		{
-			"min" = p_randomm_picker.arr_min,
-			"avg" = p_randomm_picker.arr_max,
-			"max" = p_randomm_picker.arr_avg,
-			"mod" = p_randomm_picker.arr_mod,
-			"sec" = training_time.value,
-			"bat" = spiders_batches.value,
-			"spd" = spiders_per_batch.value,
-		}
-	)
 	for y in range(spiders_batches.value):
 		for x in range(spiders_per_batch.value):
 			if keep_best.button_pressed and x == 0:
 				spawnSpider(x + 2, y, p_randomm_picker.getMax(), false)
 				continue
-			print(x, y)
 			spawnSpider(x + 2, y, p_randomm_picker.getRandom(), true)
-	print(p_randomm_picker.picked_randoms)
 
 func summonSpiders() -> void:
 	for y in range(spiders_batches.value):
@@ -242,7 +285,7 @@ func loadSpiders(p_brain):
 
 func spawnSpider(col_layer, y_indx, p_loaded_brain, p_flavoring):
 	var temp_spider = preload_spider.instantiate()
-	temp_spider.position = position + Vector3(20 * y_indx, 0, 0)
+	temp_spider.position = position + Vector3(0, 0, 10 * y_indx)
 	var temp_node = temp_spider.get_node("Skeleton3D/PhysicalBoneSimulator3D")
 	temp_node.setCollLayers(col_layer)
 	if p_loaded_brain:
