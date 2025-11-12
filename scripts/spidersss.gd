@@ -39,6 +39,10 @@ const SAVE_PATH = "user://saves/"
 #MAX 31 SPIDERS
 @export var node_visualiser: Node
 @export var generation_count: Label
+@export_category("Graphs")
+@export var graph_min_node: Node3D
+@export var graph_avg_node: Node3D
+@export var graph_max_node: Node3D
 
 var intss = 0
 var spiders_arr = []
@@ -63,7 +67,6 @@ func _ready() -> void:
 		"spider_saves" = [],
 	}
 
-	refreshFiles()
 	generation_count.text = "Awaiting start"
 	timer.timeout.connect(trainLoop)
 
@@ -73,6 +76,25 @@ func _ready() -> void:
 	save_button.pressed.connect(saveAi)
 	open_button.pressed.connect(openExplorer)
 	refresh_button.pressed.connect(refreshFiles)
+
+	refreshFiles()
+	refreshGraphs()
+
+func refreshGraphs():
+	if stats_arr["generation_statistics"].size() == 0: return
+	var res_min_value_dict: Dictionary[String, float] = {}
+	var res_avg_value_dict: Dictionary[String, float] = {}
+	var res_max_value_dict: Dictionary[String, float] = {}
+	for i in range(stats_arr["generation_statistics"].size()):
+		res_min_value_dict["gen " + str(i)] = stats_arr["generation_statistics"][i]["min"]
+		res_avg_value_dict["gen " + str(i)] = stats_arr["generation_statistics"][i]["avg"]
+		res_max_value_dict["gen " + str(i)] = stats_arr["generation_statistics"][i]["max"]
+	graph_min_node.value_dict = res_min_value_dict
+	graph_avg_node.value_dict = res_avg_value_dict
+	graph_max_node.value_dict = res_max_value_dict
+	graph_min_node.update()
+	graph_avg_node.update()
+	graph_max_node.update()
 
 func saveAi():
 	var dirAccess = DirAccess.open(SAVE_PATH)
@@ -134,6 +156,7 @@ func loadFile(p_path):
 	clear_spiders()
 	best_spider = json_loaded_ai[1]
 	loadSpiders(json_loaded_ai[1])
+	refreshGraphs()
 	startRound()
 
 func pauseTimer():
@@ -205,21 +228,22 @@ func trainLoop():
 					"brain" = randomm_picker.getMax()
 				}
 			)
+		stats_arr["generation_statistics"].append(
+			{
+				"min" = randomm_picker.arr_min,
+				"avg" = randomm_picker.arr_max,
+				"max" = randomm_picker.arr_avg,
+				"mod" = randomm_picker.arr_mod,
+				"sec" = training_time.value,
+				"bat" = spiders_batches.value,
+				"spd" = spiders_per_batch.value,
+			}
+		)
+		refreshGraphs()
 
 		modifySummon(randomm_picker)
 
 func modifySummon(p_randomm_picker: WeightedRandom) -> void:
-	stats_arr["generation_statistics"].append(
-		{
-			"min" = p_randomm_picker.arr_min,
-			"avg" = p_randomm_picker.arr_max,
-			"max" = p_randomm_picker.arr_avg,
-			"mod" = p_randomm_picker.arr_mod,
-			"sec" = training_time.value,
-			"bat" = spiders_batches.value,
-			"spd" = spiders_per_batch.value,
-		}
-	)
 	for y in range(spiders_batches.value):
 		for x in range(spiders_per_batch.value):
 			if keep_best.button_pressed and x == 0:

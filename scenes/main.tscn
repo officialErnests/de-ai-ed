@@ -514,7 +514,7 @@ text = "Neurons per layer"
 layout_mode = 2
 min_value = 1.0
 max_value = 200.0
-value = 100.0
+value = 70.0
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Spider/Panel/VBoxContainer"]
 layout_mode = 2
@@ -630,7 +630,7 @@ slider_open_text = "<"
 slider_close_text = "> Stats"
 is_open = false
 
-[node name="Spidersss" type="Node3D" parent="." node_paths=PackedStringArray("start", "pause_button", "force_stop_button", "save_button", "save_text", "open_button", "open_dialogue", "refresh_button", "load_button_storage", "training_time", "mutation_chance", "mutation_amount", "spiders_batches", "spiders_per_batch", "keep_best", "ground_height", "ground_pain", "random_goal", "goal_distance", "goal_reward", "goal_distance_reward", "hidden_layers", "neurons_per_layer", "memory_neurons", "timer", "node_visualiser", "generation_count")]
+[node name="Spidersss" type="Node3D" parent="." node_paths=PackedStringArray("start", "pause_button", "force_stop_button", "save_button", "save_text", "open_button", "open_dialogue", "refresh_button", "load_button_storage", "training_time", "mutation_chance", "mutation_amount", "spiders_batches", "spiders_per_batch", "keep_best", "ground_height", "ground_pain", "random_goal", "goal_distance", "goal_reward", "goal_distance_reward", "hidden_layers", "neurons_per_layer", "memory_neurons", "timer", "node_visualiser", "generation_count", "graph_min_node")]
 script = ExtResource("7_tipki")
 start = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Main/Panel/VBoxContainer/Start")
 pause_button = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Main/Panel/VBoxContainer/Pause")
@@ -660,9 +660,19 @@ memory_neurons = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/S
 timer = NodePath("../Lerning")
 node_visualiser = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/AiNodes")
 generation_count = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/GenCount/Label")
+graph_min_node = NodePath("../MinGraph")
 
 [node name="Lerning" type="Timer" parent="."]
 one_shot = true
 
-[node name="Graph" parent="." instance=ExtResource("12_eb6dy")]
+[node name="MinGraph" parent="." instance=ExtResource("12_eb6dy")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.14971972, 2.1, -6.4286256)
+
+[node name="AvgGraph" parent="." instance=ExtResource("12_eb6dy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.14971972, 2.1, -7.4286256)
+
+[node name="MaxGraph" parent="." instance=ExtResource("12_eb6dy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.14971972, 2.1, -8.428625)
+
+[node name="SpiderGraph" parent="." instance=ExtResource("12_eb6dy")]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0.14971972, 1.6999998, -6.028625)

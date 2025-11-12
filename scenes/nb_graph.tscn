@@ -40,6 +40,7 @@ value_dict = Dictionary[String, float]({
 
 [node name="3DGraphDraw" type="Node" parent="." node_paths=PackedStringArray("x_axis_line", "x_axis_head", "x_axis_markins", "y_axis_line", "y_axis_head", "y_axis_markins", "value_parent")]
 script = ExtResource("2_2i1i1")
+segment_size = Vector2(0.1, 1)
 x_axis_line = NodePath("../Axis/X")
 x_axis_head = NodePath("../Axis/X/X head")
 x_axis_markins = NodePath("../Axis/X_markings")

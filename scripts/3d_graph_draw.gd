@@ -49,7 +49,7 @@ func updateGraph() -> void:
 		value_parent.add_child(graph_value_mesh)
 
 		var graph_value_text := text_packed_scene.instantiate()
-		graph_value_text.value = str(iter_item_value)
+		graph_value_text.value = str(round(iter_item_value * 10) / 10)
 		graph_value_text.update()
 		graph_value_text.position.x = graph_value_mesh.position.x - segment_size.x / 2
 		graph_value_text.position.y = iter_item_value + 0.1 + 0.2
