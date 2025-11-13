@@ -9,6 +9,8 @@ extends Node3D
 @export var main_body: Node3D
 @export var text: Label3D
 @export var line: MeshInstance3D
+@export var skeleton: Skeleton3D
+
 @onready var spider_skel = $Skeleton3D/PhysicalBoneSimulator3D
 @onready var spider = spider_skel.spider
 
@@ -17,6 +19,7 @@ var prev_range = INF
 var points = 0
 var neuron_layers = []
 var memory_neurons = []
+var meshes_arr = []
 var timesss = 0
 
 var ground_height: float
@@ -30,6 +33,9 @@ var goal_distance_reward: float
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	genGoal()
+	meshes_arr.append(goal)
+	for iter_part in skeleton.get_children():
+		if iter_part is MeshInstance3D: meshes_arr.append(iter_part)
 
 func _process(delta: float) -> void:
 	timesss += delta
@@ -44,9 +50,13 @@ func _process(delta: float) -> void:
 		spider.setVel(upper_leg, base_leg)
 		updateVisualisation()
 
+func setSub():
+	for mesh: MeshInstance3D in meshes_arr:
+		mesh.layers = 1
 
 func setMain():
-	spider_skel.main_body.material_override.no_depth_test = true
+	for mesh: MeshInstance3D in meshes_arr:
+		mesh.layers = 3
 
 func genBrain():
 	if LAYER_COUNT == 1:

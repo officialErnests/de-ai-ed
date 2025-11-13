@@ -60,7 +60,9 @@ const SAVE_PATH = "user://saves/"
 @export var graph_max_node: Node3D
 @export var graph_spiders: Node3D
 @export var graph_time: Node3D
-
+@export_category("Graphs")
+@export var preview_viewport: Viewport
+@export var preview_fullscreen: Button
 var intss = 0
 var spiders_arr = []
 var stats_arr
