@@ -23,6 +23,7 @@ const SAVE_PATH = "user://saves/"
 @export var spiders_batches: SpinBox
 @export var spiders_per_batch: SpinBox
 @export var keep_best: CheckBox
+@export var auto_save_interval: SpinBox
 @export_category("Rewards")
 @export var ground_height: SpinBox
 @export var ground_pain: SpinBox
@@ -56,9 +57,28 @@ var intss = 0
 var spiders_arr = []
 var stats_arr = {
 	"generation" = 1,
-	"hidden_layers" = 2,
-	"neurons_per_layer" = 51,
-	"memory_neurons" = 8,
+	
+	#simulation
+	"training_time" = training_time.value,
+	"mutation_amount" = mutation_amount.value,
+	"spiders_batches" = spiders_batches.value,
+	"spiders_per_batch" = spiders_per_batch.value,
+	"keep_best" = keep_best.value,
+	"auto_save_interval" = keep_best.value,
+
+	#rewards
+	"ground_height" = ground_height.value,
+	"ground_pain" = ground_pain.value,
+	"random_goal" = random_goal.button_pressed,
+	"goal_distance" = goal_distance.value,
+	"goal_reward" = goal_reward.value,
+	"goal_distance_reward" = goal_distance_reward.value,
+
+	#spider
+	"hidden_layers" = hidden_layers.value,
+	"neurons_per_layer" = neurons_per_layer.value,
+	"memory_neurons" = memory_neurons.value,
+	
 	"generation_statistics" = [],
 	"spider_saves" = [],
 }
