@@ -338,9 +338,9 @@ text = "Auto save interval"
 
 [node name="SpinBox" type="SpinBox" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Simulation/Panel/VBoxContainer/AutoSaveInterval"]
 layout_mode = 2
-max_value = 10.0
-step = 0.1
-value = 0.5
+min_value = 1.0
+max_value = 1000.0
+value = 25.0
 
 [node name="Control" type="Control" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Simulation"]
 z_index = -1
@@ -593,7 +593,6 @@ text = "Show spider amount"
 
 [node name="CheckBox" type="CheckBox" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Statistics/Panel/VBoxContainer/HBoxContainer"]
 layout_mode = 2
-button_pressed = true
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Statistics/Panel/VBoxContainer"]
 layout_mode = 2
@@ -604,7 +603,6 @@ text = "Show time"
 
 [node name="CheckBox" type="CheckBox" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Statistics/Panel/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
-button_pressed = true
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Statistics/Panel/VBoxContainer"]
 layout_mode = 2
@@ -768,7 +766,7 @@ slider_open_text = "<"
 slider_close_text = "> Tools"
 is_open = false
 
-[node name="Spidersss" type="Node3D" parent="." node_paths=PackedStringArray("start", "pause_button", "force_stop_button", "save_button", "save_text", "open_button", "open_dialogue", "refresh_button", "load_button_storage", "training_time", "mutation_chance", "mutation_amount", "spiders_batches", "spiders_per_batch", "keep_best", "ground_height", "ground_pain", "random_goal", "goal_distance", "goal_reward", "goal_distance_reward", "hidden_layers", "neurons_per_layer", "memory_neurons", "graph_show_spiders", "graph_show_time", "graph_show_max", "graph_show_avg", "graph_show_min", "timer", "node_visualiser", "generation_count", "graph_min_node", "graph_avg_node", "graph_max_node", "graph_spiders", "graph_time")]
+[node name="Spidersss" type="Node3D" parent="." node_paths=PackedStringArray("start", "pause_button", "force_stop_button", "save_button", "save_text", "open_button", "open_dialogue", "refresh_button", "load_button_storage", "training_time", "mutation_chance", "mutation_amount", "spiders_batches", "spiders_per_batch", "keep_best", "auto_save_interval", "ground_height", "ground_pain", "random_goal", "goal_distance", "goal_reward", "goal_distance_reward", "hidden_layers", "neurons_per_layer", "memory_neurons", "graph_show_spiders", "graph_show_time", "graph_show_max", "graph_show_avg", "graph_show_min", "timer", "node_visualiser", "generation_count", "graph_min_node", "graph_avg_node", "graph_max_node", "graph_spiders", "graph_time")]
 script = ExtResource("7_tipki")
 start = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Main/Panel/VBoxContainer/Start")
 pause_button = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Main/Panel/VBoxContainer/Pause")
@@ -779,13 +777,13 @@ open_button = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Main
 open_dialogue = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/GenCount/SeeFiles")
 refresh_button = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Main/Panel/VBoxContainer/Refresh saves")
 load_button_storage = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Main/Panel/VBoxContainer/ScrollContainer/VBoxContainer")
-save_generation = 25
 training_time = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Simulation/Panel/VBoxContainer/Timer/SpinBox")
 mutation_chance = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Simulation/Panel/VBoxContainer/MutationChance/SpinBox")
 mutation_amount = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Simulation/Panel/VBoxContainer/MutationAmount/SpinBox")
 spiders_batches = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Simulation/Panel/VBoxContainer/SpiderBatches/SpinBox")
 spiders_per_batch = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Simulation/Panel/VBoxContainer/SpiderPerBatch/SpinBox")
 keep_best = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Simulation/Panel/VBoxContainer/KeepBest/CheckBox")
+auto_save_interval = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Simulation/Panel/VBoxContainer/AutoSaveInterval/SpinBox")
 ground_height = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Rewards/Panel/VBoxContainer/GroundHeight/SpinBox")
 ground_pain = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Rewards/Panel/VBoxContainer/Ground pain/SpinBox")
 random_goal = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Rewards/Panel/VBoxContainer/RadnomGoal/CheckBox")
@@ -823,6 +821,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.14971972, 2.1, -8.428625)
 
 [node name="SpiderGraph" parent="." instance=ExtResource("12_eb6dy")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.14971972, 2.1, -13.428625)
+visible = false
 
 [node name="TimeGraph" parent="." instance=ExtResource("12_eb6dy")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.14971972, 2.1, -12.428625)
+visible = false

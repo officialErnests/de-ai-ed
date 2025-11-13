@@ -89,7 +89,7 @@ func resetStatsArr():
 		"mutation_amount" = mutation_amount.value,
 		"spiders_batches" = spiders_batches.value,
 		"spiders_per_batch" = spiders_per_batch.value,
-		"keep_best" = keep_best.value,
+		"keep_best" = keep_best.button_pressed,
 		"auto_save_interval" = auto_save_interval.value,
 
 		#rewards
@@ -196,7 +196,7 @@ func loadFile(p_path):
 	mutation_amount.value = stats_arr["mutation_amount"]
 	spiders_batches.value = stats_arr["spiders_batches"]
 	spiders_per_batch.value = stats_arr["spiders_per_batch"]
-	keep_best.value = stats_arr["keep_best"]
+	keep_best.button_pressed = stats_arr["keep_best"]
 	auto_save_interval.value = stats_arr["auto_save_interval"]
 	ground_height.value = stats_arr["ground_height"]
 	ground_pain.value = stats_arr["ground_pain"]
@@ -274,7 +274,7 @@ func trainLoop():
 		stats_arr["mutation_amount"] = mutation_amount.value
 		stats_arr["spiders_batches"] = spiders_batches.value
 		stats_arr["spiders_per_batch"] = spiders_per_batch.value
-		stats_arr["keep_best"] = keep_best.value
+		stats_arr["keep_best"] = keep_best.button_pressed
 		stats_arr["auto_save_interval"] = auto_save_interval.value
 		stats_arr["ground_height"] = ground_height.value
 		stats_arr["ground_pain"] = ground_pain.value
