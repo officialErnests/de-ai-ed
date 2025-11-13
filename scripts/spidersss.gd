@@ -40,9 +40,18 @@ const SAVE_PATH = "user://saves/"
 @export var graph_show_max: CheckBox
 @export var graph_show_avg: CheckBox
 @export var graph_show_min: CheckBox
+@export_category("Tools")
+@export var timelapse_time: SpinBox
+@export var timelapse_button: Button
+@export var tool_viewer: Button
+@export var tool_drager: Button
+@export var tool_killer: Button
+@export var load_preview_int: SpinBox
+@export var load_preview_button: Button
+@export var load_spider_int: SpinBox
+@export var load_spider_button: Button
 @export_category("Others")
 @export var timer: Timer
-#MAX 31 SPIDERS
 @export var node_visualiser: Node
 @export var generation_count: Label
 @export_category("Graphs")

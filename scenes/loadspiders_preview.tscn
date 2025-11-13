@@ -1,0 +1,54 @@
+[gd_scene load_steps=10 format=3 uid="uid://c2ci6s68jshxn"]
+
+[ext_resource type="Script" uid="uid://dpfaidos4rmus" path="res://scripts/loadspiders_preview.gd" id="1_j3ar7"]
+[ext_resource type="Texture2D" uid="uid://chnecxepau4i1" path="res://assets/Ground.jpg" id="2_8s2j7"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_xvpfr"]
+sky_top_color = Color(0.26750416, 0.6006932, 0.68498224, 1)
+sky_horizon_color = Color(0.6423824, 0.7356543, 0.7578019, 1)
+ground_bottom_color = Color(0.094618656, 0.13451722, 0.13881871, 1)
+ground_horizon_color = Color(0.6423824, 0.7356543, 0.7578019, 1)
+
+[sub_resource type="Sky" id="Sky_0wfyh"]
+sky_material = SubResource("ProceduralSkyMaterial_xvpfr")
+
+[sub_resource type="Environment" id="Environment_3a1xu"]
+background_mode = 2
+sky = SubResource("Sky_0wfyh")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5qq8f"]
+albedo_texture = ExtResource("2_8s2j7")
+uv1_scale = Vector3(100, 100, 100)
+uv1_triplanar_sharpness = 0.006702052
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_vui6j"]
+size = Vector2(100, 100)
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_3k7br"]
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_xup4x"]
+
+[node name="Loadspiders_preview" type="Node3D" node_paths=PackedStringArray("cam_holder")]
+script = ExtResource("1_j3ar7")
+cam_holder = NodePath("CamSpin")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_3a1xu")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.8660255, -0.43301263, 0.2499999, 2.7805944e-08, 0.49999994, 0.86602545, -0.49999994, -0.7500001, 0.43301266, 0, 0, 0)
+
+[node name="floor" type="MeshInstance3D" parent="."]
+material_override = SubResource("StandardMaterial3D_5qq8f")
+mesh = SubResource("PlaneMesh_vui6j")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="floor"]
+physics_material_override = SubResource("PhysicsMaterial_3k7br")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="floor/StaticBody3D"]
+shape = SubResource("WorldBoundaryShape3D_xup4x")
+
+[node name="CamSpin" type="Node3D" parent="."]
+
+[node name="Camera3D" type="Camera3D" parent="CamSpin"]
+transform = Transform3D(1, 0, 0, 0, 0.70710677, 0.70710677, 0, -0.70710677, 0.70710677, 0, 10, 10)
