@@ -783,17 +783,7 @@ slider_close_text = "> Tools"
 is_open = false
 
 [node name="MiniViewer" type="CanvasLayer" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam"]
-
-[node name="Button" type="Button" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/MiniViewer"]
-anchors_preset = -1
-anchor_left = 0.7
-anchor_top = 0.7
-anchor_right = 1.0
-anchor_bottom = 0.7
-offset_bottom = -10.0
-grow_horizontal = 0
-grow_vertical = 0
-text = "Fullscreen"
+layer = 2
 
 [node name="Control" type="Control" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/MiniViewer"]
 layout_mode = 3
@@ -823,7 +813,20 @@ render_target_update_mode = 4
 
 [node name="Loadspiders_preview" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/MiniViewer/Control/SubViewportContainer/SubViewport" instance=ExtResource("11_trceg")]
 
-[node name="Spidersss" type="Node3D" parent="." node_paths=PackedStringArray("start", "pause_button", "force_stop_button", "save_button", "save_text", "open_button", "open_dialogue", "refresh_button", "load_button_storage", "training_time", "mutation_chance", "mutation_amount", "spiders_batches", "spiders_per_batch", "keep_best", "auto_save_interval", "ground_height", "ground_pain", "random_goal", "goal_distance", "goal_reward", "goal_distance_reward", "hidden_layers", "neurons_per_layer", "memory_neurons", "graph_show_spiders", "graph_show_time", "graph_show_max", "graph_show_avg", "graph_show_min", "timelapse_time", "timelapse_button", "tool_viewer", "tool_drager", "tool_killer", "load_preview_int", "load_preview_button", "load_spider_int", "load_spider_button", "timer", "node_visualiser", "generation_count", "graph_min_node", "graph_avg_node", "graph_max_node", "graph_spiders", "graph_time")]
+[node name="Button" type="Button" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/MiniViewer"]
+z_index = 1
+anchors_preset = -1
+anchor_left = 0.7
+anchor_top = 0.7
+anchor_right = 1.0
+anchor_bottom = 0.7
+offset_top = -41.0
+offset_bottom = -10.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "Fullscreen"
+
+[node name="Spidersss" type="Node3D" parent="." node_paths=PackedStringArray("start", "pause_button", "force_stop_button", "save_button", "save_text", "open_button", "open_dialogue", "refresh_button", "load_button_storage", "training_time", "mutation_chance", "mutation_amount", "spiders_batches", "spiders_per_batch", "keep_best", "auto_save_interval", "ground_height", "ground_pain", "random_goal", "goal_distance", "goal_reward", "goal_distance_reward", "hidden_layers", "neurons_per_layer", "memory_neurons", "graph_show_spiders", "graph_show_time", "graph_show_max", "graph_show_avg", "graph_show_min", "timelapse_time", "timelapse_button", "tool_viewer", "tool_drager", "tool_killer", "load_preview_int", "load_preview_button", "load_spider_int", "load_spider_button", "timer", "node_visualiser", "generation_count", "graph_min_node", "graph_avg_node", "graph_max_node", "graph_spiders", "graph_time", "preview_loader", "preview_viewport_control", "preview_fullscreen")]
 script = ExtResource("7_tipki")
 start = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Main/Panel/VBoxContainer/Start")
 pause_button = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Main/Panel/VBoxContainer/Pause")
@@ -872,6 +875,9 @@ graph_avg_node = NodePath("../Graphs/AvgGraph")
 graph_max_node = NodePath("../Graphs/MaxGraph")
 graph_spiders = NodePath("../Graphs/SpiderGraph")
 graph_time = NodePath("../Graphs/TimeGraph")
+preview_loader = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/MiniViewer/Control/SubViewportContainer/SubViewport/Loadspiders_preview")
+preview_viewport_control = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/MiniViewer/Control")
+preview_fullscreen = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/MiniViewer/Button")
 
 [node name="Lerning" type="Timer" parent="."]
 one_shot = true

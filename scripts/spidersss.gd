@@ -60,14 +60,19 @@ const SAVE_PATH = "user://saves/"
 @export var graph_max_node: Node3D
 @export var graph_spiders: Node3D
 @export var graph_time: Node3D
-@export_category("Graphs")
-@export var preview_viewport: Viewport
+@export_category("Tools")
+@export var preview_loader: Node3D
+@export var preview_viewport_control: Control
 @export var preview_fullscreen: Button
 var intss = 0
 var spiders_arr = []
 var stats_arr
 var best_spider = []
 var load_button_arr: Array[Control] = []
+var fullscreen = false
+
+var preview_spider_loaded = false
+var preview_best_spider = null
 
 func _ready() -> void:
 	resetStatsArr()
@@ -88,8 +93,41 @@ func _ready() -> void:
 	graph_show_avg.pressed.connect(graphShowAvg)
 	graph_show_min.pressed.connect(graphShowMin)
 
+	preview_fullscreen.pressed.connect(previewFullscreenToggle)
+
 	refreshFiles()
 	refreshGraphs()
+
+func unloadPreview():
+	preview_spider_loaded = false
+	if preview_best_spider: preview_best_spider.setMain()
+	preview_loader.deleteSpider()
+	#DONE /\
+
+func loadPreview(p_spider_to_load):
+	preview_spider_loaded = true
+	if preview_best_spider: preview_best_spider.setSub()
+	preview_loader.spawnSpider(p_spider_to_load)
+	#DONE /\
+
+func refreshPreviews():
+	pass
+	#Figure out what tf is going on w tool declerations XD
+	#DOING /\
+
+func previewFullscreenToggle():
+	fullscreen = not fullscreen
+	print(fullscreen)
+	if fullscreen:
+		preview_fullscreen.anchor_top = 1
+		preview_fullscreen.anchor_bottom = 1
+		preview_viewport_control.anchor_left = 0
+		preview_viewport_control.anchor_top = 0
+	else:
+		preview_fullscreen.anchor_top = 0.7
+		preview_fullscreen.anchor_bottom = 0.7
+		preview_viewport_control.anchor_left = 0.7
+		preview_viewport_control.anchor_top = 0.7
 
 func resetStatsArr():
 	stats_arr = {
@@ -363,7 +401,9 @@ func spawnSpider(col_layer, y_indx, p_loaded_brain, p_flavoring):
 
 	add_child(temp_spider)
 	if spiders_arr.is_empty():
-		temp_spider.setMain()
+		preview_best_spider = temp_spider
+		if not preview_spider_loaded:
+			temp_spider.setMain()
 	spiders_arr.append(temp_spider)
 
 class WeightedRandom:
