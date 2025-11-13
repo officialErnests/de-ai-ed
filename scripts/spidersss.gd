@@ -15,7 +15,6 @@ const SAVE_PATH = "user://saves/"
 @export var open_dialogue: FileDialog
 @export var refresh_button: Button
 @export var load_button_storage: Control
-@export var save_generation: int = 50
 @export_category("Simulation")
 @export var training_time: SpinBox
 @export var mutation_chance: SpinBox
@@ -91,7 +90,7 @@ func resetStatsArr():
 		"spiders_batches" = spiders_batches.value,
 		"spiders_per_batch" = spiders_per_batch.value,
 		"keep_best" = keep_best.value,
-		"auto_save_interval" = keep_best.value,
+		"auto_save_interval" = auto_save_interval.value,
 
 		#rewards
 		"ground_height" = ground_height.value,
@@ -190,6 +189,25 @@ func loadFile(p_path):
 
 	save_text.text = p_path.substr(0, p_path.length() - 3)
 	stats_arr = json_loaded_ai[0]
+
+	#loads values
+	intss = stats_arr["generation"]
+	training_time.value = stats_arr["training_time"]
+	mutation_amount.value = stats_arr["mutation_amount"]
+	spiders_batches.value = stats_arr["spiders_batches"]
+	spiders_per_batch.value = stats_arr["spiders_per_batch"]
+	keep_best.value = stats_arr["keep_best"]
+	auto_save_interval.value = stats_arr["auto_save_interval"]
+	ground_height.value = stats_arr["ground_height"]
+	ground_pain.value = stats_arr["ground_pain"]
+	random_goal.button_pressed = stats_arr["random_goal"]
+	goal_distance.value = stats_arr["goal_distance"]
+	goal_reward.value = stats_arr["goal_reward"]
+	goal_distance_reward.value = stats_arr["goal_distance_reward"]
+	hidden_layers.value = stats_arr["hidden_layers"]
+	neurons_per_layer.value = stats_arr["neurons_per_layer"]
+	memory_neurons.value = stats_arr["memory_neurons"]
+
 	intss = int(json_loaded_ai[0]["generation"])
 	clear_spiders()
 	best_spider = json_loaded_ai[1]
@@ -212,14 +230,7 @@ func restart():
 	startTraining()
 
 func startTraining():
-	stats_arr = {
-		"generation" = 1,
-		"hidden_layers" = hidden_layers.value,
-		"neurons_per_layer" = neurons_per_layer.value,
-		"memory_neurons" = memory_neurons.value,
-		"generation_statistics" = [],
-		"spider_saves" = [],
-	}
+	resetStatsArr()
 	timer.paused = false
 	clear_spiders()
 	intss = 0
@@ -264,7 +275,7 @@ func trainLoop():
 		stats_arr["spiders_batches"] = spiders_batches.value
 		stats_arr["spiders_per_batch"] = spiders_per_batch.value
 		stats_arr["keep_best"] = keep_best.value
-		stats_arr["auto_save_interval"] = keep_best.value
+		stats_arr["auto_save_interval"] = auto_save_interval.value
 		stats_arr["ground_height"] = ground_height.value
 		stats_arr["ground_pain"] = ground_pain.value
 		stats_arr["random_goal"] = random_goal.button_pressed
@@ -274,8 +285,8 @@ func trainLoop():
 		stats_arr["hidden_layers"] = hidden_layers.value
 		stats_arr["neurons_per_layer"] = neurons_per_layer.value
 		stats_arr["memory_neurons"] = memory_neurons.value
-		
-		if fmod(intss, save_generation) == 0:
+
+		if fmod(intss, auto_save_interval.value) == 0:
 			stats_arr["spider_saves"].append(
 				{
 					"gen" = intss,
