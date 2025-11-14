@@ -1,7 +1,8 @@
 extends Node3D
 
+var neurons: int = 52
 @export_category("Neurons")
-@export var NEURONS_IN_LAYER := 51
+@export var NEURONS_IN_LAYER := neurons
 @export var LAYER_COUNT := 1
 @export var MEMOR_NEURON_COUNT := 2
 @export_category("Others")
@@ -21,6 +22,8 @@ var neuron_layers = []
 var memory_neurons = []
 var meshes_arr = []
 var timesss = 0
+var random_goal_seed = []
+var random_goal_index = 0
 
 var ground_height: float
 var ground_pain: float
@@ -36,12 +39,15 @@ func _ready() -> void:
 	meshes_arr.append(goal)
 	for iter_part in skeleton.get_children():
 		if iter_part is MeshInstance3D: meshes_arr.append(iter_part)
+	timesss = brain_update_interval + 1
 
 func _process(delta: float) -> void:
 	timesss += delta
 	if timesss > brain_update_interval:
 		timesss = 0
-		var calculation = calculate(spider.getData())
+		var goal_dir = [main_body.basis.x.dot(main_body.global_position.direction_to(goal.global_position))]
+		goal_dir.append_array(spider.getData())
+		var calculation = calculate(goal_dir)
 		var upper_leg = []
 		var base_leg = []
 		for i in range(calculation.size() / 3.0):
@@ -49,6 +55,11 @@ func _process(delta: float) -> void:
 			base_leg.append(Vector3(calculation[i], calculation[i + 1], 0))
 		spider.setVel(upper_leg, base_leg)
 		updateVisualisation()
+
+func randomize(p_rand):
+	for i: PhysicalBone3D in spider_skel.get_children():
+		i.rotation = p_rand
+
 
 func setSub():
 	for mesh: MeshInstance3D in meshes_arr:
@@ -60,11 +71,11 @@ func setMain():
 
 func genBrain():
 	if LAYER_COUNT == 1:
-		neuron_layers.append(Neuron_Layer.new(51 + MEMOR_NEURON_COUNT, NEURONS_IN_LAYER, null))
+		neuron_layers.append(Neuron_Layer.new(neurons + MEMOR_NEURON_COUNT, NEURONS_IN_LAYER, null))
 	else:
 		for iter_layer in LAYER_COUNT:
 			if iter_layer == 0:
-				neuron_layers.append(Neuron_Layer.new(51, NEURONS_IN_LAYER, null))
+				neuron_layers.append(Neuron_Layer.new(neurons, NEURONS_IN_LAYER, null))
 			else:
 				neuron_layers.append(Neuron_Layer.new(NEURONS_IN_LAYER, NEURONS_IN_LAYER, null))
 	neuron_layers.append(Neuron_Layer.new(NEURONS_IN_LAYER, 28 + MEMOR_NEURON_COUNT, null))
@@ -80,7 +91,8 @@ func rVector3D():
 
 func genGoal():
 	if random_goal:
-		goal.global_position = spider_skel.global_position * Vector3(1, 0, 1) + Vector3(0, 1, 0) + Vector3(randf_range(-1, 1), 0, randf_range(-1, 1)).normalized() * goal_distance
+		goal.global_position = spider_skel.global_position * Vector3(1, 0, 1) + Vector3(0, 1, 0) + random_goal_seed[random_goal_index] * goal_distance
+		random_goal_index += 1
 	else:
 		goal.global_position = spider_skel.global_position * Vector3(1, 0, 1) + Vector3(0, 1, 0) + Vector3(1, 0, 0).normalized() * goal_distance
 
@@ -118,7 +130,7 @@ func calculate(p_inputs):
 	for iter_neuron_layer in neuron_layers:
 		inputs = iter_neuron_layer.calc(inputs)
 	memory_neurons.clear()
-	for i in range(inputs.size() - 51):
+	for i in range(inputs.size() - neurons):
 		memory_neurons.append(inputs[i])
 	return inputs
 

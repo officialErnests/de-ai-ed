@@ -22,6 +22,7 @@ const SAVE_PATH = "user://saves/"
 @export var spiders_batches: SpinBox
 @export var spiders_per_batch: SpinBox
 @export var keep_best: CheckBox
+@export var random_spawn: CheckBox
 @export var auto_save_interval: SpinBox
 @export var brain_update_interval: SpinBox
 @export_category("Rewards")
@@ -74,6 +75,8 @@ var fullscreen = false
 
 var preview_spider_loaded = false
 var preview_best_spider = null
+var random_spawn_direction := Vector3.ZERO
+var random_goal_position = []
 
 func _ready() -> void:
 	resetStatsArr()
@@ -151,7 +154,9 @@ func resetStatsArr():
 		"spiders_batches" = spiders_batches.value,
 		"spiders_per_batch" = spiders_per_batch.value,
 		"keep_best" = keep_best.button_pressed,
+		"random_spawn" = random_spawn.button_pressed,
 		"auto_save_interval" = auto_save_interval.value,
+		"brain_update_interval" = brain_update_interval.value,
 
 		#rewards
 		"ground_height" = ground_height.value,
@@ -260,6 +265,8 @@ func loadFile(p_path):
 	spiders_per_batch.value = stats_arr["spiders_per_batch"]
 	keep_best.button_pressed = stats_arr["keep_best"]
 	auto_save_interval.value = stats_arr["auto_save_interval"]
+	random_spawn.button_pressed = stats_arr["random_spawn"]
+	brain_update_interval.value = stats_arr["brain_update_interval"]
 	ground_height.value = stats_arr["ground_height"]
 	ground_pain.value = stats_arr["ground_pain"]
 	random_goal.button_pressed = stats_arr["random_goal"]
@@ -315,6 +322,10 @@ func startRound():
 func trainLoop():
 	intss += 1
 	startRound()
+	random_spawn_direction = Vector3(randf_range(-PI, PI), randf_range(-PI, PI), randf_range(-PI, PI))
+	random_goal_position.clear()
+	for i in range(10):
+		random_goal_position.append(Vector3(randf_range(-1, 1), 0, randf_range(-1, 1)).normalized())
 
 	if spiders_arr.is_empty():
 		summonSpiders()
@@ -339,6 +350,7 @@ func trainLoop():
 		stats_arr["spiders_per_batch"] = spiders_per_batch.value
 		stats_arr["keep_best"] = keep_best.button_pressed
 		stats_arr["auto_save_interval"] = auto_save_interval.value
+		stats_arr["brain_update_interval"] = brain_update_interval.value
 		stats_arr["ground_height"] = ground_height.value
 		stats_arr["ground_pain"] = ground_pain.value
 		stats_arr["random_goal"] = random_goal.button_pressed
@@ -348,6 +360,7 @@ func trainLoop():
 		stats_arr["hidden_layers"] = hidden_layers.value
 		stats_arr["neurons_per_layer"] = neurons_per_layer.value
 		stats_arr["memory_neurons"] = memory_neurons.value
+		stats_arr["random_spawn"] = random_spawn.button_pressed
 
 		if fmod(intss, auto_save_interval.value) == 0:
 			stats_arr["spider_saves"].append(
@@ -414,13 +427,17 @@ func spawnSpider(col_layer, y_indx, p_loaded_brain, p_flavoring):
 	temp_spider.NEURONS_IN_LAYER = stats_arr["neurons_per_layer"]
 	temp_spider.MEMOR_NEURON_COUNT = stats_arr["memory_neurons"]
 
-	add_child(temp_spider)
 	if spiders_arr.is_empty():
 		preview_best_spider = temp_spider
 		if not preview_spider_loaded:
 			temp_spider.setMain()
 	spiders_arr.append(temp_spider)
-	spiders_arr.brain_update_interval = brain_update_interval
+	if random_spawn.button_pressed:
+		temp_spider.randomize(random_spawn_direction)
+	temp_spider.random_goal_seed = random_goal_position
+	temp_spider.brain_update_interval = brain_update_interval.value
+	
+	add_child(temp_spider)
 
 class WeightedRandom:
 	var arr_probablity
