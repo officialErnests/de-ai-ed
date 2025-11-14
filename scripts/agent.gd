@@ -28,7 +28,7 @@ var random_goal: bool
 var goal_distance: float
 var goal_reward: float
 var goal_distance_reward: float
-
+var brain_update_interval: float = 0.1
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -39,7 +39,7 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	timesss += delta
-	if timesss > 0.1:
+	if timesss > brain_update_interval:
 		timesss = 0
 		var calculation = calculate(spider.getData())
 		var upper_leg = []

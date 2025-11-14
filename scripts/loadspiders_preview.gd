@@ -13,9 +13,18 @@ func _process(delta: float) -> void:
 
 func spawnSpider(p_loaded_brain):
 	var temp_spider = preload_spider.instantiate()
-	temp_spider.position = Vector3.ZERO
 	temp_spider.loadBrain(p_loaded_brain)
+	temp_spider.position = Vector3.ZERO
 	spider = temp_spider
+	temp_spider.get_node("Skeleton3D/PhysicalBoneSimulator3D").setCollLayers(31)
+	temp_spider.setMain()
+	add_child(temp_spider)
 	
 func deleteSpider():
 	spider.queue_free()
+
+func setCollLayers(p_layer):
+	for iter_bone in get_children().filter(func(x): return x is PhysicalBone3D):
+		iter_bone.set_collision_layer_value(1, false)
+		iter_bone.set_collision_layer_value(p_layer, true)
+		iter_bone.set_collision_mask_value(p_layer, true)

@@ -23,6 +23,7 @@ const SAVE_PATH = "user://saves/"
 @export var spiders_per_batch: SpinBox
 @export var keep_best: CheckBox
 @export var auto_save_interval: SpinBox
+@export var brain_update_interval: SpinBox
 @export_category("Rewards")
 @export var ground_height: SpinBox
 @export var ground_pain: SpinBox
@@ -50,20 +51,20 @@ const SAVE_PATH = "user://saves/"
 @export var load_preview_button: Button
 @export var load_spider_int: SpinBox
 @export var load_spider_button: Button
-@export_category("Others")
-@export var timer: Timer
-@export var node_visualiser: Node
-@export var generation_count: Label
+@export_category("Preview")
+@export var preview_loader: Node3D
+@export var preview_viewport_control: Control
+@export var preview_fullscreen: Button
 @export_category("Graphs")
 @export var graph_min_node: Node3D
 @export var graph_avg_node: Node3D
 @export var graph_max_node: Node3D
 @export var graph_spiders: Node3D
 @export var graph_time: Node3D
-@export_category("Tools")
-@export var preview_loader: Node3D
-@export var preview_viewport_control: Control
-@export var preview_fullscreen: Button
+@export_category("Others")
+@export var timer: Timer
+@export var node_visualiser: Node
+@export var generation_count: Label
 var intss = 0
 var spiders_arr = []
 var stats_arr
@@ -93,7 +94,9 @@ func _ready() -> void:
 	graph_show_avg.pressed.connect(graphShowAvg)
 	graph_show_min.pressed.connect(graphShowMin)
 
-	preview_fullscreen.pressed.connect(previewFullscreenToggle)
+	load_preview_button.pressed.connect(spiderSaveLoad)
+
+	preview_fullscreen.pressed.connect(spiderSaveLoad)
 
 	refreshFiles()
 	refreshGraphs()
@@ -102,22 +105,31 @@ func unloadPreview():
 	preview_spider_loaded = false
 	if preview_best_spider: preview_best_spider.setMain()
 	preview_loader.deleteSpider()
+	#TEST /\
 	#DONE /\
 
 func loadPreview(p_spider_to_load):
+	if preview_spider_loaded:
+		preview_loader.deleteSpider()
 	preview_spider_loaded = true
 	if preview_best_spider: preview_best_spider.setSub()
 	preview_loader.spawnSpider(p_spider_to_load)
+	#TEST /\
 	#DONE /\
 
+func spiderSaveLoad():
+	if stats_arr["spider_saves"].size() <= load_preview_int.value: return
+	loadPreview(stats_arr["spider_saves"][load_preview_int.value - 1]["brain"])
+	#TEST /\
+
 func refreshPreviews():
-	pass
-	#Figure out what tf is going on w tool declerations XD
-	#DOING /\
+	load_preview_int.max_value = stats_arr["spider_saves"].size()
+	load_preview_int.value = min(load_preview_int.value, stats_arr["spider_saves"].size())
+	#TEST /\
+	#DONE /\
 
 func previewFullscreenToggle():
 	fullscreen = not fullscreen
-	print(fullscreen)
 	if fullscreen:
 		preview_fullscreen.anchor_top = 1
 		preview_fullscreen.anchor_bottom = 1
@@ -157,6 +169,7 @@ func resetStatsArr():
 		"generation_statistics" = [],
 		"spider_saves" = [],
 	}
+	refreshPreviews()
 
 func graphShowSpiders(): graph_spiders.visible = graph_show_spiders.button_pressed
 func graphShowTime(): graph_time.visible = graph_show_time.button_pressed
@@ -256,6 +269,7 @@ func loadFile(p_path):
 	hidden_layers.value = stats_arr["hidden_layers"]
 	neurons_per_layer.value = stats_arr["neurons_per_layer"]
 	memory_neurons.value = stats_arr["memory_neurons"]
+	refreshPreviews()
 
 	intss = int(json_loaded_ai[0]["generation"])
 	clear_spiders()
@@ -353,6 +367,7 @@ func trainLoop():
 				"spd" = spiders_per_batch.value,
 			}
 		)
+		refreshPreviews()
 		refreshGraphs()
 
 		modifySummon(randomm_picker)
@@ -405,6 +420,7 @@ func spawnSpider(col_layer, y_indx, p_loaded_brain, p_flavoring):
 		if not preview_spider_loaded:
 			temp_spider.setMain()
 	spiders_arr.append(temp_spider)
+	spiders_arr.brain_update_interval = brain_update_interval
 
 class WeightedRandom:
 	var arr_probablity
