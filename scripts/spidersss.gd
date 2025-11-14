@@ -99,7 +99,7 @@ func _ready() -> void:
 
 	load_preview_button.pressed.connect(spiderSaveLoad)
 
-	preview_fullscreen.pressed.connect(spiderSaveLoad)
+	preview_fullscreen.pressed.connect(refreshPreviews)
 
 	refreshFiles()
 	refreshGraphs()
@@ -116,7 +116,7 @@ func loadPreview(p_spider_to_load):
 		preview_loader.deleteSpider()
 	preview_spider_loaded = true
 	if preview_best_spider: preview_best_spider.setSub()
-	preview_loader.spawnSpider(p_spider_to_load)
+	preview_loader.spawnSpider(p_spider_to_load, stats_arr)
 	#TEST /\
 	#DONE /\
 
