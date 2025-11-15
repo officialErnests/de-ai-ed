@@ -23,7 +23,6 @@ const SAVE_PATH = "user://saves/"
 @export var spiders_per_batch: SpinBox
 @export var keep_best: CheckBox
 @export var random_spawn: CheckBox
-@export var auto_save_interval: SpinBox
 @export var brain_update_interval: SpinBox
 @export_category("Rewards")
 @export var ground_height: SpinBox
@@ -43,6 +42,7 @@ const SAVE_PATH = "user://saves/"
 @export var graph_show_avg: CheckBox
 @export var graph_show_min: CheckBox
 @export_category("Tools")
+@export var auto_save_interval: SpinBox
 @export var timelapse_time: SpinBox
 @export var timelapse_button: Button
 @export var tool_viewer: Button
@@ -57,6 +57,7 @@ const SAVE_PATH = "user://saves/"
 @export var preview_loader: Node3D
 @export var preview_viewport_control: Control
 @export var preview_fullscreen: Button
+@export var preview_text: Label
 @export_category("Graphs")
 @export var graph_min_node: Node3D
 @export var graph_avg_node: Node3D
@@ -78,9 +79,12 @@ var preview_spider_loaded = false
 var preview_best_spider = null
 var random_spawn_direction := Vector3.ZERO
 var random_goal_position = []
+var is_timelapse_playing = false
 
 func _ready() -> void:
 	resetStatsArr()
+
+	preview_loader.labeler = preview_text
 
 	generation_count.text = "Awaiting start"
 	timer.timeout.connect(trainLoop)
@@ -98,20 +102,40 @@ func _ready() -> void:
 	graph_show_avg.pressed.connect(graphShowAvg)
 	graph_show_min.pressed.connect(graphShowMin)
 
+	timelapse_button.pressed.connect(timelapsePressed)
 	load_preview_button.pressed.connect(spiderSaveLoad)
 	unload_preview_button.pressed.connect(unloadPreview)
 
-	preview_fullscreen.pressed.connect(refreshPreviews)
+	preview_fullscreen.pressed.connect(previewFullscreenToggle)
 
 	refreshFiles()
 	refreshGraphs()
 
+func timelapsePressed() -> void:
+	if is_timelapse_playing:
+		is_timelapse_playing = false
+		preview_spider_loaded = false
+		preview_loader.endPreview()
+		setCurentBestPreview()
+	else:
+		preview_spider_loaded = true
+		if preview_best_spider: preview_best_spider.setSub()
+		is_timelapse_playing = true
+		if await preview_loader.startPreview(stats_arr, timelapse_time.value):
+			if preview_best_spider: preview_best_spider.setMain()
+			is_timelapse_playing = false
+
 func unloadPreview():
 	preview_spider_loaded = false
-	if preview_best_spider: preview_best_spider.setMain()
+	setCurentBestPreview()
 	preview_loader.deleteSpider()
-	#TEST /\
-	#DONE /\
+
+func setCurentBestPreview():
+	if preview_best_spider:
+		preview_best_spider.setMain()
+		preview_text.text = "Curently previewing: Curent best"
+	else:
+		preview_text.text = "Curently previewing: None"
 
 func loadPreview(p_spider_to_load):
 	if preview_spider_loaded:
@@ -119,19 +143,15 @@ func loadPreview(p_spider_to_load):
 	preview_spider_loaded = true
 	if preview_best_spider: preview_best_spider.setSub()
 	preview_loader.spawnSpider(p_spider_to_load, stats_arr)
-	#TEST /\
-	#DONE /\
 
 func spiderSaveLoad():
 	if stats_arr["spider_saves"].size() < load_preview_int.value: return
+	preview_text.text = "Curently previewing: loaded gen " + str(stats_arr["spider_saves"][floor(load_preview_int.value - 1)]["gen"])
 	loadPreview(stats_arr["spider_saves"][floor(load_preview_int.value - 1)]["brain"])
-	#TEST /\
 
 func refreshPreviews():
 	load_preview_int.max_value = stats_arr["spider_saves"].size()
 	load_preview_int.value = min(load_preview_int.value, stats_arr["spider_saves"].size())
-	#TEST /\
-	#DONE /\
 
 func previewFullscreenToggle():
 	fullscreen = not fullscreen
@@ -396,6 +416,7 @@ func modifySummon(p_randomm_picker: WeightedRandom) -> void:
 			spawnSpider(x + 2, y, p_randomm_picker.getRandom(), true)
 	if not preview_spider_loaded:
 		preview_best_spider.setMain()
+		preview_text.text = "Curently previewing: Curent best"
 
 func summonSpiders() -> void:
 	for y in range(spiders_batches.value):
@@ -431,6 +452,7 @@ func spawnSpider(col_layer, y_indx, p_loaded_brain, p_flavoring):
 	temp_spider.NEURONS_IN_LAYER = stats_arr["neurons_per_layer"]
 	temp_spider.MEMOR_NEURON_COUNT = stats_arr["memory_neurons"]
 
+	add_child(temp_spider)
 	if spiders_arr.is_empty():
 		preview_best_spider = temp_spider
 	spiders_arr.append(temp_spider)
@@ -439,7 +461,6 @@ func spawnSpider(col_layer, y_indx, p_loaded_brain, p_flavoring):
 	temp_spider.random_goal_seed = random_goal_position
 	temp_spider.brain_update_interval = brain_update_interval.value
 	
-	add_child(temp_spider)
 
 class WeightedRandom:
 	var arr_probablity

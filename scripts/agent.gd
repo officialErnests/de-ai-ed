@@ -90,7 +90,7 @@ func rVector3D():
 	return Vector3(randf_range(-1, 1), randf_range(-1, 1), randf_range(-1, 1))
 
 func genGoal():
-	if random_goal:
+	if random_goal and not random_goal_seed.is_empty():
 		goal.global_position = spider_skel.global_position * Vector3(1, 0, 1) + Vector3(0, 1, 0) + random_goal_seed[random_goal_index] * goal_distance
 		random_goal_index += 1
 	else:

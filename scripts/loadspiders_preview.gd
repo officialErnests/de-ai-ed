@@ -5,13 +5,37 @@ var preload_spider = preload("res://scenes/spider.tscn")
 var spider
 @export var cam_holder: Node3D
 var track_position = null
+signal StopLoop
+var labeler: Label = null
 
-func _physics_process(delta: float) -> void:
+func _process(delta: float) -> void:
 	cam_holder.rotate_y(delta * 0.25)
 	if track_position: cam_holder.global_position = track_position
-	if spider: cam_holder.global_position = spider.get_node("Skeleton3D/PhysicalBoneSimulator3D").global_position
+	if spider: cam_holder.global_position += (spider.get_node("Skeleton3D/PhysicalBoneSimulator3D").global_position - cam_holder.global_position) * delta
 
-func spawnSpider(p_loaded_brain, stats_arr):
+func startPreview(p_stats_arr, p_time_interval) -> bool:
+	StopLoop.emit()
+	return await previewLoop(p_stats_arr, p_time_interval)
+
+func endPreview() -> void:
+	StopLoop.emit()
+
+func previewLoop(p_stats_arr, p_time_interval, p_index = 0) -> bool:
+	var stopped = [false]
+	StopLoop.connect(func():
+		deleteSpider()
+		stopped[0] = true)
+	deleteSpider()
+	if p_stats_arr["spider_saves"].size() > p_index:
+		labeler.text = "Curently previewing: recap gen " + str(p_stats_arr["spider_saves"][p_index]["gen"])
+		spawnSpider(p_stats_arr["spider_saves"][p_index]["brain"], p_stats_arr)
+		await get_tree().create_timer(p_time_interval).timeout
+		if stopped[0]:
+			return false
+		return await previewLoop(p_stats_arr, p_time_interval, p_index + 1)
+	else:
+		return true
+func spawnSpider(p_loaded_brain, stats_arr) -> void:
 	var temp_spider = preload_spider.instantiate()
 	temp_spider.loadBrain(p_loaded_brain)
 	temp_spider.position = Vector3.ZERO
