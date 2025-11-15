@@ -105,11 +105,30 @@ func _ready() -> void:
 	timelapse_button.pressed.connect(timelapsePressed)
 	load_preview_button.pressed.connect(spiderSaveLoad)
 	unload_preview_button.pressed.connect(unloadPreview)
+	load_spider_button.pressed.connect(loadGeneration)
 
 	preview_fullscreen.pressed.connect(previewFullscreenToggle)
 
 	refreshFiles()
 	refreshGraphs()
+
+
+func loadGeneration():
+	if stats_arr["spider_saves"].size() < load_spider_int.value: return
+	loadFromLoadedFile(load_spider_int.value - 1)
+
+func loadFromLoadedFile(p_array_int):
+	stats_arr["generation_statistics"].resize(p_array_int + 1)
+	stats_arr["spider_saves"].resize(p_array_int + 1)
+	refreshPreviews()
+
+	intss = stats_arr["spider_saves"][p_array_int]["gen"]
+	clear_spiders()
+	best_spider = stats_arr["spider_saves"][p_array_int]["brain"]
+	loadSpiders(best_spider)
+	refreshGraphs()
+	startRound()
+
 
 func timelapsePressed() -> void:
 	if is_timelapse_playing:
@@ -152,6 +171,8 @@ func spiderSaveLoad():
 func refreshPreviews():
 	load_preview_int.max_value = stats_arr["spider_saves"].size()
 	load_preview_int.value = min(load_preview_int.value, stats_arr["spider_saves"].size())
+	load_spider_int.max_value = stats_arr["spider_saves"].size()
+	load_spider_int.value = min(load_spider_int.value, stats_arr["spider_saves"].size())
 
 func previewFullscreenToggle():
 	fullscreen = not fullscreen
@@ -452,14 +473,14 @@ func spawnSpider(col_layer, y_indx, p_loaded_brain, p_flavoring):
 	temp_spider.NEURONS_IN_LAYER = stats_arr["neurons_per_layer"]
 	temp_spider.MEMOR_NEURON_COUNT = stats_arr["memory_neurons"]
 
+	temp_spider.random_goal_seed = random_goal_position
+	temp_spider.brain_update_interval = brain_update_interval.value
 	add_child(temp_spider)
 	if spiders_arr.is_empty():
 		preview_best_spider = temp_spider
 	spiders_arr.append(temp_spider)
 	if random_spawn.button_pressed:
 		temp_spider.randomize(random_spawn_direction)
-	temp_spider.random_goal_seed = random_goal_position
-	temp_spider.brain_update_interval = brain_update_interval.value
 	
 
 class WeightedRandom:
