@@ -28,7 +28,6 @@ func _physics_process(delta: float) -> void:
 	else:
 		main_body.material_override.albedo_color = Color(1, 1, 1, 1)
 
-
 func setCollLayers(p_layer):
 	for iter_bone in get_children().filter(func(x): return x is PhysicalBone3D):
 		iter_bone.set_collision_layer_value(1, false)

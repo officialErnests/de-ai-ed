@@ -22,7 +22,9 @@ const SAVE_PATH = "user://saves/"
 @export var spiders_batches: SpinBox
 @export var spiders_per_batch: SpinBox
 @export var keep_best: CheckBox
+@export var random_spawn: CheckBox
 @export var auto_save_interval: SpinBox
+@export var brain_update_interval: SpinBox
 @export_category("Rewards")
 @export var ground_height: SpinBox
 @export var ground_pain: SpinBox
@@ -40,23 +42,42 @@ const SAVE_PATH = "user://saves/"
 @export var graph_show_max: CheckBox
 @export var graph_show_avg: CheckBox
 @export var graph_show_min: CheckBox
-@export_category("Others")
-@export var timer: Timer
-#MAX 31 SPIDERS
-@export var node_visualiser: Node
-@export var generation_count: Label
+@export_category("Tools")
+@export var timelapse_time: SpinBox
+@export var timelapse_button: Button
+@export var tool_viewer: Button
+@export var tool_drager: Button
+@export var tool_killer: Button
+@export var load_preview_int: SpinBox
+@export var load_preview_button: Button
+@export var unload_preview_button: Button
+@export var load_spider_int: SpinBox
+@export var load_spider_button: Button
+@export_category("Preview")
+@export var preview_loader: Node3D
+@export var preview_viewport_control: Control
+@export var preview_fullscreen: Button
 @export_category("Graphs")
 @export var graph_min_node: Node3D
 @export var graph_avg_node: Node3D
 @export var graph_max_node: Node3D
 @export var graph_spiders: Node3D
 @export var graph_time: Node3D
-
+@export_category("Others")
+@export var timer: Timer
+@export var node_visualiser: Node
+@export var generation_count: Label
 var intss = 0
 var spiders_arr = []
 var stats_arr
 var best_spider = []
 var load_button_arr: Array[Control] = []
+var fullscreen = false
+
+var preview_spider_loaded = false
+var preview_best_spider = null
+var random_spawn_direction := Vector3.ZERO
+var random_goal_position = []
 
 func _ready() -> void:
 	resetStatsArr()
@@ -77,8 +98,53 @@ func _ready() -> void:
 	graph_show_avg.pressed.connect(graphShowAvg)
 	graph_show_min.pressed.connect(graphShowMin)
 
+	load_preview_button.pressed.connect(spiderSaveLoad)
+	unload_preview_button.pressed.connect(unloadPreview)
+
+	preview_fullscreen.pressed.connect(refreshPreviews)
+
 	refreshFiles()
 	refreshGraphs()
+
+func unloadPreview():
+	preview_spider_loaded = false
+	if preview_best_spider: preview_best_spider.setMain()
+	preview_loader.deleteSpider()
+	#TEST /\
+	#DONE /\
+
+func loadPreview(p_spider_to_load):
+	if preview_spider_loaded:
+		preview_loader.deleteSpider()
+	preview_spider_loaded = true
+	if preview_best_spider: preview_best_spider.setSub()
+	preview_loader.spawnSpider(p_spider_to_load, stats_arr)
+	#TEST /\
+	#DONE /\
+
+func spiderSaveLoad():
+	if stats_arr["spider_saves"].size() < load_preview_int.value: return
+	loadPreview(stats_arr["spider_saves"][floor(load_preview_int.value - 1)]["brain"])
+	#TEST /\
+
+func refreshPreviews():
+	load_preview_int.max_value = stats_arr["spider_saves"].size()
+	load_preview_int.value = min(load_preview_int.value, stats_arr["spider_saves"].size())
+	#TEST /\
+	#DONE /\
+
+func previewFullscreenToggle():
+	fullscreen = not fullscreen
+	if fullscreen:
+		preview_fullscreen.anchor_top = 1
+		preview_fullscreen.anchor_bottom = 1
+		preview_viewport_control.anchor_left = 0
+		preview_viewport_control.anchor_top = 0
+	else:
+		preview_fullscreen.anchor_top = 0.7
+		preview_fullscreen.anchor_bottom = 0.7
+		preview_viewport_control.anchor_left = 0.7
+		preview_viewport_control.anchor_top = 0.7
 
 func resetStatsArr():
 	stats_arr = {
@@ -90,7 +156,9 @@ func resetStatsArr():
 		"spiders_batches" = spiders_batches.value,
 		"spiders_per_batch" = spiders_per_batch.value,
 		"keep_best" = keep_best.button_pressed,
+		"random_spawn" = random_spawn.button_pressed,
 		"auto_save_interval" = auto_save_interval.value,
+		"brain_update_interval" = brain_update_interval.value,
 
 		#rewards
 		"ground_height" = ground_height.value,
@@ -108,6 +176,7 @@ func resetStatsArr():
 		"generation_statistics" = [],
 		"spider_saves" = [],
 	}
+	refreshPreviews()
 
 func graphShowSpiders(): graph_spiders.visible = graph_show_spiders.button_pressed
 func graphShowTime(): graph_time.visible = graph_show_time.button_pressed
@@ -198,6 +267,8 @@ func loadFile(p_path):
 	spiders_per_batch.value = stats_arr["spiders_per_batch"]
 	keep_best.button_pressed = stats_arr["keep_best"]
 	auto_save_interval.value = stats_arr["auto_save_interval"]
+	random_spawn.button_pressed = stats_arr["random_spawn"] if stats_arr.has("random_spawn") else false
+	brain_update_interval.value = stats_arr["brain_update_interval"] if stats_arr.has("brain_update_interval") else 0.1
 	ground_height.value = stats_arr["ground_height"]
 	ground_pain.value = stats_arr["ground_pain"]
 	random_goal.button_pressed = stats_arr["random_goal"]
@@ -207,6 +278,7 @@ func loadFile(p_path):
 	hidden_layers.value = stats_arr["hidden_layers"]
 	neurons_per_layer.value = stats_arr["neurons_per_layer"]
 	memory_neurons.value = stats_arr["memory_neurons"]
+	refreshPreviews()
 
 	intss = int(json_loaded_ai[0]["generation"])
 	clear_spiders()
@@ -252,6 +324,10 @@ func startRound():
 func trainLoop():
 	intss += 1
 	startRound()
+	random_spawn_direction = Vector3(randf_range(-PI, PI), randf_range(-PI, PI), randf_range(-PI, PI))
+	random_goal_position.clear()
+	for i in range(10):
+		random_goal_position.append(Vector3(randf_range(-1, 1), 0, randf_range(-1, 1)).normalized())
 
 	if spiders_arr.is_empty():
 		summonSpiders()
@@ -276,6 +352,7 @@ func trainLoop():
 		stats_arr["spiders_per_batch"] = spiders_per_batch.value
 		stats_arr["keep_best"] = keep_best.button_pressed
 		stats_arr["auto_save_interval"] = auto_save_interval.value
+		stats_arr["brain_update_interval"] = brain_update_interval.value
 		stats_arr["ground_height"] = ground_height.value
 		stats_arr["ground_pain"] = ground_pain.value
 		stats_arr["random_goal"] = random_goal.button_pressed
@@ -285,6 +362,7 @@ func trainLoop():
 		stats_arr["hidden_layers"] = hidden_layers.value
 		stats_arr["neurons_per_layer"] = neurons_per_layer.value
 		stats_arr["memory_neurons"] = memory_neurons.value
+		stats_arr["random_spawn"] = random_spawn.button_pressed
 
 		if fmod(intss, auto_save_interval.value) == 0:
 			stats_arr["spider_saves"].append(
@@ -304,6 +382,7 @@ func trainLoop():
 				"spd" = spiders_per_batch.value,
 			}
 		)
+		refreshPreviews()
 		refreshGraphs()
 
 		modifySummon(randomm_picker)
@@ -315,6 +394,8 @@ func modifySummon(p_randomm_picker: WeightedRandom) -> void:
 				spawnSpider(x + 2, y, p_randomm_picker.getMax(), false)
 				continue
 			spawnSpider(x + 2, y, p_randomm_picker.getRandom(), true)
+	if not preview_spider_loaded:
+		preview_best_spider.setMain()
 
 func summonSpiders() -> void:
 	for y in range(spiders_batches.value):
@@ -350,10 +431,15 @@ func spawnSpider(col_layer, y_indx, p_loaded_brain, p_flavoring):
 	temp_spider.NEURONS_IN_LAYER = stats_arr["neurons_per_layer"]
 	temp_spider.MEMOR_NEURON_COUNT = stats_arr["memory_neurons"]
 
-	add_child(temp_spider)
 	if spiders_arr.is_empty():
-		temp_spider.setMain()
+		preview_best_spider = temp_spider
 	spiders_arr.append(temp_spider)
+	if random_spawn.button_pressed:
+		temp_spider.randomize(random_spawn_direction)
+	temp_spider.random_goal_seed = random_goal_position
+	temp_spider.brain_update_interval = brain_update_interval.value
+	
+	add_child(temp_spider)
 
 class WeightedRandom:
 	var arr_probablity
