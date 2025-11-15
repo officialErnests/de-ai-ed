@@ -65,6 +65,15 @@ func halfUpdate() -> void:
 	value_parent.add_child(graph_value_text)
 	graph_meshes_arr.append(graph_value_text)
 
+	var graph_index_text: Node3D = text_packed_scene.instantiate()
+	graph_index_text.value = str(value_dict.keys()[-1])
+	graph_index_text.update()
+	graph_index_text.position.x = graph_value_mesh.position.x
+	graph_index_text.position.y = -0.1
+	graph_index_text.rotate_z(PI / -2)
+	value_parent.add_child(graph_index_text)
+	graph_meshes_arr.append(graph_index_text)
+
 func fullReset() -> void:
 	for iter_grhap_mesh in graph_meshes_arr: iter_grhap_mesh.queue_free()
 	graph_meshes_arr.clear()
@@ -100,3 +109,12 @@ func fullReset() -> void:
 		graph_value_text.position.y = iter_item_value + 0.1 + 0.2
 		value_parent.add_child(graph_value_text)
 		graph_meshes_arr.append(graph_value_text)
+
+		var graph_index_text: Node3D = text_packed_scene.instantiate()
+		graph_index_text.value = str(iter_item_key)
+		graph_index_text.update()
+		graph_index_text.position.x = graph_value_mesh.position.x
+		graph_index_text.position.y = -0.1
+		graph_index_text.rotate_z(PI / -2)
+		value_parent.add_child(graph_index_text)
+		graph_meshes_arr.append(graph_index_text)

@@ -62,10 +62,12 @@ func randomize(p_rand):
 
 
 func setSub():
+	text.layers = 1
 	for mesh: MeshInstance3D in meshes_arr:
 		mesh.layers = 1
 
 func setMain():
+	text.layers = 3
 	for mesh: MeshInstance3D in meshes_arr:
 		mesh.layers = 3
 
@@ -91,6 +93,7 @@ func rVector3D():
 
 func genGoal():
 	if random_goal:
+		if random_goal_index >= random_goal_seed.size(): random_goal_index = 0
 		goal.global_position = spider_skel.global_position * Vector3(1, 0, 1) + Vector3(0, 1, 0) + random_goal_seed[random_goal_index] * goal_distance
 		random_goal_index += 1
 	else:

@@ -343,19 +343,6 @@ max_value = 10.0
 step = 0.1
 value = 0.5
 
-[node name="AutoSaveInterval" type="HBoxContainer" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Simulation/Panel/VBoxContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Simulation/Panel/VBoxContainer/AutoSaveInterval"]
-layout_mode = 2
-text = "Auto save interval"
-
-[node name="SpinBox" type="SpinBox" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Simulation/Panel/VBoxContainer/AutoSaveInterval"]
-layout_mode = 2
-min_value = 1.0
-max_value = 1000.0
-value = 25.0
-
 [node name="BrainUpdate" type="HBoxContainer" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Simulation/Panel/VBoxContainer"]
 layout_mode = 2
 
@@ -733,6 +720,19 @@ layout_mode = 2
 text = "Killer
 "
 
+[node name="AutoSaveInterval" type="HBoxContainer" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Tools/Panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Tools/Panel/VBoxContainer/AutoSaveInterval"]
+layout_mode = 2
+text = "Auto save interval"
+
+[node name="SpinBox" type="SpinBox" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Tools/Panel/VBoxContainer/AutoSaveInterval"]
+layout_mode = 2
+min_value = 1.0
+max_value = 1000.0
+value = 25.0
+
 [node name="HBoxContainer3" type="HBoxContainer" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Tools/Panel/VBoxContainer"]
 layout_mode = 2
 
@@ -786,6 +786,7 @@ text = "Load spider"
 
 [node name="SpinBox" type="SpinBox" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Tools/Panel/VBoxContainer/HBoxContainer4"]
 layout_mode = 2
+min_value = 1.0
 max_value = 1.0
 value = 1.0
 
@@ -849,13 +850,23 @@ anchor_left = 0.7
 anchor_top = 0.7
 anchor_right = 1.0
 anchor_bottom = 0.7
-offset_top = -41.0
-offset_bottom = -10.0
+offset_top = -43.0
+offset_bottom = -12.0
 grow_horizontal = 0
 grow_vertical = 0
 text = "Fullscreen"
 
-[node name="Spidersss" type="Node3D" parent="." node_paths=PackedStringArray("start", "pause_button", "force_stop_button", "save_button", "save_text", "open_button", "open_dialogue", "refresh_button", "load_button_storage", "training_time", "mutation_chance", "mutation_amount", "spiders_batches", "spiders_per_batch", "keep_best", "random_spawn", "auto_save_interval", "brain_update_interval", "ground_height", "ground_pain", "random_goal", "goal_distance", "goal_reward", "goal_distance_reward", "hidden_layers", "neurons_per_layer", "memory_neurons", "graph_show_spiders", "graph_show_time", "graph_show_max", "graph_show_avg", "graph_show_min", "timelapse_time", "timelapse_button", "tool_viewer", "tool_drager", "tool_killer", "load_preview_int", "load_preview_button", "unload_preview_button", "load_spider_int", "load_spider_button", "preview_loader", "preview_viewport_control", "preview_fullscreen", "graph_min_node", "graph_avg_node", "graph_max_node", "graph_spiders", "graph_time", "timer", "node_visualiser", "generation_count")]
+[node name="Label" type="Label" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/MiniViewer/Button"]
+layout_mode = 1
+offset_top = 31.0
+offset_right = 66.0
+offset_bottom = 43.0
+theme_override_colors/font_color = Color(0.641934, 0.641934, 0.641934, 1)
+theme_override_font_sizes/font_size = 8
+text = "Curently playing:"
+vertical_alignment = 2
+
+[node name="Spidersss" type="Node3D" parent="." node_paths=PackedStringArray("start", "pause_button", "force_stop_button", "save_button", "save_text", "open_button", "open_dialogue", "refresh_button", "load_button_storage", "training_time", "mutation_chance", "mutation_amount", "spiders_batches", "spiders_per_batch", "keep_best", "random_spawn", "brain_update_interval", "ground_height", "ground_pain", "random_goal", "goal_distance", "goal_reward", "goal_distance_reward", "hidden_layers", "neurons_per_layer", "memory_neurons", "graph_show_spiders", "graph_show_time", "graph_show_max", "graph_show_avg", "graph_show_min", "auto_save_interval", "timelapse_time", "timelapse_button", "tool_viewer", "tool_drager", "tool_killer", "load_preview_int", "load_preview_button", "unload_preview_button", "load_spider_int", "load_spider_button", "preview_loader", "preview_viewport_control", "preview_fullscreen", "preview_text", "graph_min_node", "graph_avg_node", "graph_max_node", "graph_spiders", "graph_time", "timer", "node_visualiser", "generation_count")]
 script = ExtResource("7_tipki")
 start = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Main/Panel/VBoxContainer/Start")
 pause_button = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Main/Panel/VBoxContainer/Pause")
@@ -873,7 +884,6 @@ spiders_batches = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/
 spiders_per_batch = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Simulation/Panel/VBoxContainer/SpiderPerBatch/SpinBox")
 keep_best = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Simulation/Panel/VBoxContainer/KeepBest/CheckBox")
 random_spawn = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Simulation/Panel/VBoxContainer/RandomSpawn/CheckBox")
-auto_save_interval = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Simulation/Panel/VBoxContainer/AutoSaveInterval/SpinBox")
 brain_update_interval = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Simulation/Panel/VBoxContainer/BrainUpdate/SpinBox")
 ground_height = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Rewards/Panel/VBoxContainer/GroundHeight/SpinBox")
 ground_pain = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Rewards/Panel/VBoxContainer/Ground pain/SpinBox")
@@ -889,6 +899,7 @@ graph_show_time = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/
 graph_show_max = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Statistics/Panel/VBoxContainer/HBoxContainer3/CheckBox")
 graph_show_avg = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Statistics/Panel/VBoxContainer/HBoxContainer4/CheckBox")
 graph_show_min = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Statistics/Panel/VBoxContainer/HBoxContainer5/CheckBox")
+auto_save_interval = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Tools/Panel/VBoxContainer/AutoSaveInterval/SpinBox")
 timelapse_time = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Tools/Panel/VBoxContainer/HBoxContainer3/SpinBox")
 timelapse_button = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Tools/Panel/VBoxContainer/HBoxContainer3/Button")
 tool_viewer = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Tools/Panel/VBoxContainer/HBoxContainer/View")
@@ -902,6 +913,7 @@ load_spider_button = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/G
 preview_loader = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/MiniViewer/Control/SubViewportContainer/SubViewport/Loadspiders_preview")
 preview_viewport_control = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/MiniViewer/Control")
 preview_fullscreen = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/MiniViewer/Button")
+preview_text = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/MiniViewer/Button/Label")
 graph_min_node = NodePath("../Graphs/MinGraph")
 graph_avg_node = NodePath("../Graphs/AvgGraph")
 graph_max_node = NodePath("../Graphs/MaxGraph")
