@@ -33,7 +33,7 @@ func spawnSpider(p_loaded_brain, stats_arr):
 	spider = temp_spider
 	
 func deleteSpider():
-	spider.queue_free()
+	if spider: spider.queue_free()
 
 func setCollLayers(p_layer):
 	for iter_bone in get_children().filter(func(x): return x is PhysicalBone3D):

@@ -754,7 +754,7 @@ layout_mode = 2
 
 [node name="Label" type="Label" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Tools/Panel/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
-text = "Load preview"
+text = "Preview"
 
 [node name="SpinBox" type="SpinBox" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Tools/Panel/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
@@ -765,6 +765,10 @@ value = 1.0
 [node name="Button" type="Button" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Tools/Panel/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
 text = "Load"
+
+[node name="Button2" type="Button" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Tools/Panel/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "un-Load"
 
 [node name="Warning" type="Label" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Tools/Panel/VBoxContainer"]
 layout_mode = 2
@@ -851,7 +855,7 @@ grow_horizontal = 0
 grow_vertical = 0
 text = "Fullscreen"
 
-[node name="Spidersss" type="Node3D" parent="." node_paths=PackedStringArray("start", "pause_button", "force_stop_button", "save_button", "save_text", "open_button", "open_dialogue", "refresh_button", "load_button_storage", "training_time", "mutation_chance", "mutation_amount", "spiders_batches", "spiders_per_batch", "keep_best", "random_spawn", "auto_save_interval", "brain_update_interval", "ground_height", "ground_pain", "random_goal", "goal_distance", "goal_reward", "goal_distance_reward", "hidden_layers", "neurons_per_layer", "memory_neurons", "graph_show_spiders", "graph_show_time", "graph_show_max", "graph_show_avg", "graph_show_min", "timelapse_time", "timelapse_button", "tool_viewer", "tool_drager", "tool_killer", "load_preview_int", "load_preview_button", "load_spider_int", "load_spider_button", "preview_loader", "preview_viewport_control", "preview_fullscreen", "graph_min_node", "graph_avg_node", "graph_max_node", "graph_spiders", "graph_time", "timer", "node_visualiser", "generation_count")]
+[node name="Spidersss" type="Node3D" parent="." node_paths=PackedStringArray("start", "pause_button", "force_stop_button", "save_button", "save_text", "open_button", "open_dialogue", "refresh_button", "load_button_storage", "training_time", "mutation_chance", "mutation_amount", "spiders_batches", "spiders_per_batch", "keep_best", "random_spawn", "auto_save_interval", "brain_update_interval", "ground_height", "ground_pain", "random_goal", "goal_distance", "goal_reward", "goal_distance_reward", "hidden_layers", "neurons_per_layer", "memory_neurons", "graph_show_spiders", "graph_show_time", "graph_show_max", "graph_show_avg", "graph_show_min", "timelapse_time", "timelapse_button", "tool_viewer", "tool_drager", "tool_killer", "load_preview_int", "load_preview_button", "unload_preview_button", "load_spider_int", "load_spider_button", "preview_loader", "preview_viewport_control", "preview_fullscreen", "graph_min_node", "graph_avg_node", "graph_max_node", "graph_spiders", "graph_time", "timer", "node_visualiser", "generation_count")]
 script = ExtResource("7_tipki")
 start = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Main/Panel/VBoxContainer/Start")
 pause_button = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Main/Panel/VBoxContainer/Pause")
@@ -892,6 +896,7 @@ tool_drager = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Tool
 tool_killer = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Tools/Panel/VBoxContainer/HBoxContainer/Killer")
 load_preview_int = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Tools/Panel/VBoxContainer/HBoxContainer2/SpinBox")
 load_preview_button = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Tools/Panel/VBoxContainer/HBoxContainer2/Button")
+unload_preview_button = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Tools/Panel/VBoxContainer/HBoxContainer2/Button2")
 load_spider_int = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Tools/Panel/VBoxContainer/HBoxContainer4/SpinBox")
 load_spider_button = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Tools/Panel/VBoxContainer/HBoxContainer4/Button")
 preview_loader = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/MiniViewer/Control/SubViewportContainer/SubViewport/Loadspiders_preview")

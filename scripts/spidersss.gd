@@ -50,6 +50,7 @@ const SAVE_PATH = "user://saves/"
 @export var tool_killer: Button
 @export var load_preview_int: SpinBox
 @export var load_preview_button: Button
+@export var unload_preview_button: Button
 @export var load_spider_int: SpinBox
 @export var load_spider_button: Button
 @export_category("Preview")
@@ -98,6 +99,7 @@ func _ready() -> void:
 	graph_show_min.pressed.connect(graphShowMin)
 
 	load_preview_button.pressed.connect(spiderSaveLoad)
+	unload_preview_button.pressed.connect(unloadPreview)
 
 	preview_fullscreen.pressed.connect(refreshPreviews)
 
@@ -121,8 +123,8 @@ func loadPreview(p_spider_to_load):
 	#DONE /\
 
 func spiderSaveLoad():
-	if stats_arr["spider_saves"].size() <= load_preview_int.value: return
-	loadPreview(stats_arr["spider_saves"][load_preview_int.value - 1]["brain"])
+	if stats_arr["spider_saves"].size() < load_preview_int.value: return
+	loadPreview(stats_arr["spider_saves"][floor(load_preview_int.value - 1)]["brain"])
 	#TEST /\
 
 func refreshPreviews():
@@ -265,8 +267,8 @@ func loadFile(p_path):
 	spiders_per_batch.value = stats_arr["spiders_per_batch"]
 	keep_best.button_pressed = stats_arr["keep_best"]
 	auto_save_interval.value = stats_arr["auto_save_interval"]
-	random_spawn.button_pressed = stats_arr["random_spawn"]
-	brain_update_interval.value = stats_arr["brain_update_interval"]
+	random_spawn.button_pressed = stats_arr["random_spawn"] if stats_arr.has("random_spawn") else false
+	brain_update_interval.value = stats_arr["brain_update_interval"] if stats_arr.has("brain_update_interval") else 0.1
 	ground_height.value = stats_arr["ground_height"]
 	ground_pain.value = stats_arr["ground_pain"]
 	random_goal.button_pressed = stats_arr["random_goal"]
@@ -392,6 +394,8 @@ func modifySummon(p_randomm_picker: WeightedRandom) -> void:
 				spawnSpider(x + 2, y, p_randomm_picker.getMax(), false)
 				continue
 			spawnSpider(x + 2, y, p_randomm_picker.getRandom(), true)
+	if not preview_spider_loaded:
+		preview_best_spider.setMain()
 
 func summonSpiders() -> void:
 	for y in range(spiders_batches.value):
@@ -429,8 +433,6 @@ func spawnSpider(col_layer, y_indx, p_loaded_brain, p_flavoring):
 
 	if spiders_arr.is_empty():
 		preview_best_spider = temp_spider
-		if not preview_spider_loaded:
-			temp_spider.setMain()
 	spiders_arr.append(temp_spider)
 	if random_spawn.button_pressed:
 		temp_spider.randomize(random_spawn_direction)
