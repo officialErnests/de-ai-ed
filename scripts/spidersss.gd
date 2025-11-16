@@ -68,6 +68,8 @@ const SAVE_PATH = "user://saves/"
 @export var timer: Timer
 @export var node_visualiser: Node
 @export var generation_count: Label
+@export var pointer_mesh: MeshInstance3D
+@export var camera: Camera3D
 var intss = 0
 var spiders_arr = []
 var stats_arr
@@ -102,6 +104,9 @@ func _ready() -> void:
 	graph_show_avg.pressed.connect(graphShowAvg)
 	graph_show_min.pressed.connect(graphShowMin)
 
+	tool_viewer.pressed.connect(cursorView)
+	tool_drager.pressed.connect(cursorGrab)
+	tool_killer.pressed.connect(cursorKill)
 	timelapse_button.pressed.connect(timelapsePressed)
 	load_preview_button.pressed.connect(spiderSaveLoad)
 	unload_preview_button.pressed.connect(unloadPreview)
@@ -112,6 +117,26 @@ func _ready() -> void:
 	refreshFiles()
 	refreshGraphs()
 
+func canKill():
+	var res = 0
+	for spider in spiders_arr: if spider: res += 1
+	return res > 1
+	
+
+func cursorGrab():
+	camera.curent_tool = camera.Tool.GRAB
+	pointer_mesh.material_override.albedo_color = Color(0, 0, 1, 1)
+	pass
+
+func cursorView():
+	camera.curent_tool = camera.Tool.VIEW
+	pointer_mesh.material_override.albedo_color = Color(0, 1, 0, 1)
+	pass
+
+func cursorKill():
+	camera.curent_tool = camera.Tool.KILL
+	pointer_mesh.material_override.albedo_color = Color(1, 0, 0, 1)
+	pass
 
 func loadGeneration():
 	if stats_arr["spider_saves"].size() < load_spider_int.value: return
@@ -128,7 +153,6 @@ func loadFromLoadedFile(p_array_int):
 	loadSpiders(best_spider)
 	refreshGraphs()
 	startRound()
-
 
 func timelapsePressed() -> void:
 	if is_timelapse_playing:
@@ -336,7 +360,6 @@ func pauseTimer():
 		pause_button.text = "resume"
 		timer.paused = true
 
-
 func restart():
 	timer.paused = false
 	start.text = "Restart training"
@@ -350,7 +373,9 @@ func startTraining():
 	trainLoop()
 
 func clear_spiders():
-	for spider in spiders_arr: spider.queue_free()
+	for spider in spiders_arr:
+		if not spider: continue
+		spider.queue_free()
 	spiders_arr.clear()
 
 func forceEnd():
@@ -377,6 +402,7 @@ func trainLoop():
 		var point_arr = []
 		var creature_arr = []
 		for spider in spiders_arr:
+			if not spider: continue
 			point_arr.append(spider.getPoints())
 			creature_arr.append(spider.getBrain())
 		var randomm_picker = WeightedRandom.new(point_arr, creature_arr)
@@ -482,7 +508,6 @@ func spawnSpider(col_layer, y_indx, p_loaded_brain, p_flavoring):
 	if random_spawn.button_pressed:
 		temp_spider.randomize(random_spawn_direction)
 	
-
 class WeightedRandom:
 	var arr_probablity
 	var arr_index

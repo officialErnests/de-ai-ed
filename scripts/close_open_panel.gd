@@ -20,6 +20,7 @@ func clicked():
 	is_moving = true
 
 	is_open = not is_open
+	global.menu_open = is_open
  	
 	move()
 	

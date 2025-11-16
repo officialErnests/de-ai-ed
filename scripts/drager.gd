@@ -1,58 +1,88 @@
 extends Camera3D
 
+enum Tool {
+	VIEW,
+	GRAB,
+	KILL
+}
+
 @export var enabled = true
 @onready var pointer: Node3D = $Pointer
+@export var curent_tool := Tool.VIEW
+@export var main_node: Node
 
 var REACH = 100
-var drag_obj = null
-var drag_obj_offset = Vector3.ZERO
+var spider_selected = null
+var spider_selected_offset = Vector3.ZERO
+var just_selected = false
 var rotation_angle = 0
 var last_dist = 0
+var visible_pointer = false
 func _process(delta: float) -> void:
+	if global.menu_open:
+		pointer.visible = false
+	else:
+		pointer.visible = visible_pointer
 	if pointer.visible:
 		rotation_angle += delta
-		pointer.rotate_x(sin(rotation_angle) * 0.05 + 0.02)
-		pointer.rotate_y(sin(rotation_angle + 1) * 0.02 + 0.05)
-		pointer.rotate_z(sin(rotation_angle + 2) * 0.03 + 0.03)
+		pointer.rotate_x(sin(rotation_angle) * 0.05 * curent_tool + 0.02)
+		pointer.rotate_y(sin(rotation_angle + 1) * 0.02 * curent_tool + 0.05)
+		pointer.rotate_z(sin(rotation_angle + 2) * 0.03 * curent_tool + 0.03)
 
 		var intersection = curRaycast()
-
 		if intersection:
 			var mouse_position = get_viewport().get_mouse_position()
 			var ray_point_start = project_ray_origin(mouse_position)
 			last_dist = ray_point_start.distance_to(intersection['position'])
-
-			pointer.scale = Vector3.ONE * sqrt((intersection['position'] - ray_point_start).length()) * 0.5
-		
-			if drag_obj:
-				pointer.global_position = intersection['position'] + Vector3.UP
-				drag_obj.linear_velocity = (intersection['position'] + Vector3.UP - drag_obj.global_position + drag_obj_offset) * delta * 100
-			else:
-				pointer.global_position = intersection['position']
+			pointer.global_position = intersection['position']
 		else:
 			var mouse_position = get_viewport().get_mouse_position()
 			var ray_point_start = project_ray_origin(mouse_position)
-			if drag_obj:
-				pointer.global_position = ray_point_start + Vector3.UP + project_ray_normal(mouse_position) * last_dist
-				drag_obj.linear_velocity = (ray_point_start + Vector3.UP + project_ray_normal(mouse_position) * last_dist - drag_obj.global_position + drag_obj_offset) * delta * 100
+			pointer.global_position = ray_point_start + Vector3.UP + project_ray_normal(mouse_position) * last_dist
+		
+		pointerDetect(delta, intersection)
+
+func pointerDetect(delta, p_intersection):
+	match curent_tool:
+		Tool.VIEW:
+			if spider_selected:
+				if not just_selected: return
+				just_selected = false
+				main_node.loadPreview(spider_selected.get_parent().agent.getBrain())
 			else:
-				pointer.global_position = ray_point_start + Vector3.UP + project_ray_normal(mouse_position) * last_dist
+				just_selected = true
+		Tool.GRAB:
+			if spider_selected:
+				if p_intersection:
+					spider_selected.linear_velocity = (p_intersection['position'] + Vector3.UP - spider_selected.global_position + spider_selected_offset) * delta * 100
+				else:
+					var mouse_position = get_viewport().get_mouse_position()
+					var ray_point_start = project_ray_origin(mouse_position)
+					spider_selected.linear_velocity = (ray_point_start + Vector3.UP + project_ray_normal(mouse_position) * last_dist - spider_selected.global_position + spider_selected_offset) * delta * 100
+		Tool.KILL:
+			if spider_selected:
+				if main_node.canKill():
+					spider_selected.get_parent().agent.queue_free()
+					spider_selected = null
+				else:
+					spider_selected = null
+				
 func _input(event: InputEvent) -> void:
 	if Input.mouse_mode == Input.MOUSE_MODE_VISIBLE and enabled:
-		pointer.visible = true
+		visible_pointer = true
 		
 		if enabled and event is InputEventMouseButton:
 			if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-				if drag_obj:
-					drag_obj = null
+				if spider_selected:
+					spider_selected = null
 				else:
 					var intersection = curRaycast()
 					if intersection and intersection['collider'].is_in_group('Movable'):
-						drag_obj = intersection['collider']
-						drag_obj_offset = drag_obj.global_position - intersection['position']
+						spider_selected = intersection['collider']
+						spider_selected_offset = spider_selected.global_position - intersection['position']
 	else:
-		if not drag_obj:
-			pointer.visible = false
+		if not spider_selected:
+			visible_pointer = false
 
 func curRaycast():
 	var mouse_position = get_viewport().get_mouse_position()
