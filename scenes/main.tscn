@@ -876,6 +876,7 @@ vertical_alignment = 2
 
 [node name="Readme" type="CanvasLayer" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam"]
 layer = 2
+visible = false
 
 [node name="Panel" type="Panel" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Readme"]
 anchors_preset = -1
@@ -896,7 +897,6 @@ offset_right = -4.0
 offset_bottom = -10.0
 grow_horizontal = 2
 grow_vertical = 2
-scroll_vertical = 1096
 horizontal_scroll_mode = 0
 vertical_scroll_mode = 2
 
@@ -916,7 +916,8 @@ horizontal_alignment = 1
 [node name="smaller" type="Label" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Readme/Panel/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.76240367, 0.76240367, 0.76240367, 1)
-text = "aka Terry simulator 2000"
+text = "aka Terry simulator 2000
+also README.md is better"
 horizontal_alignment = 1
 
 [node name="middle" type="Label" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Readme/Panel/ScrollContainer/VBoxContainer"]
