@@ -29,11 +29,13 @@ Main is tab for staring and running/saving simulation
 ### Simulation
 There are many parameters about the simulation and enviroment
 1. Round timer - how long is each round
-2. Spider timer - how many spiders are per batch (sadly godot has only 31 collision layers so max this is 31)
+2. Spider amount - how many spiders are per batch (sadly godot has only 31 collision layers so max this is 30 [the one extra is for loading spiders])
 3. Spider batches - how many spider batches there are
 4. Keep best - does the simulation keep the best spider
-5. Mutation probablity - how likely is for neuron to change some of its values
-6. Mutation amount - how much the neuron is changed
+5. Random spawn - spawns spiders in random rotation (it is goofy and should be used to train getting up)
+6. Mutation probablity - how likely is for neuron to change some of its values
+7. Mutation amount - how much the neuron is changed
+8. Brain update - sec for brain to update
 ### Rewards
 These are spiders rewards, aka PAIN and BLISS
 1. Ground height - how hig the ai has to be not to get pain (indicated by beeing red)
@@ -43,9 +45,9 @@ These are spiders rewards, aka PAIN and BLISS
 5. Goal reward - the reward for getting the goal
 6. Goal distance reward - the reward for going towards the goal
 ### Spider
-These are the parameters that determine the smartness of ai<br>
+These are the parameters that determine the "smartness" of ai<br>
 (only is set when new simulation is run)<br>
-(input neurons are 51 + memory neurons)<br>
+(input neurons are 52 + memory neurons)<br>
 (output neurons are 24 + memory neurons)
 1. Ai hidden layers - how many hidden layers ai has
 2. Neurons per layer - how many neurons ai has per hidden layer
@@ -53,7 +55,17 @@ These are the parameters that determine the smartness of ai<br>
 ### Stats
 All it does is show stats...
 ### Tools
-WIP
+Tools are used for controlling simulation in real time or loading previous generation
+1. Viewer, Drager, Killer are tools
+Viewer - used to load spider into preview from simulation<br>
+Drager - used to drag Terry around simulation
+Killer - used for killing Terries (can't kill the last Terry for obvious reasons [totatly not bc then the simulation crashes and then you would delete all the date.. totaly])
+2. Auto save interval - per how many generations Terry is auto saved
+3. Time per Terry - you select time how fast the recap will go and then click Recap and it will load recap in previewer
+4. Preview - loads that Terry in previewer
+5. Load spider - starts a new simulation from that spider
+## Previewer
+It is a screen in bottom right that shows the best spider or shows the one loaded in, it also has text to show what it is curently showing as well fullscreen button
 # How this works?
 Terry is an ai agent aka it has neurons that each has simple multiplication addition and clamping funtion to each, nothing special? well when you have multiple then the magic begins.<br>
 Each generation the Terry is ranked based on performance and the better the more likely it has to suriv and reproduce (it reproduces asexualy) and each generation it mutates a bit, aka some of it's brain neurons get tweaked a bit, and so on and so foward till Terrry learns how to walk :DD<br>

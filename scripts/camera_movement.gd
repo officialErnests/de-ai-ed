@@ -9,9 +9,9 @@ const MOUSE_SENSITIVITY = 0.5
 const SPEED = 10
 var distance = 3
 func _input(event):
-	if event.is_action_pressed("scroll_down"):
+	if event.is_action_pressed("scroll_down") and not global.menu_open:
 		distance += 1
-	if event.is_action_pressed("scroll_up"):
+	if event.is_action_pressed("scroll_up") and not global.menu_open:
 		distance -= 1
 	if event.is_action_pressed("ui_cancel"):
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
