@@ -1,6 +1,9 @@
 Quick docs, still wip XD
 # DEAIED
 Is a neural tework simulation build by @n0o0b090lv and it runs spiders called Terries as they try to reach unreachable goal
+yt demo -> https://youtu.be/I7DWUXR9xcE <br>
+github -> https://github.com/officialErnests/de-ai-ed<br>
+itch -> https://n0o0b090lv.itch.io/deaied <br>
 # Setup
 To run this, currently
 1. Clone repo locally
