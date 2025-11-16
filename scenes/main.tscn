@@ -29,11 +29,11 @@ sky = SubResource("Sky_trceg")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tbgi4"]
 albedo_texture = ExtResource("1_sugp2")
-uv1_scale = Vector3(1000, 1000, 1000)
+uv1_scale = Vector3(10000, 10000, 10000)
 uv1_triplanar_sharpness = 0.006702052
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_sugp2"]
-size = Vector2(1000, 1000)
+size = Vector2(10000, 10000)
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_tefeu"]
 
@@ -235,6 +235,7 @@ text = "O"
 script = ExtResource("8_85g3d")
 node = NodePath("../..")
 slide_offset = Vector2(-300, 0)
+slide_steps = 10.0
 slider_open_text = "<"
 slider_close_text = "> Main"
 is_open = false
@@ -374,6 +375,7 @@ text = "O"
 script = ExtResource("8_85g3d")
 node = NodePath("../..")
 slide_offset = Vector2(-300, 0)
+slide_steps = 10.0
 slider_open_text = "<"
 slider_close_text = "> Simulatio"
 is_open = false
@@ -488,6 +490,7 @@ text = "O"
 script = ExtResource("8_85g3d")
 node = NodePath("../..")
 slide_offset = Vector2(-300, 0)
+slide_steps = 10.0
 slider_open_text = "<"
 slider_close_text = "> Rewards"
 is_open = false
@@ -557,7 +560,6 @@ text = "Memory neurons"
 
 [node name="SpinBox" type="SpinBox" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Spider/Panel/VBoxContainer/HBoxContainer3"]
 layout_mode = 2
-value = 10.0
 
 [node name="Control" type="Control" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Spider"]
 z_index = -1
@@ -573,6 +575,7 @@ text = "O"
 script = ExtResource("8_85g3d")
 node = NodePath("../..")
 slide_offset = Vector2(-300, 0)
+slide_steps = 10.0
 slider_open_text = "<"
 slider_close_text = "> Spider"
 is_open = false
@@ -669,6 +672,7 @@ text = "O"
 script = ExtResource("8_85g3d")
 node = NodePath("../..")
 slide_offset = Vector2(-300, 0)
+slide_steps = 10.0
 slider_open_text = "<"
 slider_close_text = "> Stats"
 is_open = false
@@ -811,6 +815,7 @@ text = "O"
 script = ExtResource("8_85g3d")
 node = NodePath("../..")
 slide_offset = Vector2(-300, 0)
+slide_steps = 10.0
 slider_open_text = "<"
 slider_close_text = "> Tools"
 is_open = false
@@ -868,6 +873,377 @@ theme_override_colors/font_color = Color(0.641934, 0.641934, 0.641934, 1)
 theme_override_font_sizes/font_size = 8
 text = "Curently playing:"
 vertical_alignment = 2
+
+[node name="Readme" type="CanvasLayer" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam"]
+layer = 2
+visible = false
+
+[node name="Panel" type="Panel" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Readme"]
+anchors_preset = -1
+anchor_left = 0.1
+anchor_top = 0.1
+anchor_right = 0.9
+anchor_bottom = 0.9
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Readme/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 10.0
+offset_right = -4.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Readme/Panel/ScrollContainer"]
+custom_minimum_size = Vector2(488, 0)
+layout_mode = 2
+
+[node name="top" type="Label" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Readme/Panel/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 30
+theme_override_font_sizes/font_size = 50
+text = "DEAIED"
+horizontal_alignment = 1
+
+[node name="smaller" type="Label" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Readme/Panel/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.76240367, 0.76240367, 0.76240367, 1)
+text = "aka Terry simulator 2000
+also README.md is better"
+horizontal_alignment = 1
+
+[node name="middle" type="Label" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Readme/Panel/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/outline_size = 10
+theme_override_font_sizes/font_size = 30
+text = "Quick intro"
+horizontal_alignment = 1
+
+[node name="p" type="Label" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Readme/Panel/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "DEAIED is a digital simulation of spiders called Terry
+Terry use neural network to controll their movement.
+
+What is Terryis goal? 
+Quite simple, stay above some height and reaach target.
+
+Also movement:
+Wasd - move
+Esc  - exit mouse lock
+Right click - enter / exit mouse lock
+Left clink - exit mouse lock / use tool"
+horizontal_alignment = 1
+
+[node name="middle2" type="Label" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Readme/Panel/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/outline_size = 10
+theme_override_font_sizes/font_size = 30
+text = "Quick overview"
+horizontal_alignment = 1
+
+[node name="p2" type="Label" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Readme/Panel/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "In this project you have simple gui
+
+- preview in bottom right
+- generation in top right
+- timer at top
+- help button at bottom
+- simulation controll and settings on left"
+horizontal_alignment = 1
+
+[node name="small" type="Label" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Readme/Panel/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0.5137255, 1)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 25
+text = "Tab - Main"
+horizontal_alignment = 1
+
+[node name="p3" type="Label" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Readme/Panel/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "Main tab controlls the simulation
+
+- You can start training here
+- Pause training
+- Finnish batch
+- Save your creation
+- Open save folder
+- Refresh saves folder
+- And load Terries"
+horizontal_alignment = 1
+
+[node name="small2" type="Label" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Readme/Panel/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0.5137255, 1)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 25
+text = "Tab - Simulation"
+horizontal_alignment = 1
+
+[node name="p4" type="Label" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Readme/Panel/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "Simulation tab is where all the simulation thingies hide
+
+- Set how each simulation runs for
+- How many spiders are spawned per batch
+- How many batches are spawned per simulation
+- Is the best Terry kept trough simulations
+- Is terry spawned randomly
+- How likely is to mutate neuron
+- How much the neuron mutates (in range)
+- How fast the brainn updates aka thinking cycle"
+horizontal_alignment = 1
+
+[node name="small3" type="Label" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Readme/Panel/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0.5137255, 1)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 25
+text = "Tab - Rewards"
+horizontal_alignment = 1
+
+[node name="p5" type="Label" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Readme/Panel/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "Rewards tab is to do everything how terry gets hurt
+and also how he gets rewards
+
+- How hig Terry has to go up not to get hurt
+(indicated by him beeing red)
+- How much Terry is hurt if below this treshold
+- Spawns goals in random direction
+- How far goal is from Terry
+- How much terry gets from goal
+- How much terry gets for aproaching goal"
+horizontal_alignment = 1
+
+[node name="small4" type="Label" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Readme/Panel/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0.5137255, 1)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 25
+text = "Tab - Spider"
+horizontal_alignment = 1
+
+[node name="p6" type="Label" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Readme/Panel/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "Spider tab is for Terries brain
+It only comes in effect if you start a new simulation
+(More about these at the bottom [Explanation])
+
+- How many hidden neurons Terry has
+- How many neurons per hidden layer
+- How many memory neurons Terry has
+(Memory neurons let terry remember, aka set info)"
+horizontal_alignment = 1
+
+[node name="small5" type="Label" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Readme/Panel/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0.5137255, 1)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 25
+text = "Tab - Statistics"
+horizontal_alignment = 1
+
+[node name="p7" type="Label" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Readme/Panel/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "Statistics is simply to show or hide graphs
+Graphs can be located in simulation
+(they all just show or hide statistics)"
+horizontal_alignment = 1
+
+[node name="small6" type="Label" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Readme/Panel/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0.5137255, 1)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 25
+text = "Tab - Tools"
+horizontal_alignment = 1
+
+[node name="p8" type="Label" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Readme/Panel/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "Tool tab is used for picking tools to interact
+or view the simulation
+
+- Viewer, Drager and Killer are tools
+Each of em is indicated by difrent colors
+Viewer - Puts selected Terry in preview
+Drager - Moves selected Terry around
+Killer - Kills selected Terry (can't kill the last Terry)
+- Per which generation terry is saved
+- Loads all Terries in preview from save
+Used for timelapse n stuff 
+- Loads specific Terry in preview
+- Starts a new generation from selected Terry
+(Used if you have Terry that u liked in preview)"
+horizontal_alignment = 1
+
+[node name="small7" type="Label" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Readme/Panel/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0.5137255, 1)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 25
+text = "Timer"
+horizontal_alignment = 1
+
+[node name="p9" type="Label" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Readme/Panel/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "At the top is timer that counts down the end of simulation
+when timer ends it picks best Terries and reloads simulation"
+horizontal_alignment = 1
+
+[node name="small8" type="Label" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Readme/Panel/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0.5137255, 1)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 25
+text = "Generation"
+horizontal_alignment = 1
+
+[node name="p10" type="Label" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Readme/Panel/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "At top right shows which generation is curent"
+horizontal_alignment = 1
+
+[node name="small9" type="Label" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Readme/Panel/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0.5137255, 1)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 25
+text = "Preview"
+horizontal_alignment = 1
+
+[node name="p11" type="Label" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Readme/Panel/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "Preview is at bottom right
+It is used to spectate best spider
+(there is text on what is beeing loaded curently)
+Fullscreen button can be pressed to put preview fullscreen"
+horizontal_alignment = 1
+
+[node name="middle3" type="Label" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Readme/Panel/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/outline_size = 10
+theme_override_font_sizes/font_size = 30
+text = "How Terry works?"
+horizontal_alignment = 1
+
+[node name="small10" type="Label" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Readme/Panel/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0.5137255, 1)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 25
+text = "Thinking"
+horizontal_alignment = 1
+
+[node name="p12" type="Label" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Readme/Panel/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "Terry uses Neurons to think
+There is 52 Input neurons
+which are the neurons on leg rotation and hinge rotation
+goal direction and others
+
+And Terry has 24 outputs
+x and y rotation for base leg
+and y rotation for tail leg
+
+Also memory neurons
+which are there for memory
+terry can output values to these and then 
+those values will be fed back into inputs"
+horizontal_alignment = 1
+
+[node name="small11" type="Label" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Readme/Panel/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0.5137255, 1)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 25
+text = "Rewards and selection"
+horizontal_alignment = 1
+
+[node name="p13" type="Label" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Readme/Panel/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "After time has reached zero selcetion process kicks in
+First it gets the points from each Terry
+They are the time and distance spent under height treshold
+The goals reached
+And the distance to curent goal
+
+Then starts sellection
+The Terry with most points is safe from elemination
+(if setting enabled)
+Then weighted on point difrance new generation of
+Terries is selected, the more points the more likely to survive
+
+Then data is saved
+The avg, min, max and other data is saved
+In order to be able to load it in graph
+Also each 25 rounds (by default but can be changed)]
+There is autosave where best Terry is saved
+Then they all can be played back in preview
+As well trained, branching off"
+horizontal_alignment = 1
+
+[node name="middle4" type="Label" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Readme/Panel/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/outline_size = 10
+theme_override_font_sizes/font_size = 30
+text = "Finnal words"
+horizontal_alignment = 1
+
+[node name="p14" type="Label" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Readme/Panel/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "So yeah this took me 48~ hrs and had alot of fun
+There is so many features and debuging
+And it wasn't a smooth ride..
+BUT i did it and this is my biggest project yet :DD
+Also Terry starts to be decent about 500 gen..
+But it is all up to chance, that is how this works
+Also haven't gotten one that starts walkin as well XD
+Ig this is a bit too complex to deal with 52 inputs and
+16 outputs in physics simulation ;u;
+So i'm gonna be spending some time later just trying
+to get THE ONE chosen Terry that can walk XD"
+horizontal_alignment = 1
+
+[node name="Control" type="Control" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Readme"]
+z_index = -1
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Button" type="Button" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam/Readme/Control" node_paths=PackedStringArray("node")]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -10.5
+offset_top = -31.0
+offset_right = 10.5
+grow_horizontal = 2
+grow_vertical = 0
+text = "O"
+script = ExtResource("8_85g3d")
+node = NodePath("../../Panel")
+slide_offset = Vector2(0, 360)
+slide_steps = 10.0
+slider_open_text = "\\/ HELP \\/"
+slider_close_text = "/\\ HELP /\\"
+is_open = false
 
 [node name="Spidersss" type="Node3D" parent="." node_paths=PackedStringArray("start", "pause_button", "force_stop_button", "save_button", "save_text", "open_button", "open_dialogue", "refresh_button", "load_button_storage", "training_time", "mutation_chance", "mutation_amount", "spiders_batches", "spiders_per_batch", "keep_best", "random_spawn", "brain_update_interval", "ground_height", "ground_pain", "random_goal", "goal_distance", "goal_reward", "goal_distance_reward", "hidden_layers", "neurons_per_layer", "memory_neurons", "graph_show_spiders", "graph_show_time", "graph_show_max", "graph_show_avg", "graph_show_min", "auto_save_interval", "timelapse_time", "timelapse_button", "tool_viewer", "tool_drager", "tool_killer", "load_preview_int", "load_preview_button", "unload_preview_button", "load_spider_int", "load_spider_button", "preview_loader", "preview_viewport_control", "preview_fullscreen", "preview_text", "graph_min_node", "graph_avg_node", "graph_max_node", "graph_spiders", "graph_time", "timer", "node_visualiser", "generation_count", "pointer_mesh", "camera")]
 script = ExtResource("7_tipki")
