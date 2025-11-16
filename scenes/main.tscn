@@ -53,6 +53,7 @@ cap_bottom = false
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_o6xl0"]
 shading_mode = 0
+albedo_color = Color(0, 0, 1, 1)
 albedo_texture = ExtResource("5_tefeu")
 
 [sub_resource type="BoxMesh" id="BoxMesh_tipki"]
@@ -89,13 +90,15 @@ material_override = SubResource("StandardMaterial3D_tefeu")
 mesh = SubResource("CylinderMesh_sugp2")
 skeleton = NodePath("../..")
 
-[node name="Floating_cam" type="Camera3D" parent="Camera_setup/NeckOrSmthing/Dron"]
+[node name="Floating_cam" type="Camera3D" parent="Camera_setup/NeckOrSmthing/Dron" node_paths=PackedStringArray("main_node")]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0)
 cull_mask = 1048573
 current = true
 script = ExtResource("4_tbgi4")
+main_node = NodePath("../../../../Spidersss")
 
 [node name="Pointer" type="MeshInstance3D" parent="Camera_setup/NeckOrSmthing/Dron/Floating_cam"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
 visible = false
 material_override = SubResource("StandardMaterial3D_o6xl0")
 mesh = SubResource("BoxMesh_tipki")
@@ -866,7 +869,7 @@ theme_override_font_sizes/font_size = 8
 text = "Curently playing:"
 vertical_alignment = 2
 
-[node name="Spidersss" type="Node3D" parent="." node_paths=PackedStringArray("start", "pause_button", "force_stop_button", "save_button", "save_text", "open_button", "open_dialogue", "refresh_button", "load_button_storage", "training_time", "mutation_chance", "mutation_amount", "spiders_batches", "spiders_per_batch", "keep_best", "random_spawn", "brain_update_interval", "ground_height", "ground_pain", "random_goal", "goal_distance", "goal_reward", "goal_distance_reward", "hidden_layers", "neurons_per_layer", "memory_neurons", "graph_show_spiders", "graph_show_time", "graph_show_max", "graph_show_avg", "graph_show_min", "auto_save_interval", "timelapse_time", "timelapse_button", "tool_viewer", "tool_drager", "tool_killer", "load_preview_int", "load_preview_button", "unload_preview_button", "load_spider_int", "load_spider_button", "preview_loader", "preview_viewport_control", "preview_fullscreen", "preview_text", "graph_min_node", "graph_avg_node", "graph_max_node", "graph_spiders", "graph_time", "timer", "node_visualiser", "generation_count")]
+[node name="Spidersss" type="Node3D" parent="." node_paths=PackedStringArray("start", "pause_button", "force_stop_button", "save_button", "save_text", "open_button", "open_dialogue", "refresh_button", "load_button_storage", "training_time", "mutation_chance", "mutation_amount", "spiders_batches", "spiders_per_batch", "keep_best", "random_spawn", "brain_update_interval", "ground_height", "ground_pain", "random_goal", "goal_distance", "goal_reward", "goal_distance_reward", "hidden_layers", "neurons_per_layer", "memory_neurons", "graph_show_spiders", "graph_show_time", "graph_show_max", "graph_show_avg", "graph_show_min", "auto_save_interval", "timelapse_time", "timelapse_button", "tool_viewer", "tool_drager", "tool_killer", "load_preview_int", "load_preview_button", "unload_preview_button", "load_spider_int", "load_spider_button", "preview_loader", "preview_viewport_control", "preview_fullscreen", "preview_text", "graph_min_node", "graph_avg_node", "graph_max_node", "graph_spiders", "graph_time", "timer", "node_visualiser", "generation_count", "pointer_mesh", "camera")]
 script = ExtResource("7_tipki")
 start = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Main/Panel/VBoxContainer/Start")
 pause_button = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Gui/Main/Panel/VBoxContainer/Pause")
@@ -922,6 +925,8 @@ graph_time = NodePath("../Graphs/TimeGraph")
 timer = NodePath("../Lerning")
 node_visualiser = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/AiNodes")
 generation_count = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/GenCount/Label")
+pointer_mesh = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam/Pointer")
+camera = NodePath("../Camera_setup/NeckOrSmthing/Dron/Floating_cam")
 
 [node name="Lerning" type="Timer" parent="."]
 one_shot = true
