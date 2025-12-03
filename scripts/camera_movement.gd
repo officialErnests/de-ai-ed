@@ -1,28 +1,37 @@
 extends Node3D
 
+# PLAYER MOVEMENT
 
-# Called when the node enters the scene tree for the first time.
+var distance = 3
+const MOUSE_SENSITIVITY = 0.5
+const SPEED = 10
+
+# Locks cursor first time launched
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
-const MOUSE_SENSITIVITY = 0.5
-const SPEED = 10
-var distance = 3
+# Manges mouse inputs
 func _input(event):
+	# Zoom out
 	if event.is_action_pressed("scroll_down") and not global.menu_open:
 		distance += 1
+	# Zoom in
 	if event.is_action_pressed("scroll_up") and not global.menu_open:
 		distance -= 1
+	# Exits mouse lock
 	if event.is_action_pressed("ui_cancel"):
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	# Exits/enters mouse lock
 	if event.is_action_pressed("r_click"):
 		if Input.mouse_mode == Input.MOUSE_MODE_VISIBLE:
 			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 		else:
 			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	# Exits mouse lock
 	if event.is_action_pressed("l_click"):
 		if Input.mouse_mode != Input.MOUSE_MODE_VISIBLE:
 			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	# Rotates 
 	if event is InputEventMouseMotion and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
 		$NeckOrSmthing.rotate_x(deg_to_rad(event.relative.y * MOUSE_SENSITIVITY * -1))
 		rotate_y(deg_to_rad(event.relative.x * MOUSE_SENSITIVITY * -1))
@@ -31,12 +40,14 @@ func _input(event):
 		camera_rot.x = clamp(camera_rot.x, -90, 90)
 		$NeckOrSmthing.rotation_degrees = camera_rot
 
+# Handles movement
 func _process(delta):
 	var cam_xform = get_global_transform()
 
 	var input_movement_vector = Vector2()
 	var dir = Vector3()
 
+	# User input
 	if Input.is_action_pressed("movement_forward"):
 		input_movement_vector.y += 1
 	if Input.is_action_pressed("movement_backward"):
@@ -48,10 +59,10 @@ func _process(delta):
 
 	input_movement_vector = input_movement_vector.normalized()
 
-	# Basis vectors are already normalized.
 	dir += -cam_xform.basis.z * input_movement_vector.y
 	dir += cam_xform.basis.x * input_movement_vector.x
 	
+	# Moves player
 	dir.y = 0
 	dir = dir.normalized()
 	var sprintMul = 10 if Input.is_action_pressed("fast") else 1

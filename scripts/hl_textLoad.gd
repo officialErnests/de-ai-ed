@@ -1,5 +1,6 @@
 extends Node
 
+#just loads text
 @export var text_to_update: MeshInstance3D
 var parent_nb: Node
 

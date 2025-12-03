@@ -1,5 +1,7 @@
 extends Node
 
+# CONTROLL NODE TO DRAW 3D GRAPHS
+
 @export_category("Values")
 @export var segment_size := Vector2.ONE
 @export var z_size: float = 0.1
@@ -22,11 +24,14 @@ var graph: Node3D
 var graph_meshes_arr = []
 var last_graph_size: int
 
+# initilises graph and its values
 func _ready() -> void:
 	graph = get_parent()
 	last_graph_size = graph.value_dict.size()
 	graph.updateGraph.connect(updateGraph)
 
+# Decides if it should be half update or whole update
+# Making it bit more optimized on faster generations
 func updateGraph() -> void:
 	if last_graph_size + 1 == graph.value_dict.size():
 		halfUpdate()
@@ -34,6 +39,7 @@ func updateGraph() -> void:
 		fullReset()
 	last_graph_size = graph.value_dict.size()
 
+# Used when only one value is added
 func halfUpdate() -> void:
 	var value_dict: Dictionary[String, float] = graph.value_dict
 	var graph_size_x: float = value_dict.size()
@@ -74,6 +80,7 @@ func halfUpdate() -> void:
 	value_parent.add_child(graph_index_text)
 	graph_meshes_arr.append(graph_index_text)
 
+# Fully resets graph and updates all values
 func fullReset() -> void:
 	for iter_grhap_mesh in graph_meshes_arr: iter_grhap_mesh.queue_free()
 	graph_meshes_arr.clear()

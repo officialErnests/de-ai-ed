@@ -1,5 +1,7 @@
 extends Node3D
 
+# SPIDER HOLDER as well the MAIN MANAGER
+
 var preload_spider = preload("res://scenes/spider.tscn")
 var preload_load_button = preload("res://scenes/load_button.tscn")
 
@@ -83,6 +85,7 @@ var random_spawn_direction := Vector3.ZERO
 var random_goal_position = []
 var is_timelapse_playing = false
 
+# Connects buttuns to functions
 func _ready() -> void:
 	resetStatsArr()
 
@@ -117,31 +120,36 @@ func _ready() -> void:
 	refreshFiles()
 	refreshGraphs()
 
+# Checks if you can delete a spider
 func canKill():
 	var res = 0
 	for spider in spiders_arr: if spider: res += 1
 	return res > 1
-	
 
+# Switches cursor visual to grab
 func cursorGrab():
 	camera.curent_tool = camera.Tool.GRAB
 	pointer_mesh.material_override.albedo_color = Color(0, 0, 1, 1)
 	pass
 
+# Switches the cursor visual to view
 func cursorView():
 	camera.curent_tool = camera.Tool.VIEW
 	pointer_mesh.material_override.albedo_color = Color(0, 1, 0, 1)
 	pass
 
+# Switches the cursor visual to kill
 func cursorKill():
 	camera.curent_tool = camera.Tool.KILL
 	pointer_mesh.material_override.albedo_color = Color(1, 0, 0, 1)
 	pass
 
+# loads into preview selected spider
 func loadGeneration():
 	if stats_arr["spider_saves"].size() < load_spider_int.value: return
 	loadFromLoadedFile(load_spider_int.value - 1)
 
+# resets all simulation and continues 
 func loadFromLoadedFile(p_array_int):
 	stats_arr["generation_statistics"].resize(p_array_int + 1)
 	stats_arr["spider_saves"].resize(p_array_int + 1)
@@ -154,6 +162,7 @@ func loadFromLoadedFile(p_array_int):
 	refreshGraphs()
 	startRound()
 
+# Starts/stops timelapse
 func timelapsePressed() -> void:
 	if is_timelapse_playing:
 		is_timelapse_playing = false
@@ -168,11 +177,13 @@ func timelapsePressed() -> void:
 			if preview_best_spider: preview_best_spider.setMain()
 			is_timelapse_playing = false
 
+# unloads spider from preview
 func unloadPreview():
 	preview_spider_loaded = false
 	setCurentBestPreview()
 	preview_loader.deleteSpider()
 
+# sets curent preview to best spider
 func setCurentBestPreview():
 	if preview_best_spider:
 		preview_best_spider.setMain()
@@ -180,6 +191,7 @@ func setCurentBestPreview():
 	else:
 		preview_text.text = "Curently previewing: None"
 
+# loads spider into preview using brains array
 func loadPreview(p_spider_to_load):
 	if preview_spider_loaded:
 		preview_loader.deleteSpider()
@@ -187,17 +199,20 @@ func loadPreview(p_spider_to_load):
 	if preview_best_spider: preview_best_spider.setSub()
 	preview_loader.spawnSpider(p_spider_to_load, stats_arr)
 
+# loads selected generation into preview
 func spiderSaveLoad():
 	if stats_arr["spider_saves"].size() < load_preview_int.value: return
 	preview_text.text = "Curently previewing: loaded gen " + str(stats_arr["spider_saves"][floor(load_preview_int.value - 1)]["gen"])
 	loadPreview(stats_arr["spider_saves"][floor(load_preview_int.value - 1)]["brain"])
 
+# Refreshes the value ranges for loading in preview
 func refreshPreviews():
 	load_preview_int.max_value = stats_arr["spider_saves"].size()
 	load_preview_int.value = min(load_preview_int.value, stats_arr["spider_saves"].size())
 	load_spider_int.max_value = stats_arr["spider_saves"].size()
 	load_spider_int.value = min(load_spider_int.value, stats_arr["spider_saves"].size())
 
+# Toggles preview to be fullscreen
 func previewFullscreenToggle():
 	fullscreen = not fullscreen
 	if fullscreen:
@@ -211,6 +226,7 @@ func previewFullscreenToggle():
 		preview_viewport_control.anchor_left = 0.7
 		preview_viewport_control.anchor_top = 0.7
 
+# Resets stats array
 func resetStatsArr():
 	stats_arr = {
 		"generation" = 1,
@@ -243,12 +259,14 @@ func resetStatsArr():
 	}
 	refreshPreviews()
 
+# hides / shows graphs
 func graphShowSpiders(): graph_spiders.visible = graph_show_spiders.button_pressed
 func graphShowTime(): graph_time.visible = graph_show_time.button_pressed
 func graphShowMax(): graph_max_node.visible = graph_show_max.button_pressed
 func graphShowAvg(): graph_avg_node.visible = graph_show_avg.button_pressed
 func graphShowMin(): graph_min_node.visible = graph_show_min.button_pressed
 
+# Refreshes graphics and resets them
 func refreshGraphs():
 	if stats_arr["generation_statistics"].size() == 0: return
 	if graph_min_node.visible: updateGraph(graph_min_node, "min")
@@ -257,6 +275,7 @@ func refreshGraphs():
 	if graph_spiders.visible: updateGraph(graph_spiders, "bat")
 	if graph_time.visible: updateGraph(graph_time, "sec")
 
+# adds value to graph and updates them
 func updateGraph(graph_node, value: String):
 	var result: Dictionary[String, float] = {}
 	for i in range(stats_arr["generation_statistics"].size()):
@@ -267,6 +286,7 @@ func updateGraph(graph_node, value: String):
 	graph_node.value_dict = result
 	graph_node.update()
 
+# Saves brains
 func saveAi():
 	var dirAccess = DirAccess.open(SAVE_PATH)
 	if not dirAccess:
@@ -283,10 +303,11 @@ func saveAi():
 	fileSave.store_string(JSON.stringify([stats_arr, best_spider]))
 	refreshFiles()
 
+# opens dialogue to folder
 func openExplorer():
 	open_dialogue.visible = true
-	# OS.execute("explorer.exe", [str(ProjectSettings.globalize_path(SAVE_PATH)).replace("/", "\\")])
 
+# refreshes files
 func refreshFiles():
 	for iter_load_button in load_button_arr:
 		iter_load_button.queue_free()
@@ -304,6 +325,7 @@ func refreshFiles():
 			load_button_storage.add_child(load_button)
 			load_button_arr.append(load_button)
 
+# loads ai from specific path
 func loadFile(p_path):
 	var file_loaded_ai = FileAccess.open(SAVE_PATH + p_path, FileAccess.READ)
 	if not file_loaded_ai:
@@ -352,6 +374,7 @@ func loadFile(p_path):
 	refreshGraphs()
 	startRound()
 
+# pases simulation timer
 func pauseTimer():
 	if timer.paused:
 		pause_button.text = "pause"
@@ -360,11 +383,13 @@ func pauseTimer():
 		pause_button.text = "resume"
 		timer.paused = true
 
+# restarts training
 func restart():
 	timer.paused = false
 	start.text = "Restart training"
 	startTraining()
 
+# starts trainning from fresh start
 func startTraining():
 	resetStatsArr()
 	timer.paused = false
@@ -372,21 +397,25 @@ func startTraining():
 	intss = 0
 	trainLoop()
 
+# clears spide
 func clear_spiders():
 	for spider in spiders_arr:
 		if not spider: continue
 		spider.queue_free()
 	spiders_arr.clear()
 
+# Ends curent training loop
 func forceEnd():
 	timer.paused = true
 	trainLoop()
 
+# Starts a new round
 func startRound():
 	timer.paused = false
 	timer.start(training_time.value)
 	generation_count.text = "Gen: " + str(intss)
 
+# called each training loop as it setsup all spiders
 func trainLoop():
 	intss += 1
 	startRound()
@@ -454,6 +483,7 @@ func trainLoop():
 
 		modifySummon(randomm_picker)
 
+# summons spiders and modifies them
 func modifySummon(p_randomm_picker: WeightedRandom) -> void:
 	for y in range(spiders_batches.value):
 		for x in range(spiders_per_batch.value):
@@ -465,16 +495,19 @@ func modifySummon(p_randomm_picker: WeightedRandom) -> void:
 		preview_best_spider.setMain()
 		preview_text.text = "Curently previewing: Curent best"
 
+# Summons empty spiders
 func summonSpiders() -> void:
 	for y in range(spiders_batches.value):
 		for x in range(spiders_per_batch.value):
 			spawnSpider(x + 2, y, null, false)
 
+# SUmmons spiders and loads preset brain
 func loadSpiders(p_brain):
 	for y in range(spiders_batches.value):
 		for x in range(spiders_per_batch.value):
 			spawnSpider(x + 2, y, p_brain, false)
 
+# Spawns spider with parameters
 func spawnSpider(col_layer, y_indx, p_loaded_brain, p_flavoring):
 	var temp_spider = preload_spider.instantiate()
 	temp_spider.position = position + Vector3(0, 0, 10 * y_indx)
@@ -508,6 +541,7 @@ func spawnSpider(col_layer, y_indx, p_loaded_brain, p_flavoring):
 	if random_spawn.button_pressed:
 		temp_spider.randomize(random_spawn_direction)
 	
+# Used for weighted randomness
 class WeightedRandom:
 	var arr_probablity
 	var arr_index
@@ -519,6 +553,7 @@ class WeightedRandom:
 	var arr_avg = 0
 	var arr_mod
 	var picked_randoms = {}
+	# Sets up values
 	func _init(p_probablity_arr, p_index_arr) -> void:
 		arr_probablity = p_probablity_arr
 		arr_index = p_index_arr
@@ -535,8 +570,10 @@ class WeightedRandom:
 				max_probablity = probablity
 				max_index = p_index_arr[iter]
 			probablity_max += probablity
+	# Gets the max index
 	func getMax():
 		return max_index
+	# Gets a random value
 	func getRandom():
 		var probablity = randf_range(0, probablity_max)
 		var random_index = -1

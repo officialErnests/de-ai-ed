@@ -1,12 +1,12 @@
 extends CanvasLayer
 
+# DEPRICATED
+# WAS USED TO viSUALISE THE NODES BUT TOO SLOW AND LAGGY
+
 @onready var graph = $GraphEdit
 var layer_frames = []
 var neuron_nodes = []
 var label_nodes = []
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
 
 func drawAi(p_brain):
 	return

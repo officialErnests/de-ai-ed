@@ -1,7 +1,7 @@
 extends TextEdit
 
+# Used for saving and if invalid name then create new save
 
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	genText()
 

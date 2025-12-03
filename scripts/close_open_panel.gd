@@ -1,5 +1,7 @@
 class_name menu_sliding extends Button
 
+# Handles panel opening and closing
+
 @export var node: Control
 @export var slide_offset: Vector2
 @export var slide_steps: float = 1
@@ -10,11 +12,12 @@ class_name menu_sliding extends Button
 
 var is_moving = false
 
+# Closes or open them
 func _ready() -> void:
 	pressed.connect(clicked)
 	if not is_open: move()
 
-
+# Handles click
 func clicked():
 	if is_moving: return
 	is_moving = true
@@ -26,6 +29,7 @@ func clicked():
 	
 	is_moving = false
 
+# Moves panel
 func move():
 	for i in range(slide_steps):
 		await get_tree().create_timer(slide_speed).timeout

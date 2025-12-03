@@ -1,5 +1,7 @@
 extends Node3D
 
+# Used to load spider into preview
+
 var preload_spider = preload("res://scenes/spider.tscn")
 
 var spider
@@ -8,18 +10,22 @@ var track_position = null
 signal StopLoop
 var labeler: Label = null
 
+# Rotates camera
 func _process(delta: float) -> void:
 	cam_holder.rotate_y(delta * 0.25)
 	if track_position: cam_holder.global_position = track_position
 	if spider: cam_holder.global_position += (spider.get_node("Skeleton3D/PhysicalBoneSimulator3D").global_position - cam_holder.global_position) * delta
 
+# Starts preview slide show where the spider is loaded each interval step
 func startPreview(p_stats_arr, p_time_interval) -> bool:
 	StopLoop.emit()
 	return await previewLoop(p_stats_arr, p_time_interval)
 
+# Stops preview slide show
 func endPreview() -> void:
 	StopLoop.emit()
 
+# Each preview slideshow loop this is called
 func previewLoop(p_stats_arr, p_time_interval, p_index = 0) -> bool:
 	var stopped = [false]
 	StopLoop.connect(func():
@@ -35,6 +41,8 @@ func previewLoop(p_stats_arr, p_time_interval, p_index = 0) -> bool:
 		return await previewLoop(p_stats_arr, p_time_interval, p_index + 1)
 	else:
 		return true
+
+# Spawns spider from brain
 func spawnSpider(p_loaded_brain, stats_arr) -> void:
 	var temp_spider = preload_spider.instantiate()
 	temp_spider.loadBrain(p_loaded_brain)
@@ -64,9 +72,11 @@ func spawnSpider(p_loaded_brain, stats_arr) -> void:
 	if stats_arr["random_spawn"]:
 		temp_spider.randomize(Vector3(randf_range(-PI, PI), randf_range(-PI, PI), randf_range(-PI, PI)))
 	
+# deletes spider
 func deleteSpider():
 	if spider: spider.queue_free()
 
+# Sets collision layer of bones
 func setCollLayers(p_layer):
 	for iter_bone in get_children().filter(func(x): return x is PhysicalBone3D):
 		iter_bone.set_collision_layer_value(1, false)

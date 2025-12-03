@@ -1,5 +1,7 @@
 extends Camera3D
 
+# Does the cursor and tool functions
+
 enum Tool {
 	VIEW,
 	GRAB,
@@ -18,6 +20,8 @@ var just_selected = false
 var rotation_angle = 0
 var last_dist = 0
 var visible_pointer = false
+
+# Visualises pointer as well does raycasting
 func _process(delta: float) -> void:
 	if global.menu_open:
 		pointer.visible = false
@@ -42,6 +46,7 @@ func _process(delta: float) -> void:
 		
 		pointerDetect(delta, intersection)
 
+# Handles utility
 func pointerDetect(delta, p_intersection):
 	match curent_tool:
 		Tool.VIEW:
@@ -66,11 +71,12 @@ func pointerDetect(delta, p_intersection):
 					spider_selected = null
 				else:
 					spider_selected = null
-				
+
+# Gets clicked spider
 func _input(event: InputEvent) -> void:
 	if Input.mouse_mode == Input.MOUSE_MODE_VISIBLE and enabled:
 		visible_pointer = true
-		
+		# Cheecks if that is valid and spider
 		if enabled and event is InputEventMouseButton:
 			if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 				if spider_selected:
@@ -81,9 +87,11 @@ func _input(event: InputEvent) -> void:
 						spider_selected = intersection['collider']
 						spider_selected_offset = spider_selected.global_position - intersection['position']
 	else:
+		# yeah no spider lol
 		if not spider_selected:
 			visible_pointer = false
 
+# Casts rays from camera
 func curRaycast():
 	var mouse_position = get_viewport().get_mouse_position()
 	var ray_point_start = project_ray_origin(mouse_position)
